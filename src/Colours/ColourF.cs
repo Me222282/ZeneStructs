@@ -323,7 +323,7 @@ namespace Zene.Structs
             return new ColourF((float)v.X, (float)v.Y, (float)v.Z, (float)v.W);
         }
 
-        internal const float ByteToFloat = /*0.00392156862745098f*/ (float)1 / 255;
+        public const float ByteToFloat = /*0.00392156862745098f*/ (float)1 / 255;
 
         /// <summary>
         /// A colour that has all components set to 0.
