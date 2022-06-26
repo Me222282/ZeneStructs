@@ -4,6 +4,6 @@ The Zene Structs Library is a collection of c# structs that represent/manage geo
 
 ## Credits
 
-Rgb and Hsl converter from [This site](http://csharphelper.com/blog/2016/08/convert-between-rgb-and-hls-color-models-in-c/)</br>
+Rgb and Hsl converter from [This site](http://csharphelper.com/blog/2016/08/convert-between-rgb-and-hls-color-models-in-c/)<br>
 
-Matrix functions from [OpenTK](https://github.com/opentk/opentk)</br>
+Matrix functions from [OpenTK](https://github.com/opentk/opentk)<br>
