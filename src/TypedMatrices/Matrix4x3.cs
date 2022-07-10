@@ -2,7 +2,7 @@
 
 namespace Zene.Structs
 {
-    public struct Matrix4x3<T> : IMatrix<T> where T : unmanaged
+    public struct Matrix4x3<T> where T : unmanaged
     {
         public Matrix4x3(Vector3<T> row0, Vector3<T> row1, Vector3<T> row2, Vector3<T> row3)
         {
@@ -66,9 +66,6 @@ namespace Zene.Structs
                 return _matrix;
             }
         }
-
-        int IMatrix<T>.RowSize => 4;
-        int IMatrix<T>.ColumnSize => 3;
 
         public T this[int x, int y]
         {

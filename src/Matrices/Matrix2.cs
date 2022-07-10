@@ -2,7 +2,7 @@
 
 namespace Zene.Structs
 {
-    public struct Matrix2 : IMatrix<double>
+    public struct Matrix2
     {
         public Matrix2(Vector2 row0, Vector2 row1)
         {
@@ -50,8 +50,6 @@ namespace Zene.Structs
         private readonly double[,] _matrix;
 
         public double[,] Data => _matrix;
-        int IMatrix<double>.RowSize => 2;
-        int IMatrix<double>.ColumnSize => 2;
 
         public double this[int x, int y]
         {
@@ -179,71 +177,6 @@ namespace Zene.Structs
                 { /*x:2 y:0*/(this[0, 0] * matrix[2, 0]) + (this[1, 0] * matrix[2, 1]), /*x:2 y:1*/(this[0, 1] * matrix[2, 0]) + (this[1, 1] * matrix[2, 1]) },
                 { /*x:3 y:0*/(this[0, 0] * matrix[3, 0]) + (this[1, 0] * matrix[3, 1]), /*x:3 y:1*/(this[0, 1] * matrix[3, 0]) + (this[1, 1] * matrix[3, 1]) }
             });
-        }
-
-        public Matrix Add(IMatrix<double> matrix)
-        {
-            if ((matrix.RowSize != 2) || (matrix.ColumnSize != 2))
-            {
-                throw new Exception($"{nameof(matrix)} doesn't have a compatable size. Must have 2 rows and 2 columns.");
-            }
-
-            Matrix output = new Matrix(new double[2, 2]);
-
-            for (int x = 0; x < 2; x++)
-            {
-                for (int y = 0; y < 2; y++)
-                {
-                    output[x, y] = _matrix[x, y] + matrix[x, y];
-                }
-            }
-
-            return output;
-        }
-        public Matrix Subtract(IMatrix<double> matrix)
-        {
-            if ((matrix.RowSize != 2) || (matrix.ColumnSize != 2))
-            {
-                throw new Exception($"{nameof(matrix)} doesn't have a compatable size. Must have 2 rows and 2 columns.");
-            }
-
-            Matrix output = new Matrix(new double[2, 2]);
-
-            for (int x = 0; x < 2; x++)
-            {
-                for (int y = 0; y < 2; y++)
-                {
-                    output[x, y] = _matrix[x, y] - matrix[x, y];
-                }
-            }
-
-            return output;
-        }
-        public Matrix Multiply(IMatrix<double> matrix)
-        {
-            if (matrix.RowSize != 2)
-            {
-                throw new Exception($"{nameof(matrix)} doesn't have a compatable size. Must have {2} rows.");
-            }
-
-            Matrix output = new Matrix(new double[2, matrix.ColumnSize]);
-
-            for (int x = 0; x < matrix.ColumnSize; x++)
-            {
-                for (int y = 0; y < 2; y++)
-                {
-                    double value = 0;
-
-                    for (int m = 0; m < 2; m++)
-                    {
-                        value += _matrix[m, y] * matrix[x, m];
-                    }
-
-                    output[x, y] = value;
-                }
-            }
-
-            return output;
         }
 
         public double Determinant()
@@ -377,19 +310,6 @@ namespace Zene.Structs
         public static Matrix2 operator *(double a, Matrix2 b)
         {
             return b.Multiply(a);
-        }
-
-        public static Matrix operator +(Matrix2 a, IMatrix<double> b)
-        {
-            return a.Add(b);
-        }
-        public static Matrix operator -(Matrix2 a, IMatrix<double> b)
-        {
-            return a.Subtract(b);
-        }
-        public static Matrix operator *(Matrix2 a, IMatrix<double> b)
-        {
-            return a.Multiply(b);
         }
 
         public static Matrix2 CreateRotation(Radian angle)

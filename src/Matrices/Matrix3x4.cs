@@ -2,7 +2,7 @@
 
 namespace Zene.Structs
 {
-    public struct Matrix3x4 : IMatrix<double>
+    public struct Matrix3x4
     {
         public Matrix3x4(Vector4 row0, Vector4 row1, Vector4 row2)
         {
@@ -62,8 +62,6 @@ namespace Zene.Structs
         private readonly double[,] _matrix;
 
         public double[,] Data => _matrix;
-        int IMatrix<double>.RowSize => 3;
-        int IMatrix<double>.ColumnSize => 4;
 
         public double this[int x, int y]
         {
@@ -287,71 +285,6 @@ namespace Zene.Structs
             });
         }
 
-        public Matrix Add(IMatrix<double> matrix)
-        {
-            if ((matrix.RowSize != 3) || (matrix.ColumnSize != 4))
-            {
-                throw new Exception($"{nameof(matrix)} doesn't have a compatable size. Must have 3 rows and 4 columns.");
-            }
-
-            Matrix output = new Matrix(new double[4, 3]);
-
-            for (int x = 0; x < 4; x++)
-            {
-                for (int y = 0; y < 3; y++)
-                {
-                    output[x, y] = _matrix[x, y] + matrix[x, y];
-                }
-            }
-
-            return output;
-        }
-        public Matrix Subtract(IMatrix<double> matrix)
-        {
-            if ((matrix.RowSize != 3) || (matrix.ColumnSize != 4))
-            {
-                throw new Exception($"{nameof(matrix)} doesn't have a compatable size. Must have 3 rows and 4 columns.");
-            }
-
-            Matrix output = new Matrix(new double[4, 3]);
-
-            for (int x = 0; x < 4; x++)
-            {
-                for (int y = 0; y < 3; y++)
-                {
-                    output[x, y] = _matrix[x, y] - matrix[x, y];
-                }
-            }
-
-            return output;
-        }
-        public Matrix Multiply(IMatrix<double> matrix)
-        {
-            if (matrix.RowSize != 4)
-            {
-                throw new Exception($"{nameof(matrix)} doesn't have a compatable size. Must have 4 rows.");
-            }
-
-            Matrix output = new Matrix(new double[3, matrix.ColumnSize]);
-
-            for (int x = 0; x < matrix.ColumnSize; x++)
-            {
-                for (int y = 0; y < 3; y++)
-                {
-                    double value = 0;
-
-                    for (int m = 0; m < 4; m++)
-                    {
-                        value += _matrix[m, y] * matrix[x, m];
-                    }
-
-                    output[x, y] = value;
-                }
-            }
-
-            return output;
-        }
-
         public double Trace()
         {
             return this[0, 0] + this[1, 1] + this[2, 2];
@@ -462,19 +395,6 @@ namespace Zene.Structs
         public static Matrix3x4 operator *(double a, Matrix3x4 b)
         {
             return b.Multiply(a);
-        }
-
-        public static Matrix operator +(Matrix3x4 a, IMatrix<double> b)
-        {
-            return a.Add(b);
-        }
-        public static Matrix operator -(Matrix3x4 a, IMatrix<double> b)
-        {
-            return a.Subtract(b);
-        }
-        public static Matrix operator *(Matrix3x4 a, IMatrix<double> b)
-        {
-            return a.Multiply(b);
         }
 
         public static Matrix3x4 CreateRotation(Vector3 axis, Radian angle)
