@@ -2,91 +2,83 @@
 
 namespace Zene.Structs
 {
-    public struct Matrix4
+    public unsafe struct Matrix4
     {
+        public const int Rows = 4;
+        public const int Columns = 4;
+
         public Matrix4(Vector4 row0, Vector4 row1, Vector4 row2, Vector4 row3)
         {
-            _matrix = new double[,]
-            {
-                { row0.X, row1.X, row2.X, row3.X },
-                { row0.Y, row1.Y, row2.Y, row3.Y },
-                { row0.Z, row1.Z, row2.Z, row3.Z },
-                { row0.W, row1.W, row2.W, row3.W }
-            };
+            Row0 = row0;
+            Row1 = row1;
+            Row2 = row2;
+            Row3 = row3;
         }
 
-        public Matrix4(double[,] matrix)
-        {
-            _matrix = new double[4, 4];
-
-            for (int x = 0; x < 4; x++)
-            {
-                for (int y = 0; y < 4; y++)
-                {
-                    try
-                    {
-                        _matrix[x, y] = matrix[x, y];
-                    }
-                    catch (Exception)
-                    {
-                        throw new Exception("Matrix needs to have at least 4 rows and 4 columns.");
-                    }
-                }
-            }
-        }
         public Matrix4(double[] matrix)
         {
-            _matrix = new double[4, 4];
-
-            if (matrix.Length < 16)
+            if (matrix.Length < (Rows * Columns))
             {
                 throw new Exception("Matrix needs to have at least 4 rows and 4 columns.");
             }
 
-            _matrix[0, 0] = matrix[0];
-            _matrix[1, 0] = matrix[1];
-            _matrix[2, 0] = matrix[2];
-            _matrix[3, 0] = matrix[3];
+            _matrix[0] = matrix[0];
+            _matrix[1] = matrix[1];
+            _matrix[2] = matrix[2];
+            _matrix[3] = matrix[3];
 
-            _matrix[0, 1] = matrix[4];
-            _matrix[1, 1] = matrix[5];
-            _matrix[2, 1] = matrix[6];
-            _matrix[3, 1] = matrix[7];
+            _matrix[4] = matrix[4];
+            _matrix[5] = matrix[5];
+            _matrix[6] = matrix[6];
+            _matrix[7] = matrix[7];
 
-            _matrix[0, 2] = matrix[8];
-            _matrix[1, 2] = matrix[9];
-            _matrix[2, 2] = matrix[10];
-            _matrix[3, 2] = matrix[11];
+            _matrix[8] = matrix[8];
+            _matrix[9] = matrix[9];
+            _matrix[10] = matrix[10];
+            _matrix[11] = matrix[11];
 
-            _matrix[0, 3] = matrix[12];
-            _matrix[1, 3] = matrix[13];
-            _matrix[2, 3] = matrix[14];
-            _matrix[3, 3] = matrix[15];
+            _matrix[12] = matrix[12];
+            _matrix[13] = matrix[13];
+            _matrix[14] = matrix[14];
+            _matrix[15] = matrix[15];
         }
 
-        internal readonly double[,] _matrix;
+        private fixed double _matrix[Rows * Columns];
 
-        public double[,] Data => _matrix;
+        public ReadOnlySpan<double> Data
+        {
+            get
+            {
+                ReadOnlySpan<double> value;
+
+                fixed (double* ptr = _matrix)
+                {
+                    value = new ReadOnlySpan<double>(ptr, Rows * Columns);
+                }
+
+                return value;
+            }
+        }
 
         public double this[int x, int y]
         {
             get
             {
-                if (x >= 4 || y >= 4)
+                if (x >= Columns || y >= Rows)
                 {
-                    throw new IndexOutOfRangeException($"X: {x} and Y: {y} are outside the 4 x 4 range of matrix4.");
+                    throw new IndexOutOfRangeException($"X: {x} and Y: {y} are outside the {Columns} x {Rows} range of {nameof(Matrix4)}.");
                 }
 
-                return _matrix[x, y];
+                return _matrix[x + (y * Rows)];
             }
             set
             {
-                if (x >= 4 || y >= 4)
+                if (x >= Columns || y >= Rows)
                 {
-                    throw new IndexOutOfRangeException($"X: {x} and Y: {y} are outside the 4 x 4 range of matrix4.");
+                    throw new IndexOutOfRangeException($"X: {x} and Y: {y} are outside the {Columns} x {Rows} range of {nameof(Matrix4)}.");
                 }
 
-                _matrix[x, y] = value;
+                _matrix[x + (y * Rows)] = value;
             }
         }
 
@@ -94,14 +86,14 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector4(_matrix[0, 0], _matrix[1, 0], _matrix[2, 0], _matrix[3, 0]);
+                return new Vector4(_matrix[0], _matrix[1], _matrix[2], _matrix[3]);
             }
             set
             {
-                _matrix[0, 0] = value.X;
-                _matrix[1, 0] = value.Y;
-                _matrix[2, 0] = value.Z;
-                _matrix[3, 0] = value.W;
+                _matrix[0] = value.X;
+                _matrix[1] = value.Y;
+                _matrix[2] = value.Z;
+                _matrix[3] = value.W;
             }
         }
 
@@ -109,14 +101,14 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector4(_matrix[0, 1], _matrix[1, 1], _matrix[2, 1], _matrix[3, 1]);
+                return new Vector4(_matrix[4], _matrix[5], _matrix[6], _matrix[7]);
             }
             set
             {
-                _matrix[0, 1] = value.X;
-                _matrix[1, 1] = value.Y;
-                _matrix[2, 1] = value.Z;
-                _matrix[3, 1] = value.W;
+                _matrix[4] = value.X;
+                _matrix[5] = value.Y;
+                _matrix[6] = value.Z;
+                _matrix[7] = value.W;
             }
         }
 
@@ -124,14 +116,14 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector4(_matrix[0, 2], _matrix[1, 2], _matrix[2, 2], _matrix[3, 2]);
+                return new Vector4(_matrix[8], _matrix[9], _matrix[10], _matrix[11]);
             }
             set
             {
-                _matrix[0, 2] = value.X;
-                _matrix[1, 2] = value.Y;
-                _matrix[2, 2] = value.Z;
-                _matrix[3, 2] = value.W;
+                _matrix[8] = value.X;
+                _matrix[9] = value.Y;
+                _matrix[10] = value.Z;
+                _matrix[11] = value.W;
             }
         }
 
@@ -139,14 +131,14 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector4(_matrix[0, 3], _matrix[1, 3], _matrix[2, 3], _matrix[3, 3]);
+                return new Vector4(_matrix[12], _matrix[13], _matrix[14], _matrix[15]);
             }
             set
             {
-                _matrix[0, 3] = value.X;
-                _matrix[1, 3] = value.Y;
-                _matrix[2, 3] = value.Z;
-                _matrix[3, 3] = value.W;
+                _matrix[12] = value.X;
+                _matrix[13] = value.Y;
+                _matrix[14] = value.Z;
+                _matrix[15] = value.W;
             }
         }
 
@@ -154,14 +146,14 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector4(_matrix[0, 0], _matrix[0, 1], _matrix[0, 2], _matrix[0, 3]);
+                return new Vector4(_matrix[0], _matrix[4], _matrix[8], _matrix[12]);
             }
             set
             {
-                _matrix[0, 0] = value.X;
-                _matrix[0, 1] = value.Y;
-                _matrix[0, 2] = value.Z;
-                _matrix[0, 3] = value.W;
+                _matrix[0] = value.X;
+                _matrix[4] = value.Y;
+                _matrix[8] = value.Z;
+                _matrix[12] = value.W;
             }
         }
 
@@ -169,14 +161,14 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector4(_matrix[1, 0], _matrix[1, 1], _matrix[1, 2], _matrix[1, 3]);
+                return new Vector4(_matrix[1], _matrix[5], _matrix[9], _matrix[13]);
             }
             set
             {
-                _matrix[1, 0] = value.X;
-                _matrix[1, 1] = value.Y;
-                _matrix[1, 2] = value.Z;
-                _matrix[1, 3] = value.W;
+                _matrix[1] = value.X;
+                _matrix[5] = value.Y;
+                _matrix[9] = value.Z;
+                _matrix[13] = value.W;
             }
         }
 
@@ -184,14 +176,14 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector4(_matrix[2, 0], _matrix[2, 1], _matrix[2, 2], _matrix[2, 3]);
+                return new Vector4(_matrix[2], _matrix[6], _matrix[10], _matrix[14]);
             }
             set
             {
-                _matrix[2, 0] = value.X;
-                _matrix[2, 1] = value.Y;
-                _matrix[2, 2] = value.Z;
-                _matrix[2, 3] = value.W;
+                _matrix[2] = value.X;
+                _matrix[6] = value.Y;
+                _matrix[10] = value.Z;
+                _matrix[14] = value.W;
             }
         }
 
@@ -199,145 +191,139 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector4(_matrix[3, 0], _matrix[3, 1], _matrix[3, 2], _matrix[3, 3]);
+                return new Vector4(_matrix[3], _matrix[7], _matrix[11], _matrix[15]);
             }
             set
             {
-                _matrix[3, 0] = value.X;
-                _matrix[3, 1] = value.Y;
-                _matrix[3, 2] = value.Z;
-                _matrix[3, 3] = value.W;
+                _matrix[3] = value.X;
+                _matrix[7] = value.Y;
+                _matrix[11] = value.Z;
+                _matrix[15] = value.W;
             }
         }
 
-        public Matrix4 Add(Matrix4 matrix)
+        public Matrix4 Add(ref Matrix4 matrix)
         {
-            return new Matrix4(new double[,]
-            {
-                { /*x:0 y:0*/this[0, 0] + matrix[0, 0], /*x:0 y:1*/this[0, 1] + matrix[0, 1], /*x:0 y:2*/this[0, 2] + matrix[0, 2], /*x:0 y:3*/this[0, 3] + matrix[0, 3] },
-                { /*x:1 y:0*/this[1, 0] + matrix[1, 0], /*x:1 y:1*/this[1, 1] + matrix[1, 1], /*x:1 y:2*/this[1, 2] + matrix[1, 2], /*x:1 y:3*/this[1, 3] + matrix[1, 3] },
-                { /*x:2 y:0*/this[2, 0] + matrix[2, 0], /*x:2 y:1*/this[2, 1] + matrix[2, 1], /*x:2 y:2*/this[2, 2] + matrix[2, 2], /*x:2 y:3*/this[2, 3] + matrix[2, 3] },
-                { /*x:3 y:0*/this[3, 0] + matrix[3, 0], /*x:3 y:1*/this[3, 1] + matrix[3, 1], /*x:3 y:2*/this[3, 2] + matrix[3, 2], /*x:3 y:3*/this[3, 3] + matrix[3, 3] }
-            });
+            return new Matrix4(
+                Row0 + matrix.Row0,
+                Row1 + matrix.Row1,
+                Row2 + matrix.Row2,
+                Row3 + matrix.Row3);
         }
 
-        public Matrix4 Subtract(Matrix4 matrix)
+        public Matrix4 Subtract(ref Matrix4 matrix)
         {
-            return new Matrix4(new double[,]
-            {
-                { /*x:0 y:0*/this[0, 0] - matrix[0, 0], /*x:0 y:1*/this[0, 1] - matrix[0, 1], /*x:0 y:2*/this[0, 2] - matrix[0, 2], /*x:0 y:3*/this[0, 3] - matrix[0, 3] },
-                { /*x:1 y:0*/this[1, 0] - matrix[1, 0], /*x:1 y:1*/this[1, 1] - matrix[1, 1], /*x:1 y:2*/this[1, 2] - matrix[1, 2], /*x:1 y:3*/this[1, 3] - matrix[1, 3] },
-                { /*x:2 y:0*/this[2, 0] - matrix[2, 0], /*x:2 y:1*/this[2, 1] - matrix[2, 1], /*x:2 y:2*/this[2, 2] - matrix[2, 2], /*x:2 y:3*/this[2, 3] - matrix[2, 3] },
-                { /*x:3 y:0*/this[3, 0] - matrix[3, 0], /*x:3 y:1*/this[3, 1] - matrix[3, 1], /*x:3 y:2*/this[3, 2] - matrix[3, 2], /*x:3 y:3*/this[3, 3] - matrix[3, 3] }
-            });
+            return new Matrix4(
+                Row0 - matrix.Row0,
+                Row1 - matrix.Row1,
+                Row2 - matrix.Row2,
+                Row3 - matrix.Row3);
         }
 
         public Matrix4 Multiply(double value)
         {
-            return new Matrix4(new double[,]
-            {
-                { /*x:0 y:0*/this[0, 0] * value, /*x:0 y:1*/this[0, 1] * value, /*x:0 y:2*/this[0, 2] * value, /*x:0 y:3*/this[0, 3] * value },
-                { /*x:1 y:0*/this[1, 0] * value, /*x:1 y:1*/this[1, 1] * value, /*x:1 y:2*/this[1, 2] * value, /*x:1 y:3*/this[1, 3] * value },
-                { /*x:2 y:0*/this[2, 0] * value, /*x:2 y:1*/this[2, 1] * value, /*x:2 y:2*/this[2, 2] * value, /*x:2 y:3*/this[2, 3] * value },
-                { /*x:3 y:0*/this[3, 0] * value, /*x:3 y:1*/this[3, 1] * value, /*x:3 y:2*/this[3, 2] * value, /*x:3 y:3*/this[3, 3] * value }
-            });
+            return new Matrix4(
+                Row0 * value,
+                Row1 * value,
+                Row2 * value,
+                Row3 * value);
         }
 
-        public Matrix4 Multiply(Matrix4 matrix)
+        public Matrix4 Multiply(ref Matrix4 matrix)
         {
-            return new Matrix4(new double[,]
-            {
-                {   
-                    /*x:0 y:0*/(this[0, 0] * matrix[0, 0]) + (this[1, 0] * matrix[0, 1]) + (this[2, 0] * matrix[0, 2]) + (this[3, 0] * matrix[0, 3]), 
-                    /*x:0 y:1*/(this[0, 1] * matrix[0, 0]) + (this[1, 1] * matrix[0, 1]) + (this[2, 1] * matrix[0, 2]) + (this[3, 1] * matrix[0, 3]),
-                    /*x:0 y:2*/(this[0, 2] * matrix[0, 0]) + (this[1, 2] * matrix[0, 1]) + (this[2, 2] * matrix[0, 2]) + (this[3, 2] * matrix[0, 3]),
-                    /*x:0 y:3*/(this[0, 3] * matrix[0, 0]) + (this[1, 3] * matrix[0, 1]) + (this[2, 3] * matrix[0, 2]) + (this[3, 3] * matrix[0, 3])
-                },
-                {   
-                    /*x:1 y:0*/(this[0, 0] * matrix[1, 0]) + (this[1, 0] * matrix[1, 1]) + (this[2, 0] * matrix[1, 2]) + (this[3, 0] * matrix[1, 3]), 
-                    /*x:1 y:1*/(this[0, 1] * matrix[1, 0]) + (this[1, 1] * matrix[1, 1]) + (this[2, 1] * matrix[1, 2]) + (this[3, 1] * matrix[1, 3]),
-                    /*x:1 y:2*/(this[0, 2] * matrix[1, 0]) + (this[1, 2] * matrix[1, 1]) + (this[2, 2] * matrix[1, 2]) + (this[3, 2] * matrix[1, 3]),
-                    /*x:1 y:3*/(this[0, 3] * matrix[1, 0]) + (this[1, 3] * matrix[1, 1]) + (this[2, 3] * matrix[1, 2]) + (this[3, 3] * matrix[1, 3])
-                },
-                {   
-                    /*x:2 y:0*/(this[0, 0] * matrix[2, 0]) + (this[1, 0] * matrix[2, 1]) + (this[2, 0] * matrix[2, 2]) + (this[3, 0] * matrix[2, 3]), 
-                    /*x:2 y:1*/(this[0, 1] * matrix[2, 0]) + (this[1, 1] * matrix[2, 1]) + (this[2, 1] * matrix[2, 2]) + (this[3, 1] * matrix[2, 3]),
-                    /*x:2 y:2*/(this[0, 2] * matrix[2, 0]) + (this[1, 2] * matrix[2, 1]) + (this[2, 2] * matrix[2, 2]) + (this[3, 2] * matrix[2, 3]),
-                    /*x:2 y:3*/(this[0, 3] * matrix[2, 0]) + (this[1, 3] * matrix[2, 1]) + (this[2, 3] * matrix[2, 2]) + (this[3, 3] * matrix[2, 3])
-                },
-                {   
-                    /*x:3 y:0*/(this[0, 0] * matrix[3, 0]) + (this[1, 0] * matrix[3, 1]) + (this[2, 0] * matrix[3, 2]) + (this[3, 0] * matrix[3, 3]), 
-                    /*x:3 y:1*/(this[0, 1] * matrix[3, 0]) + (this[1, 1] * matrix[3, 1]) + (this[2, 1] * matrix[3, 2]) + (this[3, 1] * matrix[3, 3]),
-                    /*x:3 y:2*/(this[0, 2] * matrix[3, 0]) + (this[1, 2] * matrix[3, 1]) + (this[2, 2] * matrix[3, 2]) + (this[3, 2] * matrix[3, 3]),
-                    /*x:3 y:3*/(this[0, 3] * matrix[3, 0]) + (this[1, 3] * matrix[3, 1]) + (this[2, 3] * matrix[3, 2]) + (this[3, 3] * matrix[3, 3])
-                }
-            });
+            return new Matrix4(
+                (
+                    /*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]) + (_matrix[2] * matrix[0, 2]) + (_matrix[3] * matrix[0, 3]),
+                    /*x:1 y:0*/(_matrix[0] * matrix[1, 0]) + (_matrix[1] * matrix[1, 1]) + (_matrix[2] * matrix[1, 2]) + (_matrix[3] * matrix[1, 3]),
+                    /*x:2 y:0*/(_matrix[0] * matrix[2, 0]) + (_matrix[1] * matrix[2, 1]) + (_matrix[2] * matrix[2, 2]) + (_matrix[3] * matrix[2, 3]),
+                    /*x:3 y:0*/(_matrix[0] * matrix[3, 0]) + (_matrix[1] * matrix[3, 1]) + (_matrix[2] * matrix[3, 2]) + (_matrix[3] * matrix[3, 3])
+                ),
+                (
+                    /*x:0 y:1*/(_matrix[4] * matrix[0, 0]) + (_matrix[5] * matrix[0, 1]) + (_matrix[6] * matrix[0, 2]) + (_matrix[7] * matrix[0, 3]),
+                    /*x:1 y:1*/(_matrix[4] * matrix[1, 0]) + (_matrix[5] * matrix[1, 1]) + (_matrix[6] * matrix[1, 2]) + (_matrix[7] * matrix[1, 3]),
+                    /*x:2 y:1*/(_matrix[4] * matrix[2, 0]) + (_matrix[5] * matrix[2, 1]) + (_matrix[6] * matrix[2, 2]) + (_matrix[7] * matrix[2, 3]),
+                    /*x:3 y:1*/(_matrix[4] * matrix[3, 0]) + (_matrix[5] * matrix[3, 1]) + (_matrix[6] * matrix[3, 2]) + (_matrix[7] * matrix[3, 3])
+                ),
+                (
+                    /*x:0 y:2*/(_matrix[8] * matrix[0, 0]) + (_matrix[9] * matrix[0, 1]) + (_matrix[10] * matrix[0, 2]) + (_matrix[11] * matrix[0, 3]),
+                    /*x:1 y:2*/(_matrix[8] * matrix[1, 0]) + (_matrix[9] * matrix[1, 1]) + (_matrix[10] * matrix[1, 2]) + (_matrix[11] * matrix[1, 3]),
+                    /*x:2 y:2*/(_matrix[8] * matrix[2, 0]) + (_matrix[9] * matrix[2, 1]) + (_matrix[10] * matrix[2, 2]) + (_matrix[11] * matrix[2, 3]),
+                    /*x:3 y:2*/(_matrix[8] * matrix[3, 0]) + (_matrix[9] * matrix[3, 1]) + (_matrix[10] * matrix[3, 2]) + (_matrix[11] * matrix[3, 3])
+                ),
+                (
+                    /*x:0 y:3*/(_matrix[12] * matrix[0, 0]) + (_matrix[13] * matrix[0, 1]) + (_matrix[14] * matrix[0, 2]) + (_matrix[15] * matrix[0, 3]),
+                    /*x:1 y:3*/(_matrix[12] * matrix[1, 0]) + (_matrix[13] * matrix[1, 1]) + (_matrix[14] * matrix[1, 2]) + (_matrix[15] * matrix[1, 3]),
+                    /*x:2 y:3*/(_matrix[12] * matrix[2, 0]) + (_matrix[13] * matrix[2, 1]) + (_matrix[14] * matrix[2, 2]) + (_matrix[15] * matrix[2, 3]),
+                    /*x:3 y:3*/(_matrix[12] * matrix[3, 0]) + (_matrix[13] * matrix[3, 1]) + (_matrix[14] * matrix[3, 2]) + (_matrix[15] * matrix[3, 3])
+                ));
         }
 
-        public Matrix4x2 Multiply(Matrix4x2 matrix)
+        public Matrix4x2 Multiply(ref Matrix4x2 matrix)
         {
-            return new Matrix4x2(new double[,]
-            {
-                {
-                    /*X:0 Y:0*/(this[0, 0] * matrix[0, 0]) + (this[1, 0] * matrix[0, 1]) + (this[2, 0] * matrix[0, 2]) + (this[3, 0] * matrix[0, 3]),
-                    /*X:0 Y:1*/(this[0, 1] * matrix[0, 0]) + (this[1, 1] * matrix[0, 1]) + (this[2, 1] * matrix[0, 2]) + (this[3, 1] * matrix[0, 3]),
-                    /*X:0 Y:2*/(this[0, 2] * matrix[0, 0]) + (this[1, 2] * matrix[0, 1]) + (this[2, 2] * matrix[0, 2]) + (this[3, 2] * matrix[0, 3]),
-                    /*X:0 Y:3*/(this[0, 3] * matrix[0, 0]) + (this[1, 3] * matrix[0, 1]) + (this[2, 3] * matrix[0, 2]) + (this[3, 3] * matrix[0, 3])
-                },
-                {
-                    /*X:1 Y:0*/(this[0, 0] * matrix[1, 0]) + (this[1, 0] * matrix[1, 1]) + (this[2, 0] * matrix[1, 2]) + (this[3, 0] * matrix[1, 3]),
-                    /*X:1 Y:1*/(this[0, 1] * matrix[1, 0]) + (this[1, 1] * matrix[1, 1]) + (this[2, 1] * matrix[1, 2]) + (this[3, 1] * matrix[1, 3]),
-                    /*X:1 Y:2*/(this[0, 2] * matrix[1, 0]) + (this[1, 2] * matrix[1, 1]) + (this[2, 2] * matrix[1, 2]) + (this[3, 2] * matrix[1, 3]),
-                    /*X:1 Y:3*/(this[0, 3] * matrix[1, 0]) + (this[1, 3] * matrix[1, 1]) + (this[2, 3] * matrix[1, 2]) + (this[3, 3] * matrix[1, 3])
-                }
-            });
+            return new Matrix4x2(
+                (
+                    /*X:0 Y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]) + (_matrix[2] * matrix[0, 2]) + (_matrix[3] * matrix[0, 3]),
+                    /*X:1 Y:0*/(_matrix[0] * matrix[1, 0]) + (_matrix[1] * matrix[1, 1]) + (_matrix[2] * matrix[1, 2]) + (_matrix[3] * matrix[1, 3])
+                ),
+                (
+                    /*X:0 Y:1*/(_matrix[4] * matrix[0, 0]) + (_matrix[5] * matrix[0, 1]) + (_matrix[6] * matrix[0, 2]) + (_matrix[7] * matrix[0, 3]),
+                    /*X:1 Y:1*/(_matrix[4] * matrix[1, 0]) + (_matrix[5] * matrix[1, 1]) + (_matrix[6] * matrix[1, 2]) + (_matrix[7] * matrix[1, 3])
+                ),
+                (
+                    /*X:0 Y:2*/(_matrix[8] * matrix[0, 0]) + (_matrix[9] * matrix[0, 1]) + (_matrix[10] * matrix[0, 2]) + (_matrix[11] * matrix[0, 3]),
+                    /*X:1 Y:2*/(_matrix[8] * matrix[1, 0]) + (_matrix[9] * matrix[1, 1]) + (_matrix[10] * matrix[1, 2]) + (_matrix[11] * matrix[1, 3])
+                ),
+                (
+                    /*X:0 Y:3*/(_matrix[12] * matrix[0, 0]) + (_matrix[13] * matrix[0, 1]) + (_matrix[14] * matrix[0, 2]) + (_matrix[15] * matrix[0, 3]),
+                    /*X:1 Y:3*/(_matrix[12] * matrix[1, 0]) + (_matrix[13] * matrix[1, 1]) + (_matrix[14] * matrix[1, 2]) + (_matrix[15] * matrix[1, 3])
+                ));
         }
 
-        public Matrix4x3 Multiply(Matrix4x3 matrix)
+        public Matrix4x3 Multiply(ref Matrix4x3 matrix)
         {
-            return new Matrix4x3(new double[,]
-            {
-                {
-                    /*X:0 Y:0*/(this[0, 0] * matrix[0, 0]) + (this[1, 0] * matrix[0, 1]) + (this[2, 0] * matrix[0, 2]) + (this[3, 0] * matrix[0, 3]),
-                    /*X:0 Y:1*/(this[0, 1] * matrix[0, 0]) + (this[1, 1] * matrix[0, 1]) + (this[2, 1] * matrix[0, 2]) + (this[3, 1] * matrix[0, 3]),
-                    /*X:0 Y:2*/(this[0, 2] * matrix[0, 0]) + (this[1, 2] * matrix[0, 1]) + (this[2, 2] * matrix[0, 2]) + (this[3, 2] * matrix[0, 3]),
-                    /*X:0 Y:2*/(this[0, 3] * matrix[0, 0]) + (this[1, 3] * matrix[0, 1]) + (this[2, 3] * matrix[0, 2]) + (this[3, 3] * matrix[0, 3])
-                },
-                {
-                    /*X:1 Y:0*/(this[0, 0] * matrix[1, 0]) + (this[1, 0] * matrix[1, 1]) + (this[2, 0] * matrix[1, 2]) + (this[3, 0] * matrix[1, 3]),
-                    /*X:1 Y:1*/(this[0, 1] * matrix[1, 0]) + (this[1, 1] * matrix[1, 1]) + (this[2, 1] * matrix[1, 2]) + (this[3, 1] * matrix[1, 3]),
-                    /*X:1 Y:2*/(this[0, 2] * matrix[1, 0]) + (this[1, 2] * matrix[1, 1]) + (this[2, 2] * matrix[1, 2]) + (this[3, 2] * matrix[1, 3]),
-                    /*X:1 Y:3*/(this[0, 3] * matrix[1, 0]) + (this[1, 3] * matrix[1, 1]) + (this[2, 3] * matrix[1, 2]) + (this[3, 3] * matrix[1, 3])
-                },
-                {
-                    /*X:2 Y:0*/(this[0, 0] * matrix[2, 0]) + (this[1, 0] * matrix[2, 1]) + (this[2, 0] * matrix[2, 2]) + (this[3, 0] * matrix[2, 3]),
-                    /*X:2 Y:1*/(this[0, 1] * matrix[2, 0]) + (this[1, 1] * matrix[2, 1]) + (this[2, 1] * matrix[2, 2]) + (this[3, 1] * matrix[2, 3]),
-                    /*X:2 Y:2*/(this[0, 2] * matrix[2, 0]) + (this[1, 2] * matrix[2, 1]) + (this[2, 2] * matrix[2, 2]) + (this[3, 2] * matrix[2, 3]),
-                    /*X:2 Y:3*/(this[0, 3] * matrix[2, 0]) + (this[1, 3] * matrix[2, 1]) + (this[2, 3] * matrix[2, 2]) + (this[3, 3] * matrix[2, 3])
-                }
-            });
+            return new Matrix4x3(
+                (
+                    /*X:0 Y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]) + (_matrix[2] * matrix[0, 2]) + (_matrix[3] * matrix[0, 3]),
+                    /*X:1 Y:0*/(_matrix[0] * matrix[1, 0]) + (_matrix[1] * matrix[1, 1]) + (_matrix[2] * matrix[1, 2]) + (_matrix[3] * matrix[1, 3]),
+                    /*X:2 Y:0*/(_matrix[0] * matrix[2, 0]) + (_matrix[1] * matrix[2, 1]) + (_matrix[2] * matrix[2, 2]) + (_matrix[3] * matrix[2, 3])
+                ),
+                (
+                    /*X:0 Y:1*/(_matrix[4] * matrix[0, 0]) + (_matrix[5] * matrix[0, 1]) + (_matrix[6] * matrix[0, 2]) + (_matrix[7] * matrix[0, 3]),
+                    /*X:1 Y:1*/(_matrix[4] * matrix[1, 0]) + (_matrix[5] * matrix[1, 1]) + (_matrix[6] * matrix[1, 2]) + (_matrix[7] * matrix[1, 3]),
+                    /*X:2 Y:1*/(_matrix[4] * matrix[2, 0]) + (_matrix[5] * matrix[2, 1]) + (_matrix[6] * matrix[2, 2]) + (_matrix[7] * matrix[2, 3])
+                ),
+                (
+                    /*X:0 Y:2*/(_matrix[8] * matrix[0, 0]) + (_matrix[9] * matrix[0, 1]) + (_matrix[10] * matrix[0, 2]) + (_matrix[11] * matrix[0, 3]),
+                    /*X:1 Y:2*/(_matrix[8] * matrix[1, 0]) + (_matrix[9] * matrix[1, 1]) + (_matrix[10] * matrix[1, 2]) + (_matrix[11] * matrix[1, 3]),
+                    /*X:2 Y:2*/(_matrix[8] * matrix[2, 0]) + (_matrix[9] * matrix[2, 1]) + (_matrix[10] * matrix[2, 2]) + (_matrix[11] * matrix[2, 3])
+                ),
+                (
+                    /*X:0 Y:2*/(_matrix[12] * matrix[0, 0]) + (_matrix[13] * matrix[0, 1]) + (_matrix[14] * matrix[0, 2]) + (_matrix[15] * matrix[0, 3]),
+                    /*X:1 Y:3*/(_matrix[12] * matrix[1, 0]) + (_matrix[13] * matrix[1, 1]) + (_matrix[14] * matrix[1, 2]) + (_matrix[15] * matrix[1, 3]),
+                    /*X:2 Y:3*/(_matrix[12] * matrix[2, 0]) + (_matrix[13] * matrix[2, 1]) + (_matrix[14] * matrix[2, 2]) + (_matrix[15] * matrix[2, 3])
+                ));
         }
 
         public double Determinant()
         {
             return
-                (this[0, 0] * this[1, 1] * this[2, 2] * this[3, 3]) - (this[0, 0] * this[1, 1] * this[3, 2] * this[2, 3]) + (this[0, 0] * this[2, 1] * this[3, 2] * this[1, 3])
-                - (this[0, 0] * this[2, 1] * this[1, 2] * this[3, 3]) + (this[0, 0] * this[3, 1] * this[1, 2] * this[2, 3]) - (this[0, 0] * this[3, 1] * this[2, 2] * this[1, 3])
-                - (this[1, 0] * this[2, 1] * this[3, 2] * this[0, 3]) + (this[1, 0] * this[2, 1] * this[0, 2] * this[3, 3]) - (this[1, 0] * this[3, 1] * this[0, 2] * this[2, 3])
-                + (this[1, 0] * this[3, 1] * this[2, 2] * this[0, 3]) - (this[1, 0] * this[0, 1] * this[2, 2] * this[3, 3]) + (this[1, 0] * this[0, 1] * this[3, 2] * this[2, 3])
+                (_matrix[0] * _matrix[5] * _matrix[10] * _matrix[15]) - (_matrix[0] * _matrix[5] * _matrix[11] * _matrix[14]) + (_matrix[0] * _matrix[6] * _matrix[11] * _matrix[13])
+                - (_matrix[0] * _matrix[6] * _matrix[9] * _matrix[15]) + (_matrix[0] * _matrix[7] * _matrix[9] * _matrix[14]) - (_matrix[0] * _matrix[7] * _matrix[10] * _matrix[13])
+                - (_matrix[1] * _matrix[6] * _matrix[11] * _matrix[12]) + (_matrix[1] * _matrix[6] * _matrix[8] * _matrix[15]) - (_matrix[1] * _matrix[7] * _matrix[8] * _matrix[14])
+                + (_matrix[1] * _matrix[7] * _matrix[10] * _matrix[12]) - (_matrix[1] * _matrix[4] * _matrix[10] * _matrix[15]) + (_matrix[1] * _matrix[4] * _matrix[11] * _matrix[14])
 
-                + (this[2, 0] * this[3, 1] * this[0, 2] * this[1, 3]) - (this[2, 0] * this[3, 1] * this[1, 2] * this[0, 3]) + (this[2, 0] * this[0, 1] * this[1, 2] * this[3, 3])
-                - (this[2, 0] * this[0, 1] * this[3, 2] * this[1, 3]) + (this[2, 0] * this[1, 1] * this[3, 2] * this[0, 3]) - (this[2, 0] * this[1, 1] * this[0, 2] * this[3, 3])
-                - (this[3, 0] * this[0, 1] * this[1, 2] * this[2, 3]) + (this[3, 0] * this[0, 1] * this[2, 2] * this[1, 3]) - (this[3, 0] * this[1, 1] * this[2, 2] * this[0, 3])
-                + (this[3, 0] * this[1, 1] * this[0, 2] * this[2, 3]) - (this[3, 0] * this[2, 1] * this[0, 2] * this[1, 3]) + (this[3, 0] * this[2, 1] * this[1, 2] * this[0, 3]);
+                + (_matrix[2] * _matrix[7] * _matrix[8] * _matrix[13]) - (_matrix[2] * _matrix[7] * _matrix[9] * _matrix[12]) + (_matrix[2] * _matrix[4] * _matrix[9] * _matrix[15])
+                - (_matrix[2] * _matrix[4] * _matrix[11] * _matrix[13]) + (_matrix[2] * _matrix[5] * _matrix[11] * _matrix[12]) - (_matrix[2] * _matrix[5] * _matrix[8] * _matrix[15])
+                - (_matrix[3] * _matrix[4] * _matrix[9] * _matrix[14]) + (_matrix[3] * _matrix[4] * _matrix[10] * _matrix[13]) - (_matrix[3] * _matrix[5] * _matrix[10] * _matrix[12])
+                + (_matrix[3] * _matrix[5] * _matrix[8] * _matrix[14]) - (_matrix[3] * _matrix[6] * _matrix[8] * _matrix[13]) + (_matrix[3] * _matrix[6] * _matrix[9] * _matrix[12]);
         }
 
         public Matrix4 Invert()
         {
-            double a = this[0, 0], b = this[0, 1], c = this[0, 2], d = this[0, 3];
-            double e = this[1, 0], f = this[1, 1], g = this[1, 2], h = this[1, 3];
-            double i = this[2, 0], j = this[2, 1], k = this[2, 2], l = this[2, 3];
-            double m = this[3, 0], n = this[3, 1], o = this[3, 2], p = this[3, 3];
+            double a = _matrix[0], b = _matrix[4], c = _matrix[8], d = _matrix[12];
+            double e = _matrix[1], f = _matrix[5], g = _matrix[9], h = _matrix[13];
+            double i = _matrix[2], j = _matrix[6], k = _matrix[10], l = _matrix[14];
+            double m = _matrix[3], n = _matrix[7], o = _matrix[11], p = _matrix[15];
 
             double kp_lo = k * p - l * o;
             double jp_ln = j * p - l * n;
@@ -397,71 +383,101 @@ namespace Zene.Structs
             return new Matrix4(row0, row1, row2, row3);
         }
 
-        public double Trace()
-        {
-            return this[0, 0] + this[1, 1] + this[2, 2] + this[3, 3];
-        }
+        public double Trace() => _matrix[0] + _matrix[5] + _matrix[10] + _matrix[15];
 
-        public Matrix3 Normalize()
+        public Matrix4 Normalize()
         {
             double det = Determinant();
 
-            return new Matrix3(new double[,]
-            {
-                { /*x:0 y:0*/this[0, 0] / det, /*x:0 y:1*/this[0, 1] / det, /*x:0 y:2*/this[0, 2] / det, /*x:0 y:3*/this[0, 3] / det },
-                { /*x:1 y:0*/this[1, 0] / det, /*x:1 y:1*/this[1, 1] / det, /*x:1 y:2*/this[1, 2] / det, /*x:1 y:3*/this[1, 3] / det },
-                { /*x:2 y:0*/this[2, 0] / det, /*x:2 y:1*/this[2, 1] / det, /*x:2 y:2*/this[2, 2] / det, /*x:2 y:3*/this[2, 3] / det },
-                { /*x:3 y:0*/this[3, 0] / det, /*x:3 y:1*/this[3, 1] / det, /*x:3 y:2*/this[3, 2] / det, /*x:3 y:3*/this[3, 3] / det }
-            });
+            return new Matrix4(
+                Row0 / det,
+                Row1 / det,
+                Row2 / det,
+                Row3 / det);
         }
 
-        public Matrix4 Transpose()
-        {
-            return new Matrix4(Column0, Column1, Column2, Column3);
-        }
+        public Matrix4 Transpose() => new Matrix4(Column0, Column1, Column2, Column3);
 
         public override bool Equals(object obj)
         {
             return obj is Matrix4 matrix &&
-                _matrix == matrix._matrix;
+                _matrix[0] == matrix._matrix[0] &&
+                _matrix[1] == matrix._matrix[1] &&
+                _matrix[2] == matrix._matrix[2] &&
+                _matrix[3] == matrix._matrix[3] &&
+                _matrix[4] == matrix._matrix[4] &&
+                _matrix[5] == matrix._matrix[5] &&
+                _matrix[6] == matrix._matrix[6] &&
+                _matrix[7] == matrix._matrix[7] &&
+                _matrix[8] == matrix._matrix[8] &&
+                _matrix[9] == matrix._matrix[9] &&
+                _matrix[10] == matrix._matrix[10] &&
+                _matrix[11] == matrix._matrix[11] &&
+                _matrix[12] == matrix._matrix[12] &&
+                _matrix[13] == matrix._matrix[13] &&
+                _matrix[14] == matrix._matrix[14] &&
+                _matrix[15] == matrix._matrix[15];
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_matrix);
+            HashCode hash = new HashCode();
+            hash.Add(_matrix[0]);
+            hash.Add(_matrix[1]);
+            hash.Add(_matrix[2]);
+            hash.Add(_matrix[3]);
+            hash.Add(_matrix[4]);
+            hash.Add(_matrix[5]);
+            hash.Add(_matrix[6]);
+            hash.Add(_matrix[7]);
+            hash.Add(_matrix[8]);
+            hash.Add(_matrix[9]);
+            hash.Add(_matrix[10]);
+            hash.Add(_matrix[11]);
+            hash.Add(_matrix[12]);
+            hash.Add(_matrix[13]);
+            hash.Add(_matrix[14]);
+            hash.Add(_matrix[15]);
+
+            return hash.ToHashCode();
         }
 
-        public ReadOnlySpan<float> GetGLData()
+        public float[] GetGLData()
         {
-            int w = 4;
-            int h = 4;
-
-            float[] data = new float[w * h];
-
-            for (int x = 0; x < w; x++)
+            return new float[]
             {
-                for (int y = 0; y < h; y++)
-                {
-                    data[x + (y * w)] = (float)_matrix[x, y];
-                }
-            }
-
-            return new ReadOnlySpan<float>(data);
+                (float)_matrix[0],
+                (float)_matrix[1],
+                (float)_matrix[2],
+                (float)_matrix[3],
+                (float)_matrix[4],
+                (float)_matrix[5],
+                (float)_matrix[6],
+                (float)_matrix[7],
+                (float)_matrix[8],
+                (float)_matrix[9],
+                (float)_matrix[10],
+                (float)_matrix[11],
+                (float)_matrix[12],
+                (float)_matrix[13],
+                (float)_matrix[14],
+                (float)_matrix[15]
+            };
         }
 
         public override string ToString()
         {
-            return $@"[{_matrix[0, 0]}, {_matrix[1, 0]}, {_matrix[2, 0]}, {_matrix[3, 0]}]
-[{_matrix[0, 1]}, {_matrix[1, 1]}, {_matrix[2, 1]}, {_matrix[3, 1]}]
-[{_matrix[0, 2]}, {_matrix[1, 2]}, {_matrix[2, 2]}, {_matrix[3, 2]}]
-[{_matrix[0, 3]}, {_matrix[1, 3]}, {_matrix[2, 3]}, {_matrix[3, 3]}]";
+            return $@"[{_matrix[0]}, {_matrix[1]}, {_matrix[2]}, {_matrix[3]}]
+[{_matrix[4]}, {_matrix[5]}, {_matrix[6]}, {_matrix[7]}]
+[{_matrix[8]}, {_matrix[9]}, {_matrix[10]}, {_matrix[11]}]
+[{_matrix[12]}, {_matrix[13]}, {_matrix[14]}, {_matrix[15]}]";
         }
         public string ToString(string format)
         {
-            return $@"[{_matrix[0, 0].ToString(format)}, {_matrix[1, 0].ToString(format)}, {_matrix[2, 0].ToString(format)}, {_matrix[3, 0].ToString(format)}]
-[{_matrix[0, 1].ToString(format)}, {_matrix[1, 1].ToString(format)}, {_matrix[2, 1].ToString(format)}, {_matrix[3, 1].ToString(format)}]
-[{_matrix[0, 2].ToString(format)}, {_matrix[1, 2].ToString(format)}, {_matrix[2, 2].ToString(format)}, {_matrix[3, 2].ToString(format)}]
-[{_matrix[0, 3].ToString(format)}, {_matrix[1, 3].ToString(format)}, {_matrix[2, 3].ToString(format)}, {_matrix[3, 3].ToString(format)}]";
+            return $@"[{_matrix[0].ToString(format)}, {_matrix[1].ToString(format)}, {_matrix[2].ToString(format)}, {_matrix[3].ToString(format)}]
+[{_matrix[4].ToString(format)}, {_matrix[5].ToString(format)}, {_matrix[6].ToString(format)}, {_matrix[7].ToString(format)}]
+[{_matrix[8].ToString(format)}, {_matrix[9].ToString(format)}, {_matrix[10].ToString(format)}, {_matrix[11].ToString(format)}]
+[{_matrix[12].ToString(format)}, {_matrix[13].ToString(format)}, {_matrix[14].ToString(format)}, {_matrix[15].ToString(format)}]";
         }
 
         public static bool operator ==(Matrix4 a, Matrix4 b)
@@ -476,27 +492,27 @@ namespace Zene.Structs
 
         public static Matrix4 operator +(Matrix4 a, Matrix4 b)
         {
-            return a.Add(b);
+            return a.Add(ref b);
         }
 
         public static Matrix4 operator -(Matrix4 a, Matrix4 b)
         {
-            return a.Subtract(b);
+            return a.Subtract(ref b);
         }
 
         public static Matrix4 operator *(Matrix4 a, Matrix4 b)
         {
-            return a.Multiply(b);
+            return a.Multiply(ref b);
         }
 
         public static Matrix4x2 operator *(Matrix4 a, Matrix4x2 b)
         {
-            return a.Multiply(b);
+            return a.Multiply(ref b);
         }
 
         public static Matrix4x3 operator *(Matrix4 a, Matrix4x3 b)
         {
-            return a.Multiply(b);
+            return a.Multiply(ref b);
         }
 
         public static Matrix4 operator *(Matrix4 a, double b)
@@ -746,36 +762,20 @@ namespace Zene.Structs
 
         public static implicit operator Matrix4(Matrix4<double> matrix)
         {
-            return new Matrix4(matrix.Data);
+            return new Matrix4((Vector4)matrix.Row0, (Vector4)matrix.Row1, (Vector4)matrix.Row2, (Vector4)matrix.Row3);
         }
         public static explicit operator Matrix4(Matrix4<float> matrix)
         {
-            double[,] data = new double[4, 4]
-            {
-                { matrix[0, 0], matrix[0, 1], matrix[0, 2], matrix[0, 3] },
-                { matrix[1, 0], matrix[1, 1], matrix[1, 2], matrix[1, 3] },
-                { matrix[2, 0], matrix[2, 1], matrix[2, 2], matrix[2, 3] },
-                { matrix[3, 0], matrix[3, 1], matrix[3, 2], matrix[3, 3] }
-            };
-
-            return new Matrix4(data);
+            return new Matrix4((Vector4)matrix.Row0, (Vector4)matrix.Row1, (Vector4)matrix.Row2, (Vector4)matrix.Row3);
         }
 
         public static implicit operator Matrix4<double>(Matrix4 matrix)
         {
-            return new Matrix4<double>(matrix._matrix);
+            return new Matrix4<double>((Vector4<double>)matrix.Row0, (Vector4<double>)matrix.Row1, (Vector4<double>)matrix.Row2, (Vector4<double>)matrix.Row3);
         }
         public static explicit operator Matrix4<float>(Matrix4 matrix)
         {
-            float[,] data = new float[4, 4]
-            {
-                { (float)matrix[0, 0], (float)matrix[0, 1], (float)matrix[0, 2], (float)matrix[0, 3] },
-                { (float)matrix[1, 0], (float)matrix[1, 1], (float)matrix[1, 2], (float)matrix[1, 3] },
-                { (float)matrix[2, 0], (float)matrix[2, 1], (float)matrix[2, 2], (float)matrix[2, 3] },
-                { (float)matrix[3, 0], (float)matrix[3, 1], (float)matrix[3, 2], (float)matrix[3, 3] }
-            };
-
-            return new Matrix4<float>(data);
+            return new Matrix4<float>((Vector4<float>)matrix.Row0, (Vector4<float>)matrix.Row1, (Vector4<float>)matrix.Row2, (Vector4<float>)matrix.Row3);
         }
     }
 }

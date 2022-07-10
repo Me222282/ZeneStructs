@@ -2,78 +2,71 @@
 
 namespace Zene.Structs
 {
-    public struct Matrix3x2
+    public unsafe struct Matrix3x2
     {
+        public const int Rows = 3;
+        public const int Columns = 2;
+
         public Matrix3x2(Vector2 row0, Vector2 row1, Vector2 row2)
         {
-            _matrix = new double[,]
-            {
-                { row0.X, row1.X, row2.X },
-                { row0.Y, row1.Y, row2.Y }
-            };
+            Row0 = row0;
+            Row1 = row1;
+            Row2 = row2;
         }
 
-        public Matrix3x2(double[,] matrix)
-        {
-            _matrix = new double[2, 3];
-
-            for (int x = 0; x < 2; x++)
-            {
-                for (int y = 0; y < 3; y++)
-                {
-                    try
-                    {
-                        _matrix[x, y] = matrix[x, y];
-                    }
-                    catch (Exception)
-                    {
-                        throw new Exception("Matrix needs to have at least 3 rows and 2 columns.");
-                    }
-                }
-            }
-        }
         public Matrix3x2(double[] matrix)
         {
-            _matrix = new double[2, 3];
-
-            if (matrix.Length < 6)
+            if (matrix.Length < (Rows * Columns))
             {
                 throw new Exception("Matrix needs to have at least 3 rows and 2 columns.");
             }
 
-            _matrix[0, 0] = matrix[0];
-            _matrix[1, 0] = matrix[1];
+            _matrix[0] = matrix[0];
+            _matrix[1] = matrix[1];
 
-            _matrix[0, 1] = matrix[2];
-            _matrix[1, 1] = matrix[3];
+            _matrix[2] = matrix[2];
+            _matrix[3] = matrix[3];
 
-            _matrix[0, 2] = matrix[4];
-            _matrix[1, 2] = matrix[5];
+            _matrix[4] = matrix[4];
+            _matrix[5] = matrix[5];
         }
 
-        private readonly double[,] _matrix;
+        private fixed double _matrix[Rows * Columns];
 
-        public double[,] Data => _matrix;
+        public ReadOnlySpan<double> Data
+        {
+            get
+            {
+                ReadOnlySpan<double> value;
+
+                fixed (double* ptr = _matrix)
+                {
+                    value = new ReadOnlySpan<double>(ptr, Rows * Columns);
+                }
+
+                return value;
+            }
+        }
 
         public double this[int x, int y]
         {
             get
             {
-                if (x >= 2 || y >= 3)
+                if (x >= Columns || y >= Rows)
                 {
-                    throw new IndexOutOfRangeException($"X: {x} and Y: {y} are outside the 2 x 3 range of matrix3x2.");
+                    throw new IndexOutOfRangeException($"X: {x} and Y: {y} are outside the {Columns} x {Rows} range of {nameof(Matrix3x2)}.");
                 }
 
-                return _matrix[x, y];
+                return _matrix[x + (y * Rows)];
             }
             set
             {
-                if (x >= 2 || y >= 3)
+                if (x >= Columns || y >= Rows)
                 {
-                    throw new IndexOutOfRangeException($"X: {x} and Y: {y} are outside the 2 x 3 range of matrix3x2.");
+                    throw new IndexOutOfRangeException($"X: {x} and Y: {y} are outside the {Columns} x {Rows} range of {nameof(Matrix3x2)}.");
                 }
 
-                _matrix[x, y] = value;
+                _matrix[x + (y * Rows)] = value;
             }
         }
 
@@ -81,12 +74,12 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector2(_matrix[0, 0], _matrix[1, 0]);
+                return new Vector2(_matrix[0], _matrix[1]);
             }
             set
             {
-                _matrix[0, 0] = value.X;
-                _matrix[1, 0] = value.Y;
+                _matrix[0] = value.X;
+                _matrix[1] = value.Y;
             }
         }
 
@@ -94,12 +87,12 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector2(_matrix[0, 1], _matrix[1, 1]);
+                return new Vector2(_matrix[3], _matrix[4]);
             }
             set
             {
-                _matrix[0, 1] = value.X;
-                _matrix[1, 1] = value.Y;
+                _matrix[3] = value.X;
+                _matrix[4] = value.Y;
             }
         }
 
@@ -107,12 +100,12 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector2(_matrix[0, 2], _matrix[1, 2]);
+                return new Vector2(_matrix[5], _matrix[6]);
             }
             set
             {
-                _matrix[0, 2] = value.X;
-                _matrix[1, 2] = value.Y;
+                _matrix[5] = value.X;
+                _matrix[6] = value.Y;
             }
         }
 
@@ -120,13 +113,13 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector3(_matrix[0, 0], _matrix[0, 1], _matrix[0, 2]);
+                return new Vector3(_matrix[0], _matrix[3], _matrix[5]);
             }
             set
             {
-                _matrix[0, 0] = value.X;
-                _matrix[0, 1] = value.Y;
-                _matrix[0, 2] = value.Z;
+                _matrix[0] = value.X;
+                _matrix[3] = value.Y;
+                _matrix[5] = value.Z;
             }
         }
 
@@ -134,164 +127,144 @@ namespace Zene.Structs
         {
             get
             {
-                return new Vector3(_matrix[1, 0], _matrix[1, 1], _matrix[1, 2]);
+                return new Vector3(_matrix[1], _matrix[4], _matrix[6]);
             }
             set
             {
-                _matrix[1, 0] = value.X;
-                _matrix[1, 1] = value.Y;
-                _matrix[1, 2] = value.Z;
+                _matrix[1] = value.X;
+                _matrix[4] = value.Y;
+                _matrix[6] = value.Z;
             }
         }
 
-        public Matrix3x2 Add(Matrix3x2 matrix)
+        public Matrix3x2 Add(ref Matrix3x2 matrix)
         {
-            return new Matrix3x2(new double[,]
-            {
-                { /*x:0 y:0*/this[0, 0] + matrix[0, 0], /*x:0 y:1*/this[0, 1] + matrix[0, 1], /*x:0 y:2*/this[0, 2] + matrix[0, 2] },
-                { /*x:1 y:0*/this[1, 0] + matrix[1, 0], /*x:1 y:1*/this[1, 1] + matrix[1, 1], /*x:1 y:2*/this[1, 2] + matrix[1, 2] }
-            });
+            return new Matrix3x2(
+                Row0 + matrix.Row0,
+                Row1 + matrix.Row1,
+                Row2 + matrix.Row2);
         }
 
-        public Matrix3x2 Subtract(Matrix3x2 matrix)
+        public Matrix3x2 Subtract(ref Matrix3x2 matrix)
         {
-            return new Matrix3x2(new double[,]
-            {
-                { /*x:0 y:0*/this[0, 0] - matrix[0, 0], /*x:0 y:1*/this[0, 1] - matrix[0, 1], /*x:0 y:2*/this[0, 2] - matrix[0, 2] },
-                { /*x:1 y:0*/this[1, 0] - matrix[1, 0], /*x:1 y:1*/this[1, 1] - matrix[1, 1], /*x:1 y:2*/this[1, 2] - matrix[1, 2] }
-            });
+            return new Matrix3x2(
+                Row0 - matrix.Row0,
+                Row1 - matrix.Row1,
+                Row2 - matrix.Row2);
         }
 
         public Matrix3x2 Multiply(double value)
         {
-            return new Matrix3x2(new double[,]
-            {
-                { /*x:0 y:0*/this[0, 0] * value, /*x:0 y:1*/this[0, 1] * value, /*x:0 y:2*/this[0, 2] * value },
-                { /*x:1 y:0*/this[1, 0] * value, /*x:1 y:1*/this[1, 1] * value, /*x:1 y:2*/this[1, 2] * value }
-            });
+            return new Matrix3x2(
+                Row0 * value,
+                Row1 * value,
+                Row2 * value);
         }
 
-        public Matrix3x2 Multiply(Matrix2 matrix)
+        public Matrix3x2 Multiply(ref Matrix2 matrix)
         {
-            return new Matrix3x2(new double[,]
-            {
-                {
-                    /*x:0 y:0*/(this[0, 0] * matrix[0, 0]) + (this[1, 0] * matrix[0, 1]),
-                    /*x:0 y:1*/(this[0, 1] * matrix[0, 0]) + (this[1, 1] * matrix[0, 1]),
-                    /*x:0 y:2*/(this[0, 2] * matrix[0, 0]) + (this[1, 2] * matrix[0, 1])
-                },
-                {
-                    /*x:1 y:0*/(this[0, 0] * matrix[1, 0]) + (this[1, 0] * matrix[1, 1]),
-                    /*x:1 y:1*/(this[0, 1] * matrix[1, 0]) + (this[1, 1] * matrix[1, 1]),
-                    /*x:1 y:2*/(this[0, 2] * matrix[1, 0]) + (this[1, 2] * matrix[1, 1])
-                }
-            });
+            return new Matrix3x2(
+                (
+                    /*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]),
+                    /*x:1 y:0*/(_matrix[0] * matrix[1, 0]) + (_matrix[1] * matrix[1, 1])
+                ),
+                (
+                    /*x:0 y:1*/(_matrix[2] * matrix[0, 0]) + (_matrix[3] * matrix[0, 1]),
+                    /*x:1 y:1*/(_matrix[2] * matrix[1, 0]) + (_matrix[3] * matrix[1, 1])
+                ),
+                (
+                    /*x:0 y:2*/(_matrix[4] * matrix[0, 0]) + (_matrix[5] * matrix[0, 1]),
+                    /*x:1 y:2*/(_matrix[4] * matrix[1, 0]) + (_matrix[5] * matrix[1, 1])
+                ));
         }
 
-        public Matrix3 Multiply(Matrix2x3 matrix)
+        public Matrix3 Multiply(ref Matrix2x3 matrix)
         {
-            return new Matrix3(new double[,]
-            {
-                {
-                    /*x:0 y:0*/(this[0, 0] * matrix[0, 0]) + (this[1, 0] * matrix[0, 1]),
-                    /*x:0 y:1*/(this[0, 1] * matrix[0, 0]) + (this[1, 1] * matrix[0, 1]),
-                    /*x:0 y:2*/(this[0, 2] * matrix[0, 0]) + (this[1, 2] * matrix[0, 1])
-                },
-                {
-                    /*x:1 y:0*/(this[0, 0] * matrix[1, 0]) + (this[1, 0] * matrix[1, 1]),
-                    /*x:1 y:1*/(this[0, 1] * matrix[1, 0]) + (this[1, 1] * matrix[1, 1]),
-                    /*x:1 y:2*/(this[0, 2] * matrix[1, 0]) + (this[1, 2] * matrix[1, 1])
-                },
-                {
-                    /*x:2 y:0*/(this[0, 0] * matrix[2, 0]) + (this[1, 0] * matrix[2, 1]),
-                    /*x:2 y:1*/(this[0, 1] * matrix[2, 0]) + (this[1, 1] * matrix[2, 1]),
-                    /*x:2 y:2*/(this[0, 2] * matrix[2, 0]) + (this[1, 2] * matrix[2, 1])
-                }
-            });
+            return new Matrix3(
+                (
+                    /*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]),
+                    /*x:1 y:0*/(_matrix[0] * matrix[1, 0]) + (_matrix[1] * matrix[1, 1]),
+                    /*x:2 y:0*/(_matrix[0] * matrix[2, 0]) + (_matrix[1] * matrix[2, 1])
+                ),
+                (
+                    /*x:0 y:1*/(_matrix[2] * matrix[0, 0]) + (_matrix[3] * matrix[0, 1]),
+                    /*x:1 y:1*/(_matrix[2] * matrix[1, 0]) + (_matrix[3] * matrix[1, 1]),
+                    /*x:2 y:1*/(_matrix[2] * matrix[2, 0]) + (_matrix[3] * matrix[2, 1])
+                ),
+                (
+                    /*x:0 y:2*/(_matrix[4] * matrix[0, 0]) + (_matrix[5] * matrix[0, 1]),
+                    /*x:1 y:2*/(_matrix[4] * matrix[1, 0]) + (_matrix[5] * matrix[1, 1]),
+                    /*x:2 y:2*/(_matrix[4] * matrix[2, 0]) + (_matrix[5] * matrix[2, 1])
+                ));
         }
 
-        public Matrix3x4 Multiply(Matrix2x4 matrix)
+        public Matrix3x4 Multiply(ref Matrix2x4 matrix)
         {
-            return new Matrix3x4(new double[,]
-            {
-                {
-                    /*x:0 y:0*/(this[0, 0] * matrix[0, 0]) + (this[1, 0] * matrix[0, 1]),
-                    /*x:0 y:1*/(this[0, 1] * matrix[0, 0]) + (this[1, 1] * matrix[0, 1]),
-                    /*x:0 y:2*/(this[0, 2] * matrix[0, 0]) + (this[1, 2] * matrix[0, 1])
-                },
-                {
-                    /*x:1 y:0*/(this[0, 0] * matrix[1, 0]) + (this[1, 0] * matrix[1, 1]),
-                    /*x:1 y:1*/(this[0, 1] * matrix[1, 0]) + (this[1, 1] * matrix[1, 1]),
-                    /*x:1 y:2*/(this[0, 2] * matrix[1, 0]) + (this[1, 2] * matrix[1, 1])
-                },
-                {
-                    /*x:2 y:0*/(this[0, 0] * matrix[2, 0]) + (this[1, 0] * matrix[2, 1]),
-                    /*x:2 y:1*/(this[0, 1] * matrix[2, 0]) + (this[1, 1] * matrix[2, 1]),
-                    /*x:2 y:2*/(this[0, 2] * matrix[2, 0]) + (this[1, 2] * matrix[2, 1])
-                },
-                {
-                    /*x:2 y:0*/(this[0, 0] * matrix[3, 0]) + (this[1, 0] * matrix[3, 1]),
-                    /*x:2 y:1*/(this[0, 1] * matrix[3, 0]) + (this[1, 1] * matrix[3, 1]),
-                    /*x:2 y:2*/(this[0, 2] * matrix[3, 0]) + (this[1, 2] * matrix[3, 1])
-                }
-            });
+            return new Matrix3x4(
+                (
+                    /*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]),
+                    /*x:1 y:0*/(_matrix[0] * matrix[1, 0]) + (_matrix[1] * matrix[1, 1]),
+                    /*x:2 y:0*/(_matrix[0] * matrix[2, 0]) + (_matrix[1] * matrix[2, 1]),
+                    /*x:2 y:0*/(_matrix[0] * matrix[3, 0]) + (_matrix[1] * matrix[3, 1])
+                ),
+                (
+                    /*x:0 y:1*/(_matrix[2] * matrix[0, 0]) + (_matrix[3] * matrix[0, 1]),
+                    /*x:1 y:1*/(_matrix[2] * matrix[1, 0]) + (_matrix[3] * matrix[1, 1]),
+                    /*x:2 y:1*/(_matrix[2] * matrix[2, 0]) + (_matrix[3] * matrix[2, 1]),
+                    /*x:2 y:1*/(_matrix[2] * matrix[3, 0]) + (_matrix[3] * matrix[3, 1])
+                ),
+                (
+                    /*x:0 y:2*/(_matrix[4] * matrix[0, 0]) + (_matrix[5] * matrix[0, 1]),
+                    /*x:1 y:2*/(_matrix[4] * matrix[1, 0]) + (_matrix[5] * matrix[1, 1]),
+                    /*x:2 y:2*/(_matrix[4] * matrix[2, 0]) + (_matrix[5] * matrix[2, 1]),
+                    /*x:2 y:2*/(_matrix[4] * matrix[3, 0]) + (_matrix[5] * matrix[3, 1])
+                ));
         }
 
-        public double Trace()
-        {
-            return this[0, 0] + this[1, 1];
-        }
+        public double Trace() => _matrix[0] + _matrix[3];
 
-        public Matrix2x3 Transpose()
-        {
-            return new Matrix2x3(new double[,]
-            {
-                { /*x:0 y:0*/this[0, 0], /*x:0 y:1*/this[1, 0] },
-                { /*x:1 y:0*/this[0, 1], /*x:1 y:1*/this[1, 1] },
-                { /*x:2 y:0*/this[0, 2], /*x:2 y:1*/this[1, 2] },
-            });
-        }
+        public Matrix2x3 Transpose() => new Matrix2x3(Column0, Column1);
 
         public override bool Equals(object obj)
         {
             return obj is Matrix3x2 matrix &&
-                _matrix == matrix._matrix;
+                _matrix[0] == matrix._matrix[0] &&
+                _matrix[1] == matrix._matrix[1] &&
+                _matrix[2] == matrix._matrix[2] &&
+                _matrix[3] == matrix._matrix[3] &&
+                _matrix[4] == matrix._matrix[4] &&
+                _matrix[5] == matrix._matrix[5];
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_matrix);
+            return HashCode.Combine(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5]);
         }
 
-        public ReadOnlySpan<float> GetGLData()
+        public float[] GetGLData()
         {
-            int w = 2;
-            int h = 3;
-
-            float[] data = new float[w * h];
-
-            for (int x = 0; x < w; x++)
+            return new float[]
             {
-                for (int y = 0; y < h; y++)
-                {
-                    data[x + (y * w)] = (float)_matrix[x, y];
-                }
-            }
-
-            return new ReadOnlySpan<float>(data);
+                (float)_matrix[0],
+                (float)_matrix[1],
+                (float)_matrix[2],
+                (float)_matrix[3],
+                (float)_matrix[4],
+                (float)_matrix[5]
+            };
         }
 
         public override string ToString()
         {
-            return $@"[{_matrix[0, 0]}, {_matrix[1, 0]}]
-[{_matrix[0, 1]}, {_matrix[1, 1]}]
-[{_matrix[0, 2]}, {_matrix[1, 2]}]";
+            return $@"[{_matrix[0]}, {_matrix[1]}]
+[{_matrix[3]}, {_matrix[4]}]
+[{_matrix[5]}, {_matrix[6]}]";
         }
         public string ToString(string format)
         {
-            return $@"[{_matrix[0, 0].ToString(format)}, {_matrix[1, 0].ToString(format)}]
-[{_matrix[0, 1].ToString(format)}, {_matrix[1, 1].ToString(format)}]
-[{_matrix[0, 2].ToString(format)}, {_matrix[1, 2].ToString(format)}]";
+            return $@"[{_matrix[0].ToString(format)}, {_matrix[1].ToString(format)}]
+[{_matrix[3].ToString(format)}, {_matrix[4].ToString(format)}]
+[{_matrix[5].ToString(format)}, {_matrix[6].ToString(format)}]";
         }
 
         public static bool operator ==(Matrix3x2 a, Matrix3x2 b)
@@ -306,22 +279,22 @@ namespace Zene.Structs
 
         public static Matrix3x2 operator +(Matrix3x2 a, Matrix3x2 b)
         {
-            return a.Add(b);
+            return a.Add(ref b);
         }
 
         public static Matrix3x2 operator -(Matrix3x2 a, Matrix3x2 b)
         {
-            return a.Subtract(b);
+            return a.Subtract(ref b);
         }
 
         public static Matrix3 operator *(Matrix3x2 a, Matrix2x3 b)
         {
-            return a.Multiply(b);
+            return a.Multiply(ref b);
         }
 
         public static Matrix3x2 operator *(Matrix3x2 a, Matrix2 b)
         {
-            return a.Multiply(b);
+            return a.Multiply(ref b);
         }
 
         public static Matrix3x2 operator *(Matrix3x2 a, double b)
@@ -379,32 +352,20 @@ namespace Zene.Structs
 
         public static implicit operator Matrix3x2(Matrix3x2<double> matrix)
         {
-            return new Matrix3x2(matrix.Data);
+            return new Matrix3x2((Vector2)matrix.Row0, (Vector2)matrix.Row1, (Vector2)matrix.Row2);
         }
         public static explicit operator Matrix3x2(Matrix3x2<float> matrix)
         {
-            double[,] data = new double[2, 3]
-            {
-                { matrix[0, 0], matrix[0, 1], matrix[0, 2] },
-                { matrix[1, 0], matrix[1, 1], matrix[1, 2] }
-            };
-
-            return new Matrix3x2(data);
+            return new Matrix3x2((Vector2)matrix.Row0, (Vector2)matrix.Row1, (Vector2)matrix.Row2);
         }
 
         public static implicit operator Matrix3x2<double>(Matrix3x2 matrix)
         {
-            return new Matrix3x2<double>(matrix._matrix);
+            return new Matrix3x2<double>((Vector2<double>)matrix.Row0, (Vector2<double>)matrix.Row1, (Vector2<double>)matrix.Row2);
         }
         public static explicit operator Matrix3x2<float>(Matrix3x2 matrix)
         {
-            float[,] data = new float[2, 3]
-            {
-                { (float)matrix[0, 0], (float)matrix[0, 1], (float)matrix[0, 2] },
-                { (float)matrix[1, 0], (float)matrix[1, 1], (float)matrix[1, 2] }
-            };
-
-            return new Matrix3x2<float>(data);
+            return new Matrix3x2<float>((Vector2<float>)matrix.Row0, (Vector2<float>)matrix.Row1, (Vector2<float>)matrix.Row2);
         }
     }
 }
