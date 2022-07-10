@@ -12,25 +12,6 @@ namespace Zene.Structs
                 { row0.Y, row1.Y }
             };
         }
-        public Matrix2(T[,] matrix)
-        {
-            _matrix = new T[2, 2];
-
-            for (int x = 0; x < 2; x++)
-            {
-                for (int y = 0; y < 2; y++)
-                {
-                    try
-                    {
-                        _matrix[x, y] = matrix[x, y];
-                    }
-                    catch (Exception)
-                    {
-                        throw new Exception("Matrix needs to have at least 2 rows and 2 columns.");
-                    }
-                }
-            }
-        }
         public Matrix2(T[] matrix)
         {
             _matrix = new T[2, 2];
@@ -135,6 +116,8 @@ namespace Zene.Structs
         {
             return HashCode.Combine(_matrix);
         }
+
+        public Matrix2<T> Transpose() => new Matrix2<T>(Column0, Column1);
 
         public static bool operator ==(Matrix2<T> a, Matrix2<T> b)
         {

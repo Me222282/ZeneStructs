@@ -13,25 +13,6 @@ namespace Zene.Structs
                 { row0.Z, row1.Z }
             };
         }
-        public Matrix2x3(T[,] matrix)
-        {
-            _matrix = new T[3, 2];
-
-            for (int x = 0; x < 3; x++)
-            {
-                for (int y = 0; y < 2; y++)
-                {
-                    try
-                    {
-                        _matrix[x, y] = matrix[x, y];
-                    }
-                    catch (Exception)
-                    {
-                        throw new Exception("Matrix needs to have at least 2 rows and 3 columns.");
-                    }
-                }
-            }
-        }
         public Matrix2x3(T[] matrix)
         {
             _matrix = new T[3, 2];
@@ -142,6 +123,8 @@ namespace Zene.Structs
                 _matrix[2, 1] = value.Y;
             }
         }
+
+        public Matrix3x2<T> Transpose() => new Matrix3x2<T>(Column0, Column1, Column2);
 
         public override bool Equals(object obj)
         {
