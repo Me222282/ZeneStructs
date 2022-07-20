@@ -48,21 +48,6 @@ namespace Zene.Structs
             }
         }
 
-        public Vector2I PerpendiclarRight
-        {
-            get
-            {
-                return new Vector2I(Y, -X);
-            }
-        }
-        public Vector2I PerpendiclarLeft
-        {
-            get
-            {
-                return new Vector2I(-Y, X);
-            }
-        }
-
         public double Distance(Vector2I b)
         {
             return Math.Sqrt(SquaredDistance(b));
