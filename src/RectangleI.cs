@@ -7,6 +7,13 @@ namespace Zene.Structs
     /// </summary>
     public struct RectangleI : IBox
     {
+        /// <summary>
+        /// Creates a rectangle box from a location and size.
+        /// </summary>
+        /// <param name="x">The x value of the location.</param>
+        /// <param name="y">The y value of the location.</param>
+        /// <param name="w">The width value of the size.</param>
+        /// <param name="h">The height value of the size.</param>
         public RectangleI(int x, int y, int w, int h)
         {
             X = x;
@@ -14,6 +21,11 @@ namespace Zene.Structs
             Width = w;
             Height = h;
         }
+        /// <summary>
+        /// Creates a rectangle box from a location and size.
+        /// </summary>
+        /// <param name="location">The location of the rectangle.</param>
+        /// <param name="size">The size of the rectangle.</param>
         public RectangleI(Vector2I location, Vector2I size)
         {
             X = location.X;
@@ -21,6 +33,13 @@ namespace Zene.Structs
             Width = size.X;
             Height = size.Y;
         }
+        /// <summary>
+        /// Creates a rectangle box from a <see cref="double"/> based location and size.
+        /// </summary>
+        /// <param name="x">The x value of the location.</param>
+        /// <param name="y">The y value of the location.</param>
+        /// <param name="w">The width value of the size.</param>
+        /// <param name="h">The height value of the size.</param>
         public RectangleI(double x, double y, double w, double h)
         {
             X = (int)x;
@@ -28,6 +47,11 @@ namespace Zene.Structs
             Width = (int)w;
             Height = (int)h;
         }
+        /// <summary>
+        /// Creates a rectangle box from a <see cref="double"/> based location and size.
+        /// </summary>
+        /// <param name="location">The location of the rectangle.</param>
+        /// <param name="size">The size of the rectangle.</param>
         public RectangleI(Vector2 location, Vector2 size)
         {
             X = (int)location.X;
@@ -35,6 +59,10 @@ namespace Zene.Structs
             Width = (int)size.X;
             Height = (int)size.Y;
         }
+        /// <summary>
+        /// Creates a rectangle box from an unknown box.
+        /// </summary>
+        /// <param name="box">The unknown box to reference from.</param>
         public RectangleI(IBox box)
         {
             X = (int)box.Left;
@@ -197,7 +225,13 @@ namespace Zene.Structs
             return new RectangleI(rect);
         }
 
+        /// <summary>
+        /// A rectangle with <see cref="X"/>, <see cref="Y"/>, <see cref="Width"/> and <see cref="Height"/> set to 0.
+        /// </summary>
         public static RectangleI Zero { get; } = new RectangleI(0, 0, 0, 0);
-        public static RectangleI One { get; } = new RectangleI(-1, 1, 2, 2);
+        /// <summary>
+        /// A rectangle with a <see cref="Width"/> and <see cref="Height"/> of 1 with the top-left at origin.
+        /// </summary>
+        public static RectangleI One { get; } = new RectangleI(0, 0, 1, 1);
     }
 }

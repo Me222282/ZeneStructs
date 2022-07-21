@@ -1,5 +1,8 @@
 ﻿namespace Zene.Structs
 {
+    /// <summary>
+    /// An object the encapsulates a 3 dimensional box.
+    /// </summary>
     public interface IBox3 : IBox
     {
         /// <summary>

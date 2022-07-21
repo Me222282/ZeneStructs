@@ -7,6 +7,13 @@ namespace Zene.Structs
     /// </summary>
     public struct Rectangle : IBox
     {
+        /// <summary>
+        /// Creates a rectangle box from a location and size.
+        /// </summary>
+        /// <param name="x">The x value of the location.</param>
+        /// <param name="y">The y value of the location.</param>
+        /// <param name="w">The width value of the size.</param>
+        /// <param name="h">The height value of the size.</param>
         public Rectangle(double x, double y, double w, double h)
         {
             X = x;
@@ -14,6 +21,11 @@ namespace Zene.Structs
             Width = w;
             Height = h;
         }
+        /// <summary>
+        /// Creates a rectangle box from a location and size.
+        /// </summary>
+        /// <param name="location">The location of the rectangle.</param>
+        /// <param name="size">The size of the rectangle.</param>
         public Rectangle(Vector2 location, Vector2 size)
         {
             X = location.X;
@@ -21,6 +33,10 @@ namespace Zene.Structs
             Width = size.X;
             Height = size.Y;
         }
+        /// <summary>
+        /// Creates a rectangle box from an unknown box.
+        /// </summary>
+        /// <param name="box">The unknown box to reference from.</param>
         public Rectangle(IBox box)
         {
             X = box.Left;
@@ -132,7 +148,13 @@ namespace Zene.Structs
             return new Rectangle(box);
         }
 
+        /// <summary>
+        /// A rectangle with <see cref="X"/>, <see cref="Y"/>, <see cref="Width"/> and <see cref="Height"/> set to 0.
+        /// </summary>
         public static Rectangle Zero { get; } = new Rectangle(0, 0, 0, 0);
-        public static Rectangle One { get; } = new Rectangle(-1, 1, 2, 2);
+        /// <summary>
+        /// A rectangle with a <see cref="Width"/> and <see cref="Height"/> of 1 centred around origin.
+        /// </summary>
+        public static Rectangle One { get; } = new Rectangle(-0.5, 0.5, 1, 1);
     }
 }

@@ -7,6 +7,13 @@ namespace Zene.Structs
     /// </summary>
     public struct Box : IBox
     {
+        /// <summary>
+        /// Creates a box from its left, right, top and bottom locations.
+        /// </summary>
+        /// <param name="l">The x loction of the left side.</param>
+        /// <param name="r">The x loction of the right side.</param>
+        /// <param name="t">The y loction of the top side.</param>
+        /// <param name="b">The y loction of the bottom side.</param>
         public Box(double l, double r, double t, double b)
         {
             Left = l;
@@ -14,6 +21,11 @@ namespace Zene.Structs
             Top = t;
             Bottom = b;
         }
+        /// <summary>
+        /// Creates a box from a location and size.
+        /// </summary>
+        /// <param name="location">The location of the centre of the box.</param>
+        /// <param name="size">The size of the box.</param>
         public Box(Vector2 location, Vector2 size)
         {
             Left = 0;
@@ -24,6 +36,10 @@ namespace Zene.Structs
             Location = location;
             Size = size;
         }
+        /// <summary>
+        /// Creates a box from an unknown box.
+        /// </summary>
+        /// <param name="box">THe unknown box to reference from.</param>
         public Box(IBox box)
         {
             Left = box.Left;
@@ -149,8 +165,17 @@ namespace Zene.Structs
             return new Box(box);
         }
 
+        /// <summary>
+        /// A box the spans from positive infinity to negative infinity.
+        /// </summary>
         public static Box Infinity { get; } = new Box(double.NegativeInfinity, double.PositiveInfinity, double.PositiveInfinity, double.NegativeInfinity);
+        /// <summary>
+        /// A box with <see cref="Left"/>, <see cref="Right"/>, <see cref="Top"/> and <see cref="Bottom"/> set to 0.
+        /// </summary>
         public static Box Zero { get; } = new Box(0, 0, 0, 0);
-        public static Box One { get; } = new Box(-1, 1, 1, -1);
+        /// <summary>
+        /// A box with a <see cref="Width"/> and <see cref="Height"/> of 1 centred around origin.
+        /// </summary>
+        public static Box One { get; } = new Box(-0.5, 0.5, 0.5, -0.5);
     }
 }

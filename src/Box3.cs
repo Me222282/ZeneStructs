@@ -7,6 +7,15 @@ namespace Zene.Structs
     /// </summary>
     public struct Box3 : IBox3
     {
+        /// <summary>
+        /// Creates a box from its left, right, top, bottom, front and back locations.
+        /// </summary>
+        /// <param name="left">The x loction of the left side.</param>
+        /// <param name="right">The x loction of the right side.</param>
+        /// <param name="top">The y loction of the top side.</param>
+        /// <param name="bottom">The y loction of the bottom side.</param>
+        /// <param name="front">The z loction of the front side.</param>
+        /// <param name="back">The z loction of the back side.</param>
         public Box3(double left, double right, double top, double bottom, double front, double back)
         {
             Left = left;
@@ -16,6 +25,11 @@ namespace Zene.Structs
             Front = front;
             Back = back;
         }
+        /// <summary>
+        /// Creates a box from a location and size.
+        /// </summary>
+        /// <param name="location">The location of the centre of the box.</param>
+        /// <param name="size">The size of the box.</param>
         public Box3(Vector3 location, Vector3 size)
         {
             Left = 0;
@@ -28,6 +42,10 @@ namespace Zene.Structs
             Location = location;
             Size = size;
         }
+        /// <summary>
+        /// Creates a box from an unknown box.
+        /// </summary>
+        /// <param name="box">THe unknown box to reference from.</param>
         public Box3(IBox3 box)
         {
             Left = box.Left;
@@ -183,9 +201,18 @@ namespace Zene.Structs
             return new Box3(box);
         }
 
+        /// <summary>
+        /// A box the spans from positive infinity to negative infinity.
+        /// </summary>
         public static Box3 Infinity { get; } = new Box3(double.NegativeInfinity, double.PositiveInfinity, double.PositiveInfinity,
                                                         double.NegativeInfinity, double.NegativeInfinity, double.PositiveInfinity);
+        /// <summary>
+        /// A box with <see cref="Left"/>, <see cref="Right"/>, <see cref="Top">, <see cref="Bottom"/>, <see cref="Front"/> and <see cref="Back"/> set to 0.
+        /// </summary>
         public static Box3 Zero { get; } = new Box3(0, 0, 0, 0, 0, 0);
-        public static Box3 One { get; } = new Box3(-1, 1, 1, -1, -1, 1);
+        /// <summary>
+        /// A box with a <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> of 1 centred around origin.
+        /// </summary>
+        public static Box3 One { get; } = new Box3(-0.5, 0.5, 0.5, -0.5, -0.5, 0.5);
     }
 }

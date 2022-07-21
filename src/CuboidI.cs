@@ -7,6 +7,15 @@ namespace Zene.Structs
     /// </summary>
     public struct CuboidI : IBox3
     {
+        /// <summary>
+        /// Creates a cuboid box from a location and size.
+        /// </summary>
+        /// <param name="x">The x value of the location.</param>
+        /// <param name="y">The y value of the location.</param>
+        /// <param name="z">The y value of the location.</param>
+        /// <param name="w">The width value of the size.</param>
+        /// <param name="h">The height value of the size.</param>
+        /// <param name="d">The depth value of the size.</param>
         public CuboidI(int x, int y, int z, int w, int h, int d)
         {
             X = x;
@@ -16,6 +25,11 @@ namespace Zene.Structs
             Height = h;
             Depth = d;
         }
+        /// <summary>
+        /// Creates a cuboid box from a location and size.
+        /// </summary>
+        /// <param name="location">The location of the rectangle.</param>
+        /// <param name="size">The size of the rectangle.</param>
         public CuboidI(Vector3I location, Vector3I size)
         {
             X = location.X;
@@ -25,6 +39,15 @@ namespace Zene.Structs
             Height = size.Y;
             Depth = size.Z;
         }
+        /// <summary>
+        /// Creates a cuboid box from a <see cref="double"/> based location and size.
+        /// </summary>
+        /// <param name="x">The x value of the location.</param>
+        /// <param name="y">The y value of the location.</param>
+        /// <param name="z">The y value of the location.</param>
+        /// <param name="w">The width value of the size.</param>
+        /// <param name="h">The height value of the size.</param>
+        /// <param name="d">The depth value of the size.</param>
         public CuboidI(double x, double y, double z, double w, double h, double d)
         {
             X = (int)x;
@@ -34,6 +57,11 @@ namespace Zene.Structs
             Height = (int)h;
             Depth = (int)d;
         }
+        /// <summary>
+        /// Creates a cuboid box from a <see cref="double"/> based location and size.
+        /// </summary>
+        /// <param name="location">The location of the rectangle.</param>
+        /// <param name="size">The size of the rectangle.</param>
         public CuboidI(Vector3 location, Vector3 size)
         {
             X = (int)location.X;
@@ -43,6 +71,10 @@ namespace Zene.Structs
             Height = (int)size.Y;
             Depth = (int)size.Z;
         }
+        /// <summary>
+        /// Creates a cuboid box from an unknown box.
+        /// </summary>
+        /// <param name="box">The unknown box to reference from.</param>
         public CuboidI(IBox3 box)
         {
             X = (int)box.Left;
@@ -239,7 +271,13 @@ namespace Zene.Structs
             return new CuboidI(rect);
         }
 
+        /// <summary>
+        /// A cuboid with <see cref="X"/>, <see cref="Y"/>, <see cref="Z"/>, <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> set to 0.
+        /// </summary>
         public static CuboidI Zero { get; } = new CuboidI(0, 0, 0, 0, 0, 0);
-        public static CuboidI One { get; } = new CuboidI(-1, 1, -1, 2, 2, 2);
+        /// <summary>
+        /// A cuboid with a <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> of 1 with the top-front-left at origin.
+        /// </summary>
+        public static CuboidI One { get; } = new CuboidI(0, 0, 0, 1, 1, 1);
     }
 }

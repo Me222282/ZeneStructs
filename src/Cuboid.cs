@@ -7,6 +7,15 @@ namespace Zene.Structs
     /// </summary>
     public struct Cuboid : IBox3
     {
+        /// <summary>
+        /// Creates a cuboid box from a location and size.
+        /// </summary>
+        /// <param name="x">The x value of the location.</param>
+        /// <param name="y">The y value of the location.</param>
+        /// <param name="z">The y value of the location.</param>
+        /// <param name="w">The width value of the size.</param>
+        /// <param name="h">The height value of the size.</param>
+        /// <param name="d">The depth value of the size.</param>
         public Cuboid(double x, double y, double z, double w, double h, double d)
         {
             X = x;
@@ -16,6 +25,11 @@ namespace Zene.Structs
             Height = h;
             Depth = d;
         }
+        /// <summary>
+        /// Creates a cuboid box from a location and size.
+        /// </summary>
+        /// <param name="location">The location of the rectangle.</param>
+        /// <param name="size">The size of the rectangle.</param>
         public Cuboid(Vector3 location, Vector3 size)
         {
             X = location.X;
@@ -25,6 +39,10 @@ namespace Zene.Structs
             Height = size.Y;
             Depth = size.Z;
         }
+        /// <summary>
+        /// Creates a cuboid box from an unknown box.
+        /// </summary>
+        /// <param name="box">The unknown box to reference from.</param>
         public Cuboid(IBox3 box)
         {
             X = box.Left;
@@ -161,7 +179,13 @@ namespace Zene.Structs
             return new Cuboid(box);
         }
 
+        /// <summary>
+        /// A cuboid with <see cref="X"/>, <see cref="Y"/>, <see cref="Z"/>, <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> set to 0.
+        /// </summary>
         public static Cuboid Zero { get; } = new Cuboid(0, 0, 0, 0, 0, 0);
-        public static Cuboid One { get; } = new Cuboid(-1, 1, -1, 2, 2, 2);
+        /// <summary>
+        /// A cuboid with a <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> of 1 centred around origin.
+        /// </summary>
+        public static Cuboid One { get; } = new Cuboid(-0.5, 0.5, -0.5, 1, 1, 1);
     }
 }
