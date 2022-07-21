@@ -240,7 +240,7 @@ namespace Zene.Structs
         /// <summary>
         /// Returns this vector multiplied by <paramref name="matrix"/>.
         /// </summary>
-        /// <param name="matrix">The <see cref="Matrix2x3"/> the mutiply by.</param>
+        /// <param name="matrix">The <see cref="Matrix2x3"/> to multiply by.</param>
         /// <returns></returns>
         public Vector2 MultiplyMatrix(Matrix2x3 matrix)
         {
@@ -253,7 +253,7 @@ namespace Zene.Structs
         /// <summary>
         /// Returns this vector multiplied by <paramref name="matrix"/>.
         /// </summary>
-        /// <param name="matrix">The <see cref="Matrix3"/> the mutiply by.</param>
+        /// <param name="matrix">The <see cref="Matrix3"/> to multiply by.</param>
         /// <returns></returns>
         public Vector3 MultiplyMatrix(Matrix3 matrix)
         {
@@ -268,7 +268,7 @@ namespace Zene.Structs
         /// <summary>
         /// Returns this vector multiplied by <paramref name="matrix"/>.
         /// </summary>
-        /// <param name="matrix">The <see cref="Matrix4x3"/> the mutiply by.</param>
+        /// <param name="matrix">The <see cref="Matrix4x3"/> to multiply by.</param>
         /// <returns></returns>
         public Vector4 MultiplyMatrix(Matrix4x3 matrix)
         {

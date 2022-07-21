@@ -2,17 +2,34 @@
 
 namespace Zene.Structs
 {
+    /// <summary>
+    /// An object that stores a 2 x 2 matrix grid of <see cref="double"/>. 
+    /// </summary>
     public unsafe struct Matrix2
     {
+        /// <summary>
+        /// The number of rows in this matrix.
+        /// </summary>
         public const int Rows = 2;
+        /// <summary>
+        /// The number of columns in this matrix.
+        /// </summary>
         public const int Columns = 2;
 
+        /// <summary>
+        /// Creates a 2 x 2 matrix from its row values.
+        /// </summary>
+        /// <param name="row0">The first row of the matrix.</param>
+        /// <param name="row1">The second row of the matrix.</param>
         public Matrix2(Vector2 row0, Vector2 row1)
         {
             Row0 = row0;
             Row1 = row1;
         }
-
+        /// <summary>
+        /// Creates a 2 x 2 matrix from an array of row major values.
+        /// </summary>
+        /// <param name="matrix">The values to store in the matrix.</param>
         public Matrix2(params double[] matrix)
         {
             if (matrix.Length < (Rows * Columns))
@@ -28,6 +45,9 @@ namespace Zene.Structs
 
         private fixed double _matrix[Rows * Columns];
 
+        /// <summary>
+        /// A span that points to the data in this matrix.
+        /// </summary>
         public ReadOnlySpan<double> Data
         {
             get
@@ -43,6 +63,12 @@ namespace Zene.Structs
             }
         }
 
+        /// <summary>
+        /// Gets a value from the matrix at a given location.
+        /// </summary>
+        /// <param name="x">The x value of the location.</param>
+        /// <param name="y">The y value of the location.</param>
+        /// <returns></returns>
         public double this[int x, int y]
         {
             get
@@ -65,6 +91,9 @@ namespace Zene.Structs
             }
         }
 
+        /// <summary>
+        /// The first row of the matrix.
+        /// </summary>
         public Vector2 Row0
         {
             get
@@ -77,6 +106,9 @@ namespace Zene.Structs
                 _matrix[1] = value.Y;
             }
         }
+        /// <summary>
+        /// The second row of the matrix.
+        /// </summary>
         public Vector2 Row1
         {
             get
@@ -89,6 +121,9 @@ namespace Zene.Structs
                 _matrix[3] = value.Y;
             }
         }
+        /// <summary>
+        /// The first column of the matrix.
+        /// </summary>
         public Vector2 Column0
         {
             get
@@ -101,6 +136,9 @@ namespace Zene.Structs
                 _matrix[2] = value.Y;
             }
         }
+        /// <summary>
+        /// The second column of the matrix.
+        /// </summary>
         public Vector2 Column1
         {
             get
@@ -114,6 +152,11 @@ namespace Zene.Structs
             }
         }
 
+        /// <summary>
+        /// Returns this matrix added to another.
+        /// </summary>
+        /// <param name="matrix">The matrix to add to this.</param>
+        /// <returns></returns>
         public Matrix2 Add(ref Matrix2 matrix)
         {
             return new Matrix2(
@@ -121,6 +164,11 @@ namespace Zene.Structs
                 Row1 + matrix.Row1);
         }
 
+        /// <summary>
+        /// Returns this matrix subtracted from another.
+        /// </summary>
+        /// <param name="matrix">The matrix to subtract from this.</param>
+        /// <returns></returns>
         public Matrix2 Subtract(ref Matrix2 matrix)
         {
             return new Matrix2(
@@ -128,6 +176,11 @@ namespace Zene.Structs
                 Row1 - matrix.Row1);
         }
 
+        /// <summary>
+        /// Returns this matrix mutliplied by a <see cref="double"/> value.
+        /// </summary>
+        /// <param name="value">The value to multiply by.</param>
+        /// <returns></returns>
         public Matrix2 Multiply(double value)
         {
             return new Matrix2(
@@ -135,6 +188,11 @@ namespace Zene.Structs
                 Row1 * value);
         }
 
+        /// <summary>
+        /// Returns this matrix mutliplied by <paramref name="matrix"/>.
+        /// </summary>
+        /// <param name="matrix">The <see cref="Matrix2"/> to multiply by.</param>
+        /// <returns></returns>
         public Matrix2 Multiply(ref Matrix2 matrix)
         {
             return new Matrix2(
@@ -142,6 +200,11 @@ namespace Zene.Structs
                 (/*x:0 y:1*/(_matrix[2] * matrix[0, 0]) + (_matrix[3] * matrix[0, 1]), /*x:1 y:1*/(_matrix[2] * matrix[1, 0]) + (_matrix[3] * matrix[1, 1])));
         }
 
+        /// <summary>
+        /// Returns this matrix mutliplied by <paramref name="matrix"/>.
+        /// </summary>
+        /// <param name="matrix">The <see cref="Matrix2x3"/> to multiply by.</param>
+        /// <returns></returns>
         public Matrix2x3 Multiply(ref Matrix2x3 matrix)
         {
             return new Matrix2x3(
@@ -157,6 +220,11 @@ namespace Zene.Structs
                 ));
         }
 
+        /// <summary>
+        /// Returns this matrix mutliplied by <paramref name="matrix"/>.
+        /// </summary>
+        /// <param name="matrix">The <see cref="Matrix2x4"/> to multiply by.</param>
+        /// <returns></returns>
         public Matrix2x4 Multiply(ref Matrix2x4 matrix)
         {
             return new Matrix2x4(
@@ -181,6 +249,10 @@ namespace Zene.Structs
 
         public double Trace() => _matrix[0] + _matrix[3];
 
+        /// <summary>
+        /// Returns a normalised version of this matrix.
+        /// </summary>
+        /// <returns></returns>
         public Matrix2 Normalize()
         {
             double det = Determinant();
@@ -188,6 +260,10 @@ namespace Zene.Structs
             return new Matrix2(Row0 / det, Row1 / det);
         }
 
+        /// <summary>
+        /// Returns an inverted version of this matrix.
+        /// </summary>
+        /// <returns></returns>
         public Matrix2 Invert()
         {
             double det = Determinant();
@@ -204,6 +280,10 @@ namespace Zene.Structs
                 (_matrix[2] * invDet, _matrix[0] * invDet));
         }
 
+        /// <summary>
+        /// Returns a transposed version of this matrix.
+        /// </summary>
+        /// <returns></returns>
         public Matrix2 Transpose() => new Matrix2(Column0, Column1);
 
         public override bool Equals(object obj)
@@ -220,6 +300,10 @@ namespace Zene.Structs
             return HashCode.Combine(_matrix[0], _matrix[1], _matrix[2], _matrix[3]);
         }
 
+        /// <summary>
+        /// Gets the data used by OpenGL when parsing this matrix.
+        /// </summary>
+        /// <returns></returns>
         public float[] GetGLData()
         {
             return new float[]
@@ -287,6 +371,11 @@ namespace Zene.Structs
             return b.Multiply(a);
         }
 
+        /// <summary>
+        /// Creates a 2 x 2 matrix that stores rotational data.
+        /// </summary>
+        /// <param name="angle">The angle of the rotation.</param>
+        /// <returns></returns>
         public static Matrix2 CreateRotation(Radian angle)
         {
             double cos = Math.Cos(angle);
@@ -295,16 +384,32 @@ namespace Zene.Structs
             return new Matrix2(new Vector2(cos, sin), new Vector2(-sin, cos));
         }
 
+        /// <summary>
+        /// Creates a 2 x 2 matrix that stores scale data.
+        /// </summary>
+        /// <param name="scale">The x and y scale.</param>
+        /// <returns></returns>
         public static Matrix2 CreateScale(double scale)
         {
             return new Matrix2(new Vector2(scale, 0), new Vector2(0, scale));
         }
 
+        /// <summary>
+        /// Creates a 2 x 2 matrix that stores scale data.
+        /// </summary>
+        /// <param name="scaleX">The x scale.</param>
+        /// <param name="scaleY">The y scale.</param>
+        /// <returns></returns>
         public static Matrix2 CreateScale(double scaleX, double scaleY)
         {
             return new Matrix2(new Vector2(scaleX, 0), new Vector2(0, scaleY));
         }
 
+        /// <summary>
+        /// Creates a 2 x 2 matrix that stores scale data.
+        /// </summary>
+        /// <param name="scale">The x and y scale.</param>
+        /// <returns></returns>
         public static Matrix2 CreateScale(Vector2 scale)
         {
             return CreateScale(scale.X, scale.Y);
