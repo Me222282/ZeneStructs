@@ -2,31 +2,57 @@
 
 namespace Zene.Structs
 {
+    /// <summary>
+    /// An object that stores a 2 dimensional <typeparamref name="T"/> vector.
+    /// </summary>
     public struct Vector2<T> where T : unmanaged
     {
+        /// <summary>
+        /// Creates a 2 dimensional vector from a single <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="value">The value to set to both <see cref="X"/> and <see cref="Y"/>.</param>
         public Vector2(T value)
         {
             X = value;
             Y = value;
         }
+        /// <summary>
+        /// Creates a 2 dimensional vector from two <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="x">The value to set to <see cref="X"/>.</param>
+        /// <param name="y">The value to set to <see cref="Y"/>.</param>
         public Vector2(T x, T y)
         {
             X = x;
             Y = y;
         }
 
+        /// <summary>
+        /// Creates a 2 dimensional vector casted from a <see cref="double"/> based vector.
+        /// </summary>
+        /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
         public Vector2(Vector2 xy)
         {
             X = (T)(object)xy.X;
             Y = (T)(object)xy.Y;
         }
+        /// <summary>
+        /// Creates a 2 dimensional vector casted from an <see cref="int"/> based vector.
+        /// </summary>
+        /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
         public Vector2(Vector2I xy)
         {
             X = (T)(object)xy.X;
             Y = (T)(object)xy.Y;
         }
 
+        /// <summary>
+        /// The first value of the vector.
+        /// </summary>
         public T X { get; set; }
+        /// <summary>
+        /// The second value of the vector.
+        /// </summary>
         public T Y { get; set; }
 
         public override string ToString()

@@ -137,16 +137,16 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// Returns a 2 dimensional interpolation of this vector, <paramref name="b"/> and <paramref name="c"/>.
+        /// Returns a triangular interpolation of this vector, <paramref name="b"/> and <paramref name="c"/>.
         /// </summary>
         /// <remarks>
         /// Increasing <paramref name="u"/> points to <paramref name="b"/>.<br />
         /// Increasing <paramref name="v"/> points to <paramref name="c"/>.
         /// </remarks>
-        /// <param name="b"></param>
-        /// <param name="c"></param>
-        /// <param name="u"></param>
-        /// <param name="v"></param>
+        /// <param name="b">The second vector in the interpolation triangle.</param>
+        /// <param name="c">The thrid vector in the interpolation triangle.</param>
+        /// <param name="u">The percentage <paramref name="b"/> is included.</param>
+        /// <param name="v">The percentage <paramref name="c"/> is included.</param>
         /// <returns></returns>
         public Vector2 BaryCentric(Vector2 b, Vector2 c, double u, double v)
         {
@@ -467,19 +467,19 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// A vector with Both <see cref="X"/> and <see cref="Y"/> set to 0.
+        /// A vector with both <see cref="X"/> and <see cref="Y"/> set to 0.
         /// </summary>
         public static Vector2 Zero { get; } = new Vector2(0, 0);
         /// <summary>
-        /// A vector with Both <see cref="X"/> and <see cref="Y"/> set to 1.
+        /// A vector with both <see cref="X"/> and <see cref="Y"/> set to 1.
         /// </summary>
         public static Vector2 One { get; } = new Vector2(1, 1);
         /// <summary>
-        /// A vector with Both <see cref="X"/> and <see cref="Y"/> set to <see cref="double.PositiveInfinity"/>.
+        /// A vector with both <see cref="X"/> and <see cref="Y"/> set to <see cref="double.PositiveInfinity"/>.
         /// </summary>
         public static Vector2 PositiveInfinity { get; } = new Vector2(double.PositiveInfinity, double.PositiveInfinity);
         /// <summary>
-        /// A vector with Both <see cref="X"/> and <see cref="Y"/> set to <see cref="double.NegativeInfinity"/>.
+        /// A vector with both <see cref="X"/> and <see cref="Y"/> set to <see cref="double.NegativeInfinity"/>.
         /// </summary>
         public static Vector2 NegativeInfinity { get; } = new Vector2(double.NegativeInfinity, double.NegativeInfinity);
 

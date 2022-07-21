@@ -2,20 +2,38 @@
 
 namespace Zene.Structs
 {
+    /// <summary>
+    /// An object that stores a 3 dimensional <typeparamref name="T"/> vector.
+    /// </summary>
     public struct Vector3<T> where T : unmanaged
     {
+        /// <summary>
+        /// Creates a 3 dimensional vector from a single <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="value">The value to set to <see cref="X"/>, <see cref="Y"/> and <see cref="Z"/>.</param>
         public Vector3(T value)
         {
             X = value;
             Y = value;
             Z = value;
         }
+        /// <summary>
+        /// Creates a 3 dimensional vector from three <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="x">The value to set to <see cref="X"/>.</param>
+        /// <param name="y">The value to set to <see cref="Y"/>.</param>
+        /// <param name="z">The value to set to <see cref="Z"/>.</param>
         public Vector3(T x, T y, T z)
         {
             X = x;
             Y = y;
             Z = z;
         }
+        /// <summary>
+        /// Creates a 3 dimensional vector from a 2 dimensional vector and a <typeparamref name="T"/> Z.
+        /// </summary>
+        /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
+        /// <param name="z">The value to set to <see cref="Z"/>.</param>
         public Vector3(Vector2<T> xy, T z)
         {
             X = xy.X;
@@ -23,12 +41,20 @@ namespace Zene.Structs
             Z = z;
         }
 
+        /// <summary>
+        /// Creates a 3 dimensional vector casted from a <see cref="double"/> based vector.
+        /// </summary>
+        /// <param name="xyz">The vector to reference for <see cref="X"/>, <see cref="Y"/> and <see cref="Z"/>.</param>
         public Vector3(Vector3 xyz)
         {
             X = (T)(object)xyz.X;
             Y = (T)(object)xyz.Y;
             Z = (T)(object)xyz.Z;
         }
+        /// <summary>
+        /// Creates a 3 dimensional vector casted from an <see cref="int"/> based vector.
+        /// </summary>
+        /// <param name="xyz">The vector to reference for <see cref="X"/>, <see cref="Y"/> and <see cref="Z"/>.</param>
         public Vector3(Vector3I xyz)
         {
             X = (T)(object)xyz.X;
@@ -36,8 +62,17 @@ namespace Zene.Structs
             Z = (T)(object)xyz.Z;
         }
 
+        /// <summary>
+        /// The first value of the vector.
+        /// </summary>
         public T X { get; set; }
+        /// <summary>
+        /// The second value of the vector.
+        /// </summary>
         public T Y { get; set; }
+        /// <summary>
+        /// The third value of the vector.
+        /// </summary>
         public T Z { get; set; }
 
         public override string ToString()
