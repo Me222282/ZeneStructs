@@ -177,7 +177,7 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// Returns this matrix mutliplied by a <see cref="double"/> value.
+        /// Returns this matrix multiplied by a <see cref="double"/> value.
         /// </summary>
         /// <param name="value">The value to multiply by.</param>
         /// <returns></returns>
@@ -189,7 +189,7 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// Returns this matrix mutliplied by <paramref name="matrix"/>.
+        /// Returns this matrix multiplied by <paramref name="matrix"/>.
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix2"/> to multiply by.</param>
         /// <returns></returns>
@@ -201,7 +201,7 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// Returns this matrix mutliplied by <paramref name="matrix"/>.
+        /// Returns this matrix multiplied by <paramref name="matrix"/>.
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix2x3"/> to multiply by.</param>
         /// <returns></returns>
@@ -221,7 +221,7 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// Returns this matrix mutliplied by <paramref name="matrix"/>.
+        /// Returns this matrix multiplied by <paramref name="matrix"/>.
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix2x4"/> to multiply by.</param>
         /// <returns></returns>
