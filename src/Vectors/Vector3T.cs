@@ -40,6 +40,17 @@ namespace Zene.Structs
             Y = xy.Y;
             Z = z;
         }
+        /// <summary>
+        /// Creates a 3 dimensional vector from a 2 dimensional vector and a <typeparamref name="T"/> X.
+        /// </summary>
+        /// <param name="yz">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
+        /// <param name="x">The value to set to <see cref="X"/>.</param>
+        public Vector3(T x, Vector2<T> yz)
+        {
+            Y = yz.X;
+            Z = yz.Y;
+            X = x;
+        }
 
         /// <summary>
         /// Creates a 3 dimensional vector casted from a <see cref="double"/> based vector.
@@ -126,9 +137,8 @@ namespace Zene.Structs
             return new Vector3I((int)(object)obj.X, (int)(object)obj.Y, (int)(object)obj.Z);
         }
 
-        public static implicit operator Vector3<T>((T, T, T) v)
-        {
-            return new Vector3<T>(v.Item1, v.Item2, v.Item3);
-        }
+        public static implicit operator Vector3<T>((T, T, T) v) => new Vector3<T>(v.Item1, v.Item2, v.Item3);
+        public static implicit operator Vector3<T>((Vector2<T>, T) v) => new Vector3<T>(v.Item1, v.Item2);
+        public static implicit operator Vector3<T>((T, Vector2<T>) v) => new Vector3<T>(v.Item1, v.Item2);
     }
 }

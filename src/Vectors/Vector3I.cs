@@ -84,6 +84,28 @@ namespace Zene.Structs
             Z = z;
         }
         /// <summary>
+        /// Creates a 3 dimensional vector from a <see cref="double"/> based 2 dimensional vector and a <see cref="double"/> X.
+        /// </summary>
+        /// <param name="x">The value to set to <see cref="X"/>.</param>
+        /// <param name="yz">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
+        public Vector3I(double x, Vector2 yz)
+        {
+            X = (int)x;
+            Y = (int)yz.Y;
+            Z = (int)yz.Y;
+        }
+        /// <summary>
+        /// Creates a 3 dimensional vector from a <see cref="double"/> based 2 dimensional vector and an <see cref="int"/> X.
+        /// </summary>
+        /// <param name="xy">The value to set to <see cref="X"/>.</param>
+        /// <param name="z">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
+        public Vector3I(int x, Vector2 yz)
+        {
+            X = x;
+            Y = (int)yz.X;
+            Z = (int)yz.Y;
+        }
+        /// <summary>
         /// Creates a 3 dimensional vector from a 2 dimensional vector and a <see cref="double"/> Z.
         /// </summary>
         /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
@@ -104,6 +126,28 @@ namespace Zene.Structs
             X = xy.X;
             Y = xy.Y;
             Z = z;
+        }
+        /// <summary>
+        /// Creates a 3 dimensional vector from a 2 dimensional vector and a <see cref="double"/> X.
+        /// </summary>
+        /// <param name="yz">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
+        /// <param name="x">The value to set to <see cref="X"/>.</param>
+        public Vector3I(double x, Vector2I yz)
+        {
+            Y = yz.X;
+            Z = yz.Y;
+            X = (int)x;
+        }
+        /// <summary>
+        /// Creates a 3 dimensional vector from a based 2 dimensional vector and an <see cref="int"/> X.
+        /// </summary>
+        /// <param name="yz">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
+        /// <param name="x">The value to set to <see cref="X"/>.</param>
+        public Vector3I(int x, Vector2I yz)
+        {
+            Y = yz.X;
+            Z = yz.Y;
+            X = x;
         }
 
         /// <summary>
@@ -465,9 +509,8 @@ namespace Zene.Structs
             return new Vector3(a.X / b.X, a.Y / b.Y, a.Z / b.Z);
         }
 
-        public static implicit operator Vector3I((int, int, int) v)
-        {
-            return new Vector3I(v.Item1, v.Item2, v.Item3);
-        }
+        public static implicit operator Vector3I((int, int, int) v) => new Vector3I(v.Item1, v.Item2, v.Item3);
+        public static implicit operator Vector3I((Vector2I, int) v) => new Vector3I(v.Item1, v.Item2);
+        public static implicit operator Vector3I((int, Vector2I) v) => new Vector3I(v.Item1, v.Item2);
     }
 }

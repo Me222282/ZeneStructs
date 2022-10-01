@@ -45,6 +45,18 @@ namespace Zene.Structs
             W = w;
         }
         /// <summary>
+        /// Creates a 3 dimensional vector from a 3 dimensional vector and a <typeparamref name="T"/> X.
+        /// </summary>
+        /// <param name="yzw">The vector to reference for <see cref="Y"/>, <see cref="Z"/> and <see cref="W"/>.</param>
+        /// <param name="x">The value to set to <see cref="X"/>.</param>
+        public Vector4(T x, Vector3<T> yzw)
+        {
+            Y = yzw.X;
+            Z = yzw.Y;
+            W = yzw.Z;
+            X = x;
+        }
+        /// <summary>
         /// Creates a 3 dimensional vector from a 2 dimensional vector and a <typeparamref name="T"/> Z and W.
         /// </summary>
         /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
@@ -56,6 +68,32 @@ namespace Zene.Structs
             Y = xy.Y;
             Z = z;
             W = w;
+        }
+        /// <summary>
+        /// Creates a 3 dimensional vector from a 2 dimensional vector and a <typeparamref name="T"/> X and W.
+        /// </summary>
+        /// <param name="yz">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
+        /// <param name="x">The value to set to <see cref="X"/>.</param>
+        /// <param name="w">The value to set to <see cref="W"/>.</param>
+        public Vector4(T x, Vector2<T> yz, T w)
+        {
+            Y = yz.X;
+            Z = yz.Y;
+            X = x;
+            W = w;
+        }
+        /// <summary>
+        /// Creates a 3 dimensional vector from a 2 dimensional vector and a <typeparamref name="T"/> X and Y.
+        /// </summary>
+        /// <param name="zw">The vector to reference for <see cref="Z"/> and <see cref="W"/>.</param>
+        /// <param name="x">The value to set to <see cref="X"/>.</param>
+        /// <param name="y">The value to set to <see cref="Y"/>.</param>
+        public Vector4(T x, T y, Vector2<T> zw)
+        {
+            Z = zw.X;
+            W = zw.Y;
+            X = x;
+            Y = y;
         }
         /// <summary>
         /// Creates a 4 dimensional vector from two <see cref="Vector2{T}"/>.
@@ -160,9 +198,12 @@ namespace Zene.Structs
             return new Vector4I((int)(object)obj.X, (int)(object)obj.Y, (int)(object)obj.Z, (int)(object)obj.W);
         }
 
-        public static implicit operator Vector4<T>((T, T, T, T) v)
-        {
-            return new Vector4<T>(v.Item1, v.Item2, v.Item3, v.Item4);
-        }
+        public static implicit operator Vector4<T>((T, T, T, T) v) => new Vector4<T>(v.Item1, v.Item2, v.Item3, v.Item4);
+        public static implicit operator Vector4<T>((Vector2<T>, T, T) v) => new Vector4<T>(v.Item1, v.Item2, v.Item3);
+        public static implicit operator Vector4<T>((T, Vector2<T>, T) v) => new Vector4<T>(v.Item1, v.Item2, v.Item3);
+        public static implicit operator Vector4<T>((T, T, Vector2<T>) v) => new Vector4<T>(v.Item1, v.Item2, v.Item3);
+        public static implicit operator Vector4<T>((Vector2<T>, Vector2<T>) v) => new Vector4<T>(v.Item1, v.Item2);
+        public static implicit operator Vector4<T>((Vector3<T>, T) v) => new Vector4<T>(v.Item1, v.Item2);
+        public static implicit operator Vector4<T>((T, Vector3<T>) v) => new Vector4<T>(v.Item1, v.Item2);
     }
 }
