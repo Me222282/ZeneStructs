@@ -423,6 +423,12 @@ namespace Zene.Structs
             return b.Multiply(a);
         }
 
+        private static Matrix4x3 _zero = new Matrix4x3(Vector3.Zero, Vector3.Zero, Vector3.Zero, Vector3.Zero);
+        public static ref Matrix4x3 Zero => ref _zero;
+
+        private static Matrix4x3 _identity = new Matrix4x3(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), Vector3.Zero);
+        public static ref Matrix4x3 Identity => ref _identity;
+
         public static Matrix4x3 CreateScale(double scale)
         {
             return new Matrix4x3(

@@ -371,6 +371,12 @@ namespace Zene.Structs
             return b.Multiply(a);
         }
 
+        private static Matrix2 _zero = new Matrix2(Vector2.Zero, Vector2.Zero);
+        public static ref Matrix2 Zero => ref _zero;
+
+        private static Matrix2 _identity = new Matrix2(new Vector2(1, 0), new Vector2(0, 1));
+        public static ref Matrix2 Identity => ref _identity;
+
         /// <summary>
         /// Creates a 2 x 2 matrix that stores rotational data.
         /// </summary>

@@ -307,6 +307,12 @@ namespace Zene.Structs
             return b.Multiply(a);
         }
 
+        private static Matrix3x2 _zero = new Matrix3x2(Vector2.Zero, Vector2.Zero, Vector2.Zero);
+        public static ref Matrix3x2 Zero => ref _zero;
+
+        private static Matrix3x2 _identity = new Matrix3x2(new Vector2(1, 0), new Vector2(0, 1), Vector2.Zero);
+        public static ref Matrix3x2 Identity => ref _identity;
+
         public static Matrix3x2 CreateRotation(Radian angle)
         {
             double cos = Math.Cos(angle);

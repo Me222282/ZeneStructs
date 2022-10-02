@@ -394,6 +394,12 @@ namespace Zene.Structs
             return b.Multiply(a);
         }
 
+        private static Matrix3 _zero = new Matrix3(Vector3.Zero, Vector3.Zero, Vector3.Zero);
+        public static ref Matrix3 Zero => ref _zero;
+
+        private static Matrix3 _identity = new Matrix3(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1));
+        public static ref Matrix3 Identity => ref _identity;
+
         public static Matrix3 CreateRotation(Vector3 axis, Radian angle)
         {
             // normalize and create a local copy of the vector.

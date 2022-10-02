@@ -525,9 +525,11 @@ namespace Zene.Structs
             return b.Multiply(a);
         }
 
-        public static Matrix4 Zero { get; } = new Matrix4(Vector4.Zero, Vector4.Zero, Vector4.Zero, Vector4.Zero);
+        private static Matrix4 _zero = new Matrix4(Vector4.Zero, Vector4.Zero, Vector4.Zero, Vector4.Zero);
+        public static ref Matrix4 Zero => ref _zero;
 
-        public static Matrix4 Identity { get; } = new Matrix4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0), new Vector4(0, 0, 1, 0), new Vector4(0, 0, 0, 1));
+        private static Matrix4 _identity = new Matrix4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0), new Vector4(0, 0, 1, 0), new Vector4(0, 0, 0, 1));
+        public static ref Matrix4 Identity => ref _identity;
 
         public static Matrix4 CreateRotation(Vector3 axis, Radian angle)
         {
