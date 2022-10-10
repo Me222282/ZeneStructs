@@ -617,10 +617,18 @@ namespace Zene.Structs
                 new Vector4(0, 0, 0, 1));
         }
 
-        public static Matrix4 CreateScale(Vector3 scale)
+        public static Matrix4 CreateScale(double scaleX, double scaleY)
         {
-            return CreateScale(scale.X, scale.Y, scale.Z);
+            return new Matrix4(
+                new Vector4(scaleX, 0, 0, 0),
+                new Vector4(0, scaleY, 0, 0),
+                new Vector4(0, 0, 1, 0),
+                new Vector4(0, 0, 0, 1));
         }
+
+        public static Matrix4 CreateScale(Vector3 scale) => CreateScale(scale.X, scale.Y, scale.Z);
+
+        public static Matrix4 CreateScale(Vector2 scale) => CreateScale(scale.X, scale.Y);
 
         public static Matrix4 CreateTranslation(double xyz)
         {
@@ -640,9 +648,39 @@ namespace Zene.Structs
                 new Vector4(x, y, z, 1));
         }
 
-        public static Matrix4 CreateTranslation(Vector3 xyz)
+        public static Matrix4 CreateTranslation(double x, double y)
         {
-            return CreateTranslation(xyz.X, xyz.Y, xyz.Z);
+            return new Matrix4(
+                new Vector4(1, 0, 0, 0),
+                new Vector4(0, 1, 0, 0),
+                new Vector4(0, 0, 1, 0),
+                new Vector4(x, y, 0, 1));
+        }
+
+        public static Matrix4 CreateTranslation(Vector3 xyz) => CreateTranslation(xyz.X, xyz.Y, xyz.Z);
+
+        public static Matrix4 CreateTranslation(Vector2 xy) => CreateTranslation(xy.X, xy.Y);
+
+        public static Matrix4 CreateBox(IBox box)
+        {
+            Vector2 c = box.Centre;
+
+            return new Matrix4(
+                new Vector4(box.Width, 0, 0, 0),
+                new Vector4(0, box.Height, 0, 0),
+                new Vector4(0, 0, 1, 0),
+                new Vector4(c.X, c.Y, 0, 1));
+        }
+
+        public static Matrix4 CreateBox(IBox3 box)
+        {
+            Vector3 c = box.Centre;
+
+            return new Matrix4(
+                new Vector4(box.Width, 0, 0, 0),
+                new Vector4(0, box.Height, 0, 0),
+                new Vector4(0, 0, box.Depth, 0),
+                new Vector4(c.X, c.Y, c.Z, 1));
         }
 
         public static Matrix4 CreateOrthographicOffCentre(double left, double right, double top, double bottom, double depthNear, double depthFar)

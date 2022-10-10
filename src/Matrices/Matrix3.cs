@@ -441,7 +441,6 @@ namespace Zene.Structs
                 new Vector3(0, cos, sin),
                 new Vector3(0, -sin, cos));
         }
-
         public static Matrix3 CreateRotationY(Radian angle)
         {
             double cos = Math.Cos(angle);
@@ -452,7 +451,6 @@ namespace Zene.Structs
                 new Vector3(0, 1, 0),
                 new Vector3(sin, 0, cos));
         }
-
         public static Matrix3 CreateRotationZ(Radian angle)
         {
             double cos = Math.Cos(angle);
@@ -471,7 +469,6 @@ namespace Zene.Structs
                 new Vector3(0, scale, 0),
                 new Vector3(0, 0, scale));
         }
-
         public static Matrix3 CreateScale(double scaleX, double scaleY, double scaleZ)
         {
             return new Matrix3(
@@ -479,11 +476,15 @@ namespace Zene.Structs
                 new Vector3(0, scaleY, 0),
                 new Vector3(0, 0, scaleZ));
         }
-
-        public static Matrix3 CreateScale(Vector3 scale)
+        public static Matrix3 CreateScale(double scaleX, double scaleY)
         {
-            return CreateScale(scale.X, scale.Y, scale.Z);
+            return new Matrix3(
+                new Vector3(scaleX, 0, 0),
+                new Vector3(0, scaleY, 0),
+                new Vector3(0, 0, 1));
         }
+        public static Matrix3 CreateScale(Vector3 scale) => CreateScale(scale.X, scale.Y, scale.Z);
+        public static Matrix3 CreateScale(Vector2 scale) => CreateScale(scale.X, scale.Y);
 
         public static Matrix3 CreateTranslation(double xy)
         {
@@ -499,9 +500,16 @@ namespace Zene.Structs
                 new Vector3(0, 1, 0),
                 new Vector3(x, y, 1));
         }
-        public static Matrix3 CreateTranslation(Vector2 xy)
+        public static Matrix3 CreateTranslation(Vector2 xy) => CreateTranslation(xy.X, xy.Y);
+
+        public static Matrix3 CreateBox(IBox box)
         {
-            return CreateTranslation(xy.X, xy.Y);
+            Vector2 c = box.Centre;
+
+            return new Matrix3(
+                new Vector3(box.Width, 0, 0),
+                new Vector3(0, box.Height, 0),
+                new Vector3(c.X, c.Y, 1));
         }
 
         public static implicit operator Matrix3(Matrix3<double> matrix)

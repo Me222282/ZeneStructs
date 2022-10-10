@@ -445,14 +445,16 @@ namespace Zene.Structs
                 new Vector3(0, 0, scaleZ),
                 Vector3.Zero);
         }
-        public static Matrix4x3 CreateScale(Vector3 scale)
+        public static Matrix4x3 CreateScale(double scaleX, double scaleY)
         {
             return new Matrix4x3(
-                new Vector3(scale.X, 0, 0),
-                new Vector3(0, scale.Y, 0),
-                new Vector3(0, 0, scale.Z),
+                new Vector3(scaleX, 0, 0),
+                new Vector3(0, scaleY, 0),
+                new Vector3(0, 0, 1),
                 Vector3.Zero);
         }
+        public static Matrix4x3 CreateScale(Vector3 scale) => CreateScale(scale.X, scale.Y, scale.Z);
+        public static Matrix4x3 CreateScale(Vector2 scale) => CreateScale(scale.X, scale.Y);
 
         public static Matrix4x3 CreateTranslation(double xyz)
         {
@@ -470,13 +472,36 @@ namespace Zene.Structs
                 new Vector3(0, 0, 1),
                 new Vector3(x, y, z));
         }
-        public static Matrix4x3 CreateTranslation(Vector3 xyz)
+        public static Matrix4x3 CreateTranslation(double x, double y)
         {
             return new Matrix4x3(
                 new Vector3(1, 0, 0),
                 new Vector3(0, 1, 0),
                 new Vector3(0, 0, 1),
-                new Vector3(xyz.X, xyz.Y, xyz.Z));
+                new Vector3(x, y, 0));
+        }
+        public static Matrix4x3 CreateTranslation(Vector3 xyz) => CreateTranslation(xyz.X, xyz.Y, xyz.Z);
+        public static Matrix4x3 CreateTranslation(Vector2 xy) => CreateTranslation(xy.X, xy.Y);
+
+        public static Matrix4x3 CreateBox(IBox box)
+        {
+            Vector2 c = box.Centre;
+
+            return new Matrix4x3(
+                new Vector3(box.Width, 0, 0),
+                new Vector3(0, box.Height, 0),
+                new Vector3(0, 0, 1),
+                new Vector3(c.X, c.Y, 0));
+        }
+        public static Matrix4x3 CreateBox(IBox3 box)
+        {
+            Vector3 c = box.Centre;
+
+            return new Matrix4x3(
+                new Vector3(box.Width, 0, 0),
+                new Vector3(0, box.Height, 0),
+                new Vector3(0, 0, box.Depth),
+                new Vector3(c.X, c.Y, c.Z));
         }
 
         public static Matrix4x3 CreateRotationX(Radian angle)

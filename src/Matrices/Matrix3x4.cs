@@ -475,10 +475,15 @@ namespace Zene.Structs
                 new Vector4(0, scaleY, 0, 0),
                 new Vector4(0, 0, scaleZ, 0));
         }
-        public static Matrix3x4 CreateScale(Vector3 scale)
+        public static Matrix3x4 CreateScale(double scaleX, double scaleY)
         {
-            return CreateScale(scale.X, scale.Y, scale.Z);
+            return new Matrix3x4(
+                new Vector4(scaleX, 0, 0, 0),
+                new Vector4(0, scaleY, 0, 0),
+                new Vector4(0, 0, 1, 0));
         }
+        public static Matrix3x4 CreateScale(Vector3 scale) => CreateScale(scale.X, scale.Y, scale.Z);
+        public static Matrix3x4 CreateScale(Vector2 scale) => CreateScale(scale.X, scale.Y);
 
         public static Matrix3x4 CreateTranslation(double xy)
         {
@@ -494,9 +499,16 @@ namespace Zene.Structs
                 new Vector4(0, 1, 0, 0),
                 new Vector4(x, y, 1, 0));
         }
-        public static Matrix3x4 CreateTranslation(Vector2 xy)
+        public static Matrix3x4 CreateTranslation(Vector2 xy) => CreateTranslation(xy.X, xy.Y);
+
+        public static Matrix3x4 CreateBox(IBox box)
         {
-            return CreateTranslation(xy.X, xy.Y);
+            Vector2 c = box.Centre;
+
+            return new Matrix3x4(
+                new Vector4(box.Width, 0, 0, 0),
+                new Vector4(0, box.Height, 0, 0),
+                new Vector4(c.X, c.Y, 1, 0));
         }
 
         public static implicit operator Matrix3x4(Matrix3x4<double> matrix)
