@@ -326,6 +326,7 @@ namespace Zene.Structs
             return !a.Equals(b);
         }
 
+        /*
         public static Vector3 operator +(Vector3 a, double b)
         {
             return new Vector3(a.X + b, a.Y + b, a.Z + b);
@@ -333,16 +334,17 @@ namespace Zene.Structs
         public static Vector3 operator +(double a, Vector3 b)
         {
             return b + a;
-        }
+        }*/
         public static Vector3 operator +(Vector3 a, Vector3 b)
         {
             return new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
         }
 
+        /*
         public static Vector3 operator -(Vector3 a, double b)
         {
             return new Vector3(a.X - b, a.Y - b, a.Z - b);
-        }
+        }*/
         public static Vector3 operator -(Vector3 v)
         {
             return new Vector3(-v.X, -v.Y, -v.Z);
@@ -352,6 +354,7 @@ namespace Zene.Structs
             return new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
         }
 
+        /*
         public static Vector3 operator *(Vector3 a, double b)
         {
             return new Vector3(a.X * b, a.Y * b, a.Z * b);
@@ -359,7 +362,7 @@ namespace Zene.Structs
         public static Vector3 operator *(double a, Vector3 b)
         {
             return b * a;
-        }
+        }*/
         public static Vector3 operator *(Vector3 a, Vector3 b)
         {
             return new Vector3(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
@@ -392,16 +395,17 @@ namespace Zene.Structs
             return b.MultiplyMatrix(a);
         }
 
+        /*
         public static Vector3 operator /(Vector3 a, double b)
         {
             return new Vector3(a.X / b, a.Y / b, a.Z / b);
-        }
+        }*/
         public static Vector3 operator /(Vector3 a, Vector3 b)
         {
             return new Vector3(a.X / b.X, a.Y / b.Y, a.Z / b.Z);
         }
 
-        public static explicit operator Vector3(Vector2 p)
+        public static implicit operator Vector3(Vector2 p)
         {
             return new Vector3(p, 0);
         }
@@ -409,7 +413,7 @@ namespace Zene.Structs
         {
             return new Vector3(p.X, p.Y, p.Z);
         }
-        public static explicit operator Vector3(Vector2I p)
+        public static implicit operator Vector3(Vector2I p)
         {
             return new Vector3(p, 0);
         }
@@ -493,5 +497,6 @@ namespace Zene.Structs
         public static implicit operator Vector3((double, Vector2) v) => new Vector3(v.Item1, v.Item2);
         public static implicit operator Vector3((Vector2I, double) v) => new Vector3(v.Item1, v.Item2);
         public static implicit operator Vector3((double, Vector2I) v) => new Vector3(v.Item1, v.Item2);
+        public static implicit operator Vector3(double v) => new Vector3(v);
     }
 }

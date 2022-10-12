@@ -558,6 +558,7 @@ namespace Zene.Structs
             return !a.Equals(b);
         }
 
+        /*
         public static Vector4I operator +(Vector4I a, int b)
         {
             return new Vector4I(a.X + b, a.Y + b, a.Z + b, a.W + b);
@@ -565,16 +566,17 @@ namespace Zene.Structs
         public static Vector4I operator +(int a, Vector4I b)
         {
             return b + a;
-        }
+        }*/
         public static Vector4I operator +(Vector4I a, Vector4I b)
         {
             return new Vector4I(a.X + b.X, a.Y + b.Y, a.Z + b.Z, a.W + b.W);
         }
 
+        /*
         public static Vector4I operator -(Vector4I a, int b)
         {
             return new Vector4I(a.X - b, a.Y - b, a.Z - b, a.W - b);
-        }
+        }*/
         public static Vector4I operator -(Vector4I a, Vector4I b)
         {
             return new Vector4I(a.X - b.X, a.Y - b.Y, a.Z - b.Z, a.W - b.W);
@@ -584,6 +586,7 @@ namespace Zene.Structs
             return new Vector4I(-v.X, -v.Y, -v.Z, -v.W);
         }
 
+        /*
         public static Vector4I operator *(Vector4I a, int b)
         {
             return new Vector4I(a.X * b, a.Y * b, a.Z * b, a.W * b);
@@ -591,7 +594,7 @@ namespace Zene.Structs
         public static Vector4I operator *(int a, Vector4I b)
         {
             return b * a;
-        }
+        }*/
         public static Vector4I operator *(Vector4I a, Vector4I b)
         {
             return new Vector4I(a.X * b.X, a.Y * b.Y, a.Z * b.Z, a.W * b.W);
@@ -624,20 +627,21 @@ namespace Zene.Structs
             return b.MultiplyMatrix(a);
         }
 
+        /*
         public static Vector4I operator /(Vector4I a, int b)
         {
             return new Vector4I(a.X / b, a.Y / b, a.Z / b, a.W / b);
-        }
+        }*/
         public static Vector4I operator /(Vector4I a, Vector4I b)
         {
             return new Vector4I(a.X / b.X, a.Y / b.Y, a.Z / b.Z, a.W / b.W);
         }
 
-        public static implicit operator Vector4I(Vector2 p)
+        public static explicit operator Vector4I(Vector2 p)
         {
             return new Vector4I(p, 1, 1);
         }
-        public static implicit operator Vector4I(Vector3 p)
+        public static explicit operator Vector4I(Vector3 p)
         {
             return new Vector4I(p, 1);
         }
@@ -649,7 +653,7 @@ namespace Zene.Structs
         {
             return new Vector4I(p, 1);
         }
-        public static implicit operator Vector4I(Vector4 p)
+        public static explicit operator Vector4I(Vector4 p)
         {
             return new Vector4I(p);
         }
@@ -720,5 +724,6 @@ namespace Zene.Structs
         public static implicit operator Vector4I((Vector2I, Vector2I) v) => new Vector4I(v.Item1, v.Item2);
         public static implicit operator Vector4I((Vector3I, int) v) => new Vector4I(v.Item1, v.Item2);
         public static implicit operator Vector4I((int, Vector3I) v) => new Vector4I(v.Item1, v.Item2);
+        public static implicit operator Vector4I(int v) => new Vector4I(v);
     }
 }

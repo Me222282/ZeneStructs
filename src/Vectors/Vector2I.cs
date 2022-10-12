@@ -309,6 +309,7 @@ namespace Zene.Structs
             return !a.Equals(b);
         }
 
+        /*
         public static Vector2I operator +(Vector2I a, int b)
         {
             return new Vector2I(a.X + b, a.Y + b);
@@ -316,16 +317,17 @@ namespace Zene.Structs
         public static Vector2I operator +(int a, Vector2I b)
         {
             return b + a;
-        }
+        }*/
         public static Vector2I operator +(Vector2I a, Vector2I b)
         {
             return new Vector2I(a.X + b.X, a.Y + b.Y);
         }
 
+        /*
         public static Vector2I operator -(Vector2I a, int b)
         {
             return new Vector2I(a.X - b, a.Y - b);
-        }
+        }*/
         public static Vector2I operator -(Vector2I v)
         {
             return new Vector2I(-v.X, -v.Y);
@@ -335,6 +337,7 @@ namespace Zene.Structs
             return new Vector2I(a.X - b.X, a.Y - b.Y);
         }
 
+        /*
         public static Vector2I operator *(Vector2I a, int b)
         {
             return new Vector2I(a.X * b, a.Y * b);
@@ -342,7 +345,7 @@ namespace Zene.Structs
         public static Vector2I operator *(int a, Vector2I b)
         {
             return b * a;
-        }
+        }*/
         public static Vector2I operator *(Vector2I a, Vector2I b)
         {
             return new Vector2I(a.X * b.X, a.Y * b.Y);
@@ -375,10 +378,11 @@ namespace Zene.Structs
             return b.MultiplyMatrix(a);
         }
 
+        /*
         public static Vector2I operator /(Vector2I a, int b)
         {
             return new Vector2I(a.X / b, a.Y / b);
-        }
+        }*/
         public static Vector2I operator /(Vector2I a, Vector2I b)
         {
             return new Vector2I(a.X / b.X, a.Y / b.Y);
@@ -431,9 +435,7 @@ namespace Zene.Structs
             return new Vector2(a.X * b.X, a.Y * b.Y);
         }
 
-        public static implicit operator Vector2I((int, int) v)
-        {
-            return new Vector2I(v.Item1, v.Item2);
-        }
+        public static implicit operator Vector2I((int, int) v) => new Vector2I(v.Item1, v.Item2);
+        public static implicit operator Vector2I(int v) => new Vector2I(v);
     }
 }
