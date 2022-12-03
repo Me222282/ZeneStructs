@@ -5,7 +5,7 @@ namespace Zene.Structs
     /// <summary>
     /// An object that stores a 2 x 2 matrix grid of <see cref="double"/>. 
     /// </summary>
-    public unsafe struct Matrix2
+    public unsafe class Matrix2
     {
         /// <summary>
         /// The number of rows in this matrix.
@@ -43,7 +43,7 @@ namespace Zene.Structs
             _matrix[3] = matrix[3];
         }
 
-        private fixed double _matrix[Rows * Columns];
+        private readonly double[] _matrix = new double[Rows * Columns];
 
         /// <summary>
         /// A span that points to the data in this matrix.
@@ -157,7 +157,7 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="matrix">The matrix to add to this.</param>
         /// <returns></returns>
-        public Matrix2 Add(ref Matrix2 matrix)
+        public Matrix2 Add(Matrix2 matrix)
         {
             return new Matrix2(
                 Row0 + matrix.Row0,
@@ -169,7 +169,7 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="matrix">The matrix to subtract from this.</param>
         /// <returns></returns>
-        public Matrix2 Subtract(ref Matrix2 matrix)
+        public Matrix2 Subtract(Matrix2 matrix)
         {
             return new Matrix2(
                 Row0 - matrix.Row0,
@@ -189,11 +189,11 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// Returns this matrix multiplied by <paramref name="matrix"/>.
+        /// Returns this matrix multiplied by <paramname="matrix"/>.
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix2"/> to multiply by.</param>
         /// <returns></returns>
-        public Matrix2 Multiply(ref Matrix2 matrix)
+        public Matrix2 Multiply(Matrix2 matrix)
         {
             return new Matrix2(
                 (/*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]), /*x:1 y:0*/(_matrix[0] * matrix[1, 0]) + (_matrix[1] * matrix[1, 1])),
@@ -201,11 +201,11 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// Returns this matrix multiplied by <paramref name="matrix"/>.
+        /// Returns this matrix multiplied by <paramname="matrix"/>.
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix2x3"/> to multiply by.</param>
         /// <returns></returns>
-        public Matrix2x3 Multiply(ref Matrix2x3 matrix)
+        public Matrix2x3 Multiply(Matrix2x3 matrix)
         {
             return new Matrix2x3(
                 (
@@ -221,11 +221,11 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// Returns this matrix multiplied by <paramref name="matrix"/>.
+        /// Returns this matrix multiplied by <paramname="matrix"/>.
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix2x4"/> to multiply by.</param>
         /// <returns></returns>
-        public Matrix2x4 Multiply(ref Matrix2x4 matrix)
+        public Matrix2x4 Multiply(Matrix2x4 matrix)
         {
             return new Matrix2x4(
                 (
@@ -338,27 +338,27 @@ namespace Zene.Structs
 
         public static Matrix2 operator +(Matrix2 a, Matrix2 b)
         {
-            return a.Add(ref b);
+            return a.Add(b);
         }
 
         public static Matrix2 operator -(Matrix2 a, Matrix2 b)
         {
-            return a.Subtract(ref b);
+            return a.Subtract(b);
         }
 
         public static Matrix2 operator *(Matrix2 a, Matrix2 b)
         {
-            return a.Multiply(ref b);
+            return a.Multiply(b);
         }
 
         public static Matrix2x3 operator *(Matrix2 a, Matrix2x3 b)
         {
-            return a.Multiply(ref b);
+            return a.Multiply(b);
         }
 
         public static Matrix2x4 operator *(Matrix2 a, Matrix2x4 b)
         {
-            return a.Multiply(ref b);
+            return a.Multiply(b);
         }
 
         public static Matrix2 operator *(Matrix2 a, double b)
@@ -371,11 +371,9 @@ namespace Zene.Structs
             return b.Multiply(a);
         }
 
-        private static Matrix2 _zero = new Matrix2(Vector2.Zero, Vector2.Zero);
-        public static ref Matrix2 Zero => ref _zero;
+        public static Matrix2 Zero { get; } = new Matrix2(Vector2.Zero, Vector2.Zero);
 
-        private static Matrix2 _identity = new Matrix2(new Vector2(1, 0), new Vector2(0, 1));
-        public static ref Matrix2 Identity => ref _identity;
+        public static Matrix2 Identity { get; } = new Matrix2(new Vector2(1, 0), new Vector2(0, 1));
 
         /// <summary>
         /// Creates a 2 x 2 matrix that stores rotational data.

@@ -2,7 +2,7 @@
 
 namespace Zene.Structs
 {
-    public unsafe struct Matrix3x2
+    public unsafe class Matrix3x2
     {
         public const int Rows = 3;
         public const int Columns = 2;
@@ -31,7 +31,7 @@ namespace Zene.Structs
             _matrix[5] = matrix[5];
         }
 
-        private fixed double _matrix[Rows * Columns];
+        private readonly double[] _matrix = new double[Rows * Columns];
 
         public ReadOnlySpan<double> Data
         {
@@ -137,7 +137,7 @@ namespace Zene.Structs
             }
         }
 
-        public Matrix3x2 Add(ref Matrix3x2 matrix)
+        public Matrix3x2 Add(Matrix3x2 matrix)
         {
             return new Matrix3x2(
                 Row0 + matrix.Row0,
@@ -145,7 +145,7 @@ namespace Zene.Structs
                 Row2 + matrix.Row2);
         }
 
-        public Matrix3x2 Subtract(ref Matrix3x2 matrix)
+        public Matrix3x2 Subtract(Matrix3x2 matrix)
         {
             return new Matrix3x2(
                 Row0 - matrix.Row0,
@@ -161,7 +161,7 @@ namespace Zene.Structs
                 Row2 * value);
         }
 
-        public Matrix3x2 Multiply(ref Matrix2 matrix)
+        public Matrix3x2 Multiply(Matrix2 matrix)
         {
             return new Matrix3x2(
                 (
@@ -178,7 +178,7 @@ namespace Zene.Structs
                 ));
         }
 
-        public Matrix3 Multiply(ref Matrix2x3 matrix)
+        public Matrix3 Multiply(Matrix2x3 matrix)
         {
             return new Matrix3(
                 (
@@ -198,7 +198,7 @@ namespace Zene.Structs
                 ));
         }
 
-        public Matrix3x4 Multiply(ref Matrix2x4 matrix)
+        public Matrix3x4 Multiply(Matrix2x4 matrix)
         {
             return new Matrix3x4(
                 (
@@ -279,22 +279,22 @@ namespace Zene.Structs
 
         public static Matrix3x2 operator +(Matrix3x2 a, Matrix3x2 b)
         {
-            return a.Add(ref b);
+            return a.Add(b);
         }
 
         public static Matrix3x2 operator -(Matrix3x2 a, Matrix3x2 b)
         {
-            return a.Subtract(ref b);
+            return a.Subtract(b);
         }
 
         public static Matrix3 operator *(Matrix3x2 a, Matrix2x3 b)
         {
-            return a.Multiply(ref b);
+            return a.Multiply(b);
         }
 
         public static Matrix3x2 operator *(Matrix3x2 a, Matrix2 b)
         {
-            return a.Multiply(ref b);
+            return a.Multiply(b);
         }
 
         public static Matrix3x2 operator *(Matrix3x2 a, double b)
@@ -307,11 +307,9 @@ namespace Zene.Structs
             return b.Multiply(a);
         }
 
-        private static Matrix3x2 _zero = new Matrix3x2(Vector2.Zero, Vector2.Zero, Vector2.Zero);
-        public static ref Matrix3x2 Zero => ref _zero;
+        public static Matrix3x2 Zero { get; } = new Matrix3x2(Vector2.Zero, Vector2.Zero, Vector2.Zero);
 
-        private static Matrix3x2 _identity = new Matrix3x2(new Vector2(1, 0), new Vector2(0, 1), Vector2.Zero);
-        public static ref Matrix3x2 Identity => ref _identity;
+        public static Matrix3x2 Identity { get; } = new Matrix3x2(new Vector2(1, 0), new Vector2(0, 1), Vector2.Zero);
 
         public static Matrix3x2 CreateRotation(Radian angle)
         {
