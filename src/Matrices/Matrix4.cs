@@ -670,6 +670,17 @@ namespace Zene.Structs
                 new Vector4(c.X, c.Y, 0, 1));
         }
 
+        public static Matrix4 CreateBox(IBox box, double depth)
+        {
+            Vector2 c = box.Centre;
+
+            return new Matrix4(
+                new Vector4(box.Width, 0, 0, 0),
+                new Vector4(0, box.Height, 0, 0),
+                new Vector4(0, 0, 1, 0),
+                new Vector4(c.X, c.Y, depth, 1));
+        }
+
         public static Matrix4 CreateBox(IBox3 box)
         {
             Vector3 c = box.Centre;
