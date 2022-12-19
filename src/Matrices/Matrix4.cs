@@ -204,6 +204,11 @@ namespace Zene.Structs
 
         public Matrix4 Add(Matrix4 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Identity;
+            }
+
             return new Matrix4(
                 Row0 + matrix.Row0,
                 Row1 + matrix.Row1,
@@ -213,6 +218,11 @@ namespace Zene.Structs
 
         public Matrix4 Subtract(Matrix4 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Identity;
+            }
+
             return new Matrix4(
                 Row0 - matrix.Row0,
                 Row1 - matrix.Row1,
@@ -231,6 +241,11 @@ namespace Zene.Structs
 
         public Matrix4 Multiply(Matrix4 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Identity;
+            }
+
             return new Matrix4(
                 (
                     /*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]) + (_matrix[2] * matrix[0, 2]) + (_matrix[3] * matrix[0, 3]),
@@ -260,6 +275,11 @@ namespace Zene.Structs
 
         public Matrix4x2 Multiply(Matrix4x2 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Matrix4x2.Identity;
+            }
+
             return new Matrix4x2(
                 (
                     /*X:0 Y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]) + (_matrix[2] * matrix[0, 2]) + (_matrix[3] * matrix[0, 3]),
@@ -281,6 +301,11 @@ namespace Zene.Structs
 
         public Matrix4x3 Multiply(Matrix4x3 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Matrix4x3.Identity;
+            }
+
             return new Matrix4x3(
                 (
                     /*X:0 Y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]) + (_matrix[2] * matrix[0, 2]) + (_matrix[3] * matrix[0, 3]),
@@ -400,7 +425,7 @@ namespace Zene.Structs
 
         public override bool Equals(object obj)
         {
-            return obj is Matrix4 matrix &&
+            return obj is Matrix4 matrix && matrix is not null &&
                 _matrix[0] == matrix._matrix[0] &&
                 _matrix[1] == matrix._matrix[1] &&
                 _matrix[2] == matrix._matrix[2] &&
@@ -820,10 +845,20 @@ namespace Zene.Structs
 
         public static implicit operator Matrix4<double>(Matrix4 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Identity;
+            }
+
             return new Matrix4<double>((Vector4<double>)matrix.Row0, (Vector4<double>)matrix.Row1, (Vector4<double>)matrix.Row2, (Vector4<double>)matrix.Row3);
         }
         public static explicit operator Matrix4<float>(Matrix4 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Identity;
+            }
+
             return new Matrix4<float>((Vector4<float>)matrix.Row0, (Vector4<float>)matrix.Row1, (Vector4<float>)matrix.Row2, (Vector4<float>)matrix.Row3);
         }
     }

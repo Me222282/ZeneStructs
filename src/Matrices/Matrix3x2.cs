@@ -139,6 +139,11 @@ namespace Zene.Structs
 
         public Matrix3x2 Add(Matrix3x2 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Identity;
+            }
+
             return new Matrix3x2(
                 Row0 + matrix.Row0,
                 Row1 + matrix.Row1,
@@ -147,6 +152,11 @@ namespace Zene.Structs
 
         public Matrix3x2 Subtract(Matrix3x2 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Identity;
+            }
+
             return new Matrix3x2(
                 Row0 - matrix.Row0,
                 Row1 - matrix.Row1,
@@ -163,6 +173,11 @@ namespace Zene.Structs
 
         public Matrix3x2 Multiply(Matrix2 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Matrix2.Identity;
+            }
+
             return new Matrix3x2(
                 (
                     /*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]),
@@ -180,6 +195,11 @@ namespace Zene.Structs
 
         public Matrix3 Multiply(Matrix2x3 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Matrix2x3.Identity;
+            }
+
             return new Matrix3(
                 (
                     /*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]),
@@ -200,6 +220,11 @@ namespace Zene.Structs
 
         public Matrix3x4 Multiply(Matrix2x4 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Matrix2x4.Identity;
+            }
+
             return new Matrix3x4(
                 (
                     /*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]),
@@ -227,7 +252,7 @@ namespace Zene.Structs
 
         public override bool Equals(object obj)
         {
-            return obj is Matrix3x2 matrix &&
+            return obj is Matrix3x2 matrix && matrix is not null &&
                 _matrix[0] == matrix._matrix[0] &&
                 _matrix[1] == matrix._matrix[1] &&
                 _matrix[2] == matrix._matrix[2] &&
@@ -366,10 +391,20 @@ namespace Zene.Structs
 
         public static implicit operator Matrix3x2<double>(Matrix3x2 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Identity;
+            }
+
             return new Matrix3x2<double>((Vector2<double>)matrix.Row0, (Vector2<double>)matrix.Row1, (Vector2<double>)matrix.Row2);
         }
         public static explicit operator Matrix3x2<float>(Matrix3x2 matrix)
         {
+            if (matrix == null)
+            {
+                matrix = Identity;
+            }
+
             return new Matrix3x2<float>((Vector2<float>)matrix.Row0, (Vector2<float>)matrix.Row1, (Vector2<float>)matrix.Row2);
         }
     }

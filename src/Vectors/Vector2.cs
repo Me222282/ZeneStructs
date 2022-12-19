@@ -182,6 +182,11 @@ namespace Zene.Structs
         /// <returns></returns>
         public Vector2 MultiplyMatrix(Matrix2 matrix)
         {
+            if (matrix == null)
+            {
+                return new Vector2(X, Y);
+            }
+
             return new Vector2(
                 //(matrix[0, 0] * X) + (matrix[0, 1] * Y),
                 //(matrix[1, 0] * X) + (matrix[1, 1] * Y));
@@ -195,6 +200,11 @@ namespace Zene.Structs
         /// <returns></returns>
         public Vector3 MultiplyMatrix(Matrix3x2 matrix)
         {
+            if (matrix == null)
+            {
+                return new Vector3(X, Y, 0d);
+            }
+
             return new Vector3(
                 //(matrix[0, 0] * X) + (matrix[0, 1] * Y),
                 //(matrix[1, 0] * X) + (matrix[1, 1] * Y),
@@ -210,6 +220,11 @@ namespace Zene.Structs
         /// <returns></returns>
         public Vector4 MultiplyMatrix(Matrix4x2 matrix)
         {
+            if (matrix == null)
+            {
+                return new Vector4(X, Y, 0d, 0d);
+            }
+
             return new Vector4(
                 //(matrix[0, 0] * X) + (matrix[0, 1] * Y),
                 //(matrix[1, 0] * X) + (matrix[1, 1] * Y),
