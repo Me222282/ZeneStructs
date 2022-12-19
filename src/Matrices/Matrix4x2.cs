@@ -158,7 +158,7 @@ namespace Zene.Structs
 
         public Matrix4x2 Add(Matrix4x2 matrix)
         {
-            if (matrix == null)
+            if (matrix is null)
             {
                 matrix = Identity;
             }
@@ -172,7 +172,7 @@ namespace Zene.Structs
 
         public Matrix4x2 Subtract(Matrix4x2 matrix)
         {
-            if (matrix == null)
+            if (matrix is null)
             {
                 matrix = Identity;
             }
@@ -195,7 +195,7 @@ namespace Zene.Structs
 
         public Matrix4x2 Multiply(Matrix2 matrix)
         {
-            if (matrix == null)
+            if (matrix is null)
             {
                 matrix = Matrix2.Identity;
             }
@@ -221,7 +221,7 @@ namespace Zene.Structs
 
         public Matrix4x3 Multiply(Matrix2x3 matrix)
         {
-            if (matrix == null)
+            if (matrix is null)
             {
                 matrix = Matrix2x3.Identity;
             }
@@ -251,7 +251,7 @@ namespace Zene.Structs
 
         public Matrix4 Multiply(Matrix2x4 matrix)
         {
-            if (matrix == null)
+            if (matrix is null)
             {
                 matrix = Matrix2x4.Identity;
             }
@@ -337,31 +337,69 @@ namespace Zene.Structs
 
         public static bool operator ==(Matrix4x2 a, Matrix4x2 b)
         {
+            if (a is null)
+            {
+                a = Identity;
+            }
+            if (b is null)
+            {
+                b = Identity;
+            }
+
             return a.Equals(b);
         }
 
         public static bool operator !=(Matrix4x2 a, Matrix4x2 b)
         {
+            if (a is null)
+            {
+                a = Identity;
+            }
+            if (b is null)
+            {
+                b = Identity;
+            }
+
             return !a.Equals(b);
         }
 
         public static Matrix4x2 operator +(Matrix4x2 a, Matrix4x2 b)
         {
+            if (a is null)
+            {
+                a = Identity;
+            }
+
             return a.Add(b);
         }
 
         public static Matrix4x2 operator -(Matrix4x2 a, Matrix4x2 b)
         {
+            if (a is null)
+            {
+                a = Identity;
+            }
+
             return a.Subtract(b);
         }
 
         public static Matrix4x2 operator *(Matrix4x2 a, Matrix2 b)
         {
+            if (a is null)
+            {
+                a = Identity;
+            }
+
             return a.Multiply(b);
         }
 
         public static Matrix4x3 operator *(Matrix4x2 a, Matrix2x3 b)
         {
+            if (a is null)
+            {
+                a = Identity;
+            }
+
             return a.Multiply(b);
         }
 
@@ -372,11 +410,21 @@ namespace Zene.Structs
 
         public static Matrix4x2 operator *(Matrix4x2 a, double b)
         {
+            if (a is null)
+            {
+                a = Identity;
+            }
+
             return a.Multiply(b);
         }
 
         public static Matrix4x2 operator *(double a, Matrix4x2 b)
         {
+            if (b is null)
+            {
+                b = Identity;
+            }
+
             return b.Multiply(a);
         }
 
@@ -442,7 +490,7 @@ namespace Zene.Structs
 
         public static implicit operator Matrix4x2<double>(Matrix4x2 matrix)
         {
-            if (matrix == null)
+            if (matrix is null)
             {
                 matrix = Identity;
             }
@@ -451,7 +499,7 @@ namespace Zene.Structs
         }
         public static explicit operator Matrix4x2<float>(Matrix4x2 matrix)
         {
-            if (matrix == null)
+            if (matrix is null)
             {
                 matrix = Identity;
             }
