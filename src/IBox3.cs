@@ -15,7 +15,7 @@
         public double Back { get; set; }
 
         /// <summary>
-        /// The center location of the box.
+        /// The centre location of the box.
         /// </summary>
         public new Vector3 Centre { get; }
         Vector2 IBox.Centre => (Vector2)Centre;

@@ -23,7 +23,7 @@
         public double Top { get; set; }
 
         /// <summary>
-        /// The center location of the box.
+        /// The centre location of the box.
         /// </summary>
         public Vector2 Centre { get; }
 
