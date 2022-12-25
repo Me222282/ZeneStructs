@@ -73,6 +73,24 @@ namespace Zene.Structs
         }
 
         /// <summary>
+        /// Clamps <paramref name="box"/> to the bounds of <paramref name="bounds"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="box">The box to clamp.</param>
+        /// <param name="bounds">The constricting bounds.</param>
+        /// <returns></returns>
+        public static T Clamp<T>(this T box, IBox bounds) where T : IBox, new()
+        {
+            return new T()
+            {
+                Left = Math.Max(box.Left, bounds.Left),
+                Right = Math.Min(box.Right, bounds.Right),
+                Bottom = Math.Max(box.Bottom, bounds.Bottom),
+                Top = Math.Min(box.Top, bounds.Top)
+            };
+        }
+
+        /// <summary>
         /// Shifts <see cref="IBox"/> <paramref name="box"/> by <paramref name="offset"/>.
         /// </summary>
         /// <param name="box">The box to offset.</param>

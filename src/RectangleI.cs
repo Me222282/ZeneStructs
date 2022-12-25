@@ -95,7 +95,15 @@ namespace Zene.Structs
         /// <summary>
         /// The center location of the box.
         /// </summary>
-        public Vector2I Centre => new Vector2I(X + (Width * 0.5), Y - (Height * 0.5));
+        public Vector2I Centre
+        {
+            get => new Vector2I(X + (Width * 0.5), Y - (Height * 0.5));
+            set
+            {
+                X = value.X - (Width / 2);
+                Y = value.Y - (Height / 2);
+            }
+        }
         Vector2 IBox.Centre => new Vector2(X + (Width * 0.5), Y - (Height * 0.5));
         Vector2 IBox.Size => Size;
 
@@ -133,6 +141,10 @@ namespace Zene.Structs
             set
             {
                 Width += X - value;
+                if (Width < 0)
+                {
+                    Width = 0;
+                }
                 X = value;
             }
         }
@@ -147,7 +159,14 @@ namespace Zene.Structs
         public int Right
         {
             get => X + Width;
-            set => Width = value - X;
+            set
+            {
+                Width = value - X;
+                if (Width < 0)
+                {
+                    Width = 0;
+                }
+            }
         }
         double IBox.Right
         {
@@ -163,6 +182,10 @@ namespace Zene.Structs
             set
             {
                 Height = Y - value;
+                if (Height < 0)
+                {
+                    Height = 0;
+                }
                 Y = value;
             }
         }
@@ -177,7 +200,14 @@ namespace Zene.Structs
         public int Top
         {
             get => Y;
-            set => Height += value - Y;
+            set
+            {
+                Height += value - Y;
+                if (Height < 0)
+                {
+                    Height = 0;
+                }
+            }
         }
         double IBox.Top
         {

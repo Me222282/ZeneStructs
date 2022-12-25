@@ -56,7 +56,15 @@ namespace Zene.Structs
         public double Width { get; set; }
         public double Height { get; set; }
 
-        public Vector2 Centre => new Vector2(X + (Width * 0.5), Y - (Height * 0.5));
+        public Vector2 Centre
+        {
+            get => new Vector2(X + (Width * 0.5), Y - (Height * 0.5));
+            set
+            {
+                X = value.X - (Width * 0.5);
+                Y = value.Y - (Height * 0.5);
+            }
+        }
 
         /// <summary>
         /// The top-left location of the box.
@@ -89,13 +97,24 @@ namespace Zene.Structs
             set
             {
                 Width += X - value;
+                if (Width < 0)
+                {
+                    Width = 0;
+                }
                 X = value;
             }
         }
         public double Right
         {
             get => X + Width;
-            set => Width = value - X;
+            set
+            {
+                Width = value - X;
+                if (Width < 0)
+                {
+                    Width = 0;
+                }
+            }
         }
         public double Bottom
         {
@@ -103,13 +122,24 @@ namespace Zene.Structs
             set
             {
                 Height = Y - value;
+                if (Height < 0)
+                {
+                    Height = 0;
+                }
                 Y = value;
             }
         }
         public double Top
         {
             get => Y;
-            set => Height += value - Y;
+            set
+            {
+                Height += value - Y;
+                if (Height < 0)
+                {
+                    Height = 0;
+                }
+            }
         }
 
 #nullable enable
