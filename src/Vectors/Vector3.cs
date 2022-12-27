@@ -238,6 +238,12 @@ namespace Zene.Structs
         }
 
         /// <summary>
+        /// Returns this vector as a <see cref="Vector3I"/> rounded to the nearest value.
+        /// </summary>
+        /// <returns></returns>
+        public Vector3I RoundedInt() => new Vector3I(Math.Round(X), Math.Round(Y), Math.Round(Z));
+
+        /// <summary>
         /// Returns this vector multiplied by <paramref name="matrix"/>.
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix2x3"/> to multiply by.</param>
