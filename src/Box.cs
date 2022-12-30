@@ -129,6 +129,20 @@ namespace Zene.Structs
             }
         }
 
+        /// <summary>
+        /// Sets the top left corner of the box whilst keeping the size the same.
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetTopLeft(Vector2 value)
+        {
+            Vector2 size = Size;
+
+            Top = value.Y;
+            Left = value.X;
+            Bottom = value.Y - size.Y;
+            Right = value.X + size.X;
+        }
+
 #nullable enable
         public override string ToString()
         {
