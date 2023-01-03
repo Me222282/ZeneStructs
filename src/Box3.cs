@@ -202,16 +202,16 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// A box the spans from positive infinity to negative infinity.
+        /// A <see cref="Box3"/> that spans from negative to positive infinity.
         /// </summary>
         public static Box3 Infinity { get; } = new Box3(double.NegativeInfinity, double.PositiveInfinity, double.PositiveInfinity,
                                                         double.NegativeInfinity, double.NegativeInfinity, double.PositiveInfinity);
         /// <summary>
-        /// A box with <see cref="Left"/>, <see cref="Right"/>, <see cref="Top">, <see cref="Bottom"/>, <see cref="Front"/> and <see cref="Back"/> set to 0.
+        /// A <see cref="Box3"/> with <see cref="Left"/>, <see cref="Right"/>, <see cref="Top">, <see cref="Bottom"/>, <see cref="Front"/> and <see cref="Back"/> all set to 0.
         /// </summary>
         public static Box3 Zero { get; } = new Box3(0, 0, 0, 0, 0, 0);
         /// <summary>
-        /// A box with a <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> of 1 centred around origin.
+        /// A <see cref="Box3"/> with a <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> of 1 centred around origin.
         /// </summary>
         public static Box3 One { get; } = new Box3(-0.5, 0.5, 0.5, -0.5, -0.5, 0.5);
     }

@@ -256,11 +256,11 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// A rectangle with <see cref="X"/>, <see cref="Y"/>, <see cref="Width"/> and <see cref="Height"/> set to 0.
+        /// A <see cref="RectangleI"/> with <see cref="X"/>, <see cref="Y"/>, <see cref="Width"/> and <see cref="Height"/> all set to 0.
         /// </summary>
         public static RectangleI Zero { get; } = new RectangleI(0, 0, 0, 0);
         /// <summary>
-        /// A rectangle with a <see cref="Width"/> and <see cref="Height"/> of 1 with the top-left at origin.
+        /// A <see cref="RectangleI"/> with a <see cref="Width"/> and <see cref="Height"/> of 1 with the top-left at origin.
         /// </summary>
         public static RectangleI One { get; } = new RectangleI(0, 0, 1, 1);
     }

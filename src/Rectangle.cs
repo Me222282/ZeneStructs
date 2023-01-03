@@ -179,11 +179,11 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// A rectangle with <see cref="X"/>, <see cref="Y"/>, <see cref="Width"/> and <see cref="Height"/> set to 0.
+        /// A <see cref="Rectangle"/> with <see cref="X"/>, <see cref="Y"/>, <see cref="Width"/> and <see cref="Height"/> all set to 0.
         /// </summary>
         public static Rectangle Zero { get; } = new Rectangle(0, 0, 0, 0);
         /// <summary>
-        /// A rectangle with a <see cref="Width"/> and <see cref="Height"/> of 1 centred around origin.
+        /// A <see cref="Rectangle"/> with a <see cref="Width"/> and <see cref="Height"/> of 1 centred around origin.
         /// </summary>
         public static Rectangle One { get; } = new Rectangle(-0.5, 0.5, 1, 1);
     }

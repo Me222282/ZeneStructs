@@ -180,15 +180,15 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// A box the spans from positive infinity to negative infinity.
+        /// A <see cref="Box"/> that spans from negative to positive infinity.
         /// </summary>
         public static Box Infinity { get; } = new Box(double.NegativeInfinity, double.PositiveInfinity, double.PositiveInfinity, double.NegativeInfinity);
         /// <summary>
-        /// A box with <see cref="Left"/>, <see cref="Right"/>, <see cref="Top"/> and <see cref="Bottom"/> set to 0.
+        /// A <see cref="Box"/> with <see cref="Left"/>, <see cref="Right"/>, <see cref="Top"/> and <see cref="Bottom"/> all set to 0.
         /// </summary>
         public static Box Zero { get; } = new Box(0, 0, 0, 0);
         /// <summary>
-        /// A box with a <see cref="Width"/> and <see cref="Height"/> of 1 centred around origin.
+        /// A <see cref="Box"/> with a <see cref="Width"/> and <see cref="Height"/> of 1 centred around origin.
         /// </summary>
         public static Box One { get; } = new Box(-0.5, 0.5, 0.5, -0.5);
     }

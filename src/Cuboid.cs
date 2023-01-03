@@ -180,11 +180,11 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// A cuboid with <see cref="X"/>, <see cref="Y"/>, <see cref="Z"/>, <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> set to 0.
+        /// A <see cref="Cuboid"/> with <see cref="X"/>, <see cref="Y"/>, <see cref="Z"/>, <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> all set to 0.
         /// </summary>
         public static Cuboid Zero { get; } = new Cuboid(0, 0, 0, 0, 0, 0);
         /// <summary>
-        /// A cuboid with a <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> of 1 centred around origin.
+        /// A <see cref="Cuboid"/> with a <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> of 1 centred around origin.
         /// </summary>
         public static Cuboid One { get; } = new Cuboid(-0.5, 0.5, -0.5, 1, 1, 1);
     }

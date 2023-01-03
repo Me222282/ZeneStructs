@@ -272,11 +272,11 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// A cuboid with <see cref="X"/>, <see cref="Y"/>, <see cref="Z"/>, <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> set to 0.
+        /// A <see cref="CuboidI"/> with <see cref="X"/>, <see cref="Y"/>, <see cref="Z"/>, <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> all set to 0.
         /// </summary>
         public static CuboidI Zero { get; } = new CuboidI(0, 0, 0, 0, 0, 0);
         /// <summary>
-        /// A cuboid with a <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> of 1 with the top-front-left at origin.
+        /// A <see cref="CuboidI"/> with a <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> of 1 with the top-front-left at origin.
         /// </summary>
         public static CuboidI One { get; } = new CuboidI(0, 0, 0, 1, 1, 1);
     }
