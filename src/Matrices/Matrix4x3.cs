@@ -38,6 +38,10 @@ namespace Zene.Structs
             _matrix[10] = matrix[10];
             _matrix[11] = matrix[11];
         }
+        public Matrix4x3()
+        {
+            _matrix = new double[12];
+        }
 
         private readonly double[] _matrix = new double[Rows * Columns];
 
@@ -178,6 +182,12 @@ namespace Zene.Structs
                 _matrix[11] = value.W;
             }
         }
+
+        /// <summary>
+        /// Sets the contents of this matrix, to the contents of <paramref name="matrix"/>.
+        /// </summary>
+        /// <param name="matrix">THe source matrix.</param>
+        public void Set(Matrix4x3 matrix) => matrix._matrix.CopyTo(_matrix, 0);
 
         public Matrix4x3 Add(Matrix4x3 matrix)
         {

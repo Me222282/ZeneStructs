@@ -14,7 +14,6 @@ namespace Zene.Structs
             Row2 = row2;
             Row3 = row3;
         }
-
         public Matrix4(double[] matrix)
         {
             if (matrix.Length < (Rows * Columns))
@@ -41,6 +40,10 @@ namespace Zene.Structs
             _matrix[13] = matrix[13];
             _matrix[14] = matrix[14];
             _matrix[15] = matrix[15];
+        }
+        public Matrix4()
+        {
+            _matrix = new double[16];
         }
 
         private readonly double[] _matrix = new double[Rows * Columns];
@@ -200,6 +203,15 @@ namespace Zene.Structs
                 _matrix[11] = value.Z;
                 _matrix[15] = value.W;
             }
+        }
+
+        /// <summary>
+        /// Sets the contents of this matrix, to the contents of <paramref name="matrix"/>.
+        /// </summary>
+        /// <param name="matrix">THe source matrix.</param>
+        public void Set(Matrix4 matrix)
+        {
+            matrix._matrix.CopyTo(_matrix, 0);
         }
 
         public Matrix4 Add(Matrix4 matrix)
