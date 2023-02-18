@@ -379,7 +379,12 @@ namespace Zene.Structs
 
         public static Matrix2x3 Zero { get; } = new Matrix2x3(Vector3.Zero, Vector3.Zero);
 
-        public static Matrix2x3 Identity { get; } = new Matrix2x3(new Vector3(1, 0, 0), new Vector3(0, 1, 0));
+        public static Matrix2x3 Identity { get; } = CreateIdentity();
+
+        public static Matrix2x3 CreateIdentity()
+        {
+            return new Matrix2x3(new Vector3(1, 0, 0), new Vector3(0, 1, 0));
+        }
 
         public static Matrix2x3 CreateRotation(Radian angle)
         {

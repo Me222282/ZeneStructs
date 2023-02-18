@@ -461,7 +461,12 @@ namespace Zene.Structs
 
         public static Matrix2 Zero { get; } = new Matrix2(Vector2.Zero, Vector2.Zero);
 
-        public static Matrix2 Identity { get; } = new Matrix2(new Vector2(1, 0), new Vector2(0, 1));
+        public static Matrix2 Identity { get; } = CreateIdentity();
+
+        public static Matrix2 CreateIdentity()
+        {
+            return new Matrix2(new Vector2(1, 0), new Vector2(0, 1));
+        }
 
         /// <summary>
         /// Creates a 2 x 2 matrix that stores rotational data.

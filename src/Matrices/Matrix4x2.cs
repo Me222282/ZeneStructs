@@ -440,7 +440,12 @@ namespace Zene.Structs
 
         public static Matrix4x2 Zero { get; } = new Matrix4x2(Vector2.Zero, Vector2.Zero, Vector2.Zero, Vector2.Zero);
 
-        public static Matrix4x2 Identity { get; } = new Matrix4x2(new Vector2(1, 0), new Vector2(0, 1), Vector2.Zero, Vector2.Zero);
+        public static Matrix4x2 Identity { get; } = CreateIdentity();
+
+        public static Matrix4x2 CreateIdentity()
+        {
+            return new Matrix4x2(new Vector2(1, 0), new Vector2(0, 1), Vector2.Zero, Vector2.Zero);
+        }
 
         public static Matrix4x2 CreateRotation(Radian angle)
         {

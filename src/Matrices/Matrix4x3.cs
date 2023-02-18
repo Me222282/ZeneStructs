@@ -513,7 +513,12 @@ namespace Zene.Structs
 
         public static Matrix4x3 Zero { get; } = new Matrix4x3(Vector3.Zero, Vector3.Zero, Vector3.Zero, Vector3.Zero);
 
-        public static Matrix4x3 Identity { get; } = new Matrix4x3(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), Vector3.Zero);
+        public static Matrix4x3 Identity { get; } = CreateIdentity();
+
+        public static Matrix4x3 CreateIdentity()
+        {
+            return new Matrix4x3(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), Vector3.Zero);
+        }
 
         public static Matrix4x3 CreateScale(double scale)
         {

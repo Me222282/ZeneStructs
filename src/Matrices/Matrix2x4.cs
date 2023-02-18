@@ -400,7 +400,12 @@ namespace Zene.Structs
 
         public static Matrix2x4 Zero { get; } = new Matrix2x4(Vector4.Zero, Vector4.Zero);
 
-        public static Matrix2x4 Identity { get; } = new Matrix2x4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0));
+        public static Matrix2x4 Identity { get; } = CreateIdentity();
+
+        public static Matrix2x4 CreateIdentity()
+        {
+            return new Matrix2x4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0));
+        }
 
         public static Matrix2x4 CreateRotation(Radian angle)
         {
