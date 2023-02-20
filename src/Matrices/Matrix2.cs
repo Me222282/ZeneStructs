@@ -39,8 +39,19 @@ namespace Zene.Structs
 
             _matrix[0] = matrix[0];
             _matrix[1] = matrix[1];
+
             _matrix[2] = matrix[2];
             _matrix[3] = matrix[3];
+        }
+        public Matrix2(IMatrix matrix)
+        {
+            MatrixSpan ms = matrix.MatrixData();
+
+            _matrix[0] = ms[0, 0];
+            _matrix[1] = ms[1, 0];
+
+            _matrix[2] = ms[0, 1];
+            _matrix[3] = ms[1, 1];
         }
         public Matrix2()
         {

@@ -44,11 +44,11 @@ namespace Zene.Structs
 
             double[] data = new double[r * c];
             int i = 0;
-            for (int x = 0; x < c; x++)
+            for (int y = 0; y < r; y++)
             {
-                for (int y = 0; y < r; y++)
+                for (int x = 0; x < c; x++)
                 {
-                    data[i] = GetValue(a, y, b, x, times);
+                    data[x + (y * r)] = GetValue(a, y, b, x, times);
                     i++;
                 }
             }
@@ -61,10 +61,12 @@ namespace Zene.Structs
 
             for (int i = 0; i < times; i++)
             {
-                value += a[y, i] * b[i, x];
+                value += a[i, y] * b[x, i];
             }
 
             return value;
         }
+
+        public static MultiplyMatrix operator *(MultiplyMatrix a, IMatrix b) => new MultiplyMatrix(a, b);
     }
 }

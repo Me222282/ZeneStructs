@@ -21,5 +21,7 @@
 
             return Source.MatrixData();
         }
+
+        public static MultiplyMatrix operator *(ReferenceMatrix a, IMatrix b) => new MultiplyMatrix(a, b);
     }
 }

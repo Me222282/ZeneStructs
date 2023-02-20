@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Zene.Structs
 {
@@ -66,6 +67,61 @@ namespace Zene.Structs
 
                 return _data[x + (Rows * y)];
             }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(Rows * Columns * 2);
+
+            int index = 0;
+            for (int y = 0; y < Rows; y++)
+            {
+                sb.Append('[');
+
+                for (int x = 0; x < Columns - 1; x++)
+                {
+                    sb.Append(_data[index]);
+                    sb.Append(", ");
+                    index++;
+                }
+                sb.Append(_data[index]);
+                index++;
+
+                sb.Append(']');
+                if (y + 1 < Rows)
+                {
+                    sb.Append('\n');
+                }
+            }
+
+            return sb.ToString();
+        }
+        public string ToString(string format)
+        {
+            StringBuilder sb = new StringBuilder(Rows * Columns * 2);
+
+            int index = 0;
+            for (int y = 0; y < Rows; y++)
+            {
+                sb.Append('[');
+
+                for (int x = 0; x < Columns - 1; x++)
+                {
+                    sb.Append(_data[index].ToString(format));
+                    sb.Append(", ");
+                    index++;
+                }
+                sb.Append(_data[index].ToString(format));
+                index++;
+
+                sb.Append(']');
+                if (y + 1 < Rows)
+                {
+                    sb.Append('\n');
+                }
+            }
+
+            return sb.ToString();
         }
 
         public static MatrixSpan Identity => new MatrixSpan(0, 0, Array.Empty<double>());

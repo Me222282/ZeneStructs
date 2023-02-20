@@ -13,7 +13,7 @@ namespace Zene.Structs
             Row1 = row1;
         }
 
-        public Matrix2x3(double[] matrix)
+        public Matrix2x3(params double[] matrix)
         {
             if (matrix.Length < (Rows * Columns))
             {
@@ -23,9 +23,22 @@ namespace Zene.Structs
             _matrix[0] = matrix[0];
             _matrix[1] = matrix[1];
             _matrix[2] = matrix[2];
+
             _matrix[3] = matrix[3];
             _matrix[4] = matrix[4];
             _matrix[5] = matrix[5];
+        }
+        public Matrix2x3(IMatrix matrix)
+        {
+            MatrixSpan ms = matrix.MatrixData();
+
+            _matrix[0] = ms[0, 0];
+            _matrix[1] = ms[1, 0];
+            _matrix[2] = ms[2, 0];
+
+            _matrix[3] = ms[0, 1];
+            _matrix[4] = ms[1, 1];
+            _matrix[5] = ms[2, 1];
         }
         public Matrix2x3()
         {
