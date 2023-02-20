@@ -54,6 +54,8 @@ namespace Zene.Structs
         public int Rows { get; }
         public int Columns { get; }
 
+        public int Length => _data.Length;
+
         private readonly ReadOnlySpan<double> _data;
 
         public double this[int x, int y]
