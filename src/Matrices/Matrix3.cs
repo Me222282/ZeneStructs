@@ -2,10 +2,10 @@
 
 namespace Zene.Structs
 {
-    public unsafe class Matrix3
+    public unsafe class Matrix3 : IMatrix
     {
-        public const int Rows = 3;
-        public const int Columns = 3;
+        public int Rows => 3;
+        public int Columns => 3;
 
         public Matrix3(Vector3 row0, Vector3 row1, Vector3 row2)
         {
@@ -38,22 +38,9 @@ namespace Zene.Structs
             _matrix = new double[9];
         }
 
-        private readonly double[] _matrix = new double[Rows * Columns];
+        private readonly double[] _matrix = new double[9];
 
-        public ReadOnlySpan<double> Data
-        {
-            get
-            {
-                ReadOnlySpan<double> value;
-
-                fixed (double* ptr = _matrix)
-                {
-                    value = new ReadOnlySpan<double>(ptr, Rows * Columns);
-                }
-
-                return value;
-            }
-        }
+        public ReadOnlySpan<double> Data => _matrix;
 
         public double this[int x, int y]
         {
@@ -161,121 +148,6 @@ namespace Zene.Structs
             }
         }
 
-        /// <summary>
-        /// Sets the contents of this matrix, to the contents of <paramref name="matrix"/>.
-        /// </summary>
-        /// <param name="matrix">THe source matrix.</param>
-        public void Set(Matrix3 matrix) => matrix._matrix.CopyTo(_matrix, 0);
-
-        public Matrix3 Add(Matrix3 matrix)
-        {
-            if (matrix is null)
-            {
-                matrix = Identity;
-            }
-
-            return new Matrix3(
-                Row0 + matrix.Row0,
-                Row1 + matrix.Row1,
-                Row2 + matrix.Row2);
-        }
-
-        public Matrix3 Subtract(Matrix3 matrix)
-        {
-            if (matrix is null)
-            {
-                matrix = Identity;
-            }
-
-            return new Matrix3(
-                Row0 - matrix.Row0,
-                Row1 - matrix.Row1,
-                Row2 - matrix.Row2);
-        }
-
-        public Matrix3 Multiply(double value)
-        {
-            return new Matrix3(
-                Row0 * value,
-                Row1 * value,
-                Row2 * value);
-        }
-
-        public Matrix3 Multiply(Matrix3 matrix)
-        {
-            if (matrix is null)
-            {
-                matrix = Identity;
-            }
-
-            return new Matrix3(
-                (
-                    /*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]) + (_matrix[2] * matrix[0, 2]),
-                    /*x:1 y:0*/(_matrix[0] * matrix[1, 0]) + (_matrix[1] * matrix[1, 1]) + (_matrix[2] * matrix[1, 2]),
-                    /*x:2 y:0*/(_matrix[0] * matrix[2, 0]) + (_matrix[1] * matrix[2, 1]) + (_matrix[2] * matrix[2, 2])
-                ),
-                (
-                    /*x:0 y:1*/(_matrix[3] * matrix[0, 0]) + (_matrix[4] * matrix[0, 1]) + (_matrix[5] * matrix[0, 2]),
-                    /*x:1 y:1*/(_matrix[3] * matrix[1, 0]) + (_matrix[4] * matrix[1, 1]) + (_matrix[5] * matrix[1, 2]),
-                    /*x:2 y:1*/(_matrix[3] * matrix[2, 0]) + (_matrix[4] * matrix[2, 1]) + (_matrix[5] * matrix[2, 2])
-                ),
-                (
-                    /*x:0 y:2*/(_matrix[6] * matrix[0, 0]) + (_matrix[7] * matrix[0, 1]) + (_matrix[8] * matrix[0, 2]),
-                    /*x:1 y:2*/(_matrix[6] * matrix[1, 0]) + (_matrix[7] * matrix[1, 1]) + (_matrix[8] * matrix[1, 2]),
-                    /*x:2 y:2*/(_matrix[6] * matrix[2, 0]) + (_matrix[7] * matrix[2, 1]) + (_matrix[8] * matrix[2, 2])
-                ));
-        }
-
-        public Matrix3x2 Multiply(Matrix3x2 matrix)
-        {
-            if (matrix is null)
-            {
-                matrix = Matrix3x2.Identity;
-            }
-
-            return new Matrix3x2(
-                (
-                    /*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]) + (_matrix[2] * matrix[0, 2]),
-                    /*x:1 y:0*/(_matrix[0] * matrix[1, 0]) + (_matrix[1] * matrix[1, 1]) + (_matrix[2] * matrix[1, 2])
-                ),
-                (
-                    /*x:0 y:1*/(_matrix[3] * matrix[0, 0]) + (_matrix[4] * matrix[0, 1]) + (_matrix[5] * matrix[0, 2]),
-                    /*x:1 y:1*/(_matrix[3] * matrix[1, 0]) + (_matrix[4] * matrix[1, 1]) + (_matrix[5] * matrix[1, 2])
-                ),
-                (
-                    /*x:0 y:2*/(_matrix[6] * matrix[0, 0]) + (_matrix[7] * matrix[0, 1]) + (_matrix[8] * matrix[0, 2]),
-                    /*x:1 y:2*/(_matrix[6] * matrix[1, 0]) + (_matrix[7] * matrix[1, 1]) + (_matrix[8] * matrix[1, 2])
-                ));
-        }
-
-        public Matrix3x4 Multiply(Matrix3x4 matrix)
-        {
-            if (matrix is null)
-            {
-                matrix = Matrix3x4.Identity;
-            }
-
-            return new Matrix3x4(
-                (
-                    /*x:0 y:0*/(_matrix[0] * matrix[0, 0]) + (_matrix[1] * matrix[0, 1]) + (_matrix[2] * matrix[0, 2]),
-                    /*x:1 y:0*/(_matrix[0] * matrix[1, 0]) + (_matrix[1] * matrix[1, 1]) + (_matrix[2] * matrix[1, 2]),
-                    /*x:2 y:0*/(_matrix[0] * matrix[2, 0]) + (_matrix[1] * matrix[2, 1]) + (_matrix[2] * matrix[2, 2]),
-                    /*x:3 y:0*/(_matrix[0] * matrix[3, 0]) + (_matrix[1] * matrix[3, 1]) + (_matrix[2] * matrix[3, 2])
-                ),
-                (
-                    /*x:0 y:1*/(_matrix[3] * matrix[0, 0]) + (_matrix[4] * matrix[0, 1]) + (_matrix[5] * matrix[0, 2]),
-                    /*x:1 y:1*/(_matrix[3] * matrix[1, 0]) + (_matrix[4] * matrix[1, 1]) + (_matrix[5] * matrix[1, 2]),
-                    /*x:2 y:1*/(_matrix[3] * matrix[2, 0]) + (_matrix[4] * matrix[2, 1]) + (_matrix[5] * matrix[2, 2]),
-                    /*x:3 y:1*/(_matrix[3] * matrix[3, 0]) + (_matrix[4] * matrix[3, 1]) + (_matrix[5] * matrix[3, 2])
-                ),
-                (
-                    /*x:0 y:2*/(_matrix[6] * matrix[0, 0]) + (_matrix[7] * matrix[0, 1]) + (_matrix[8] * matrix[0, 2]),
-                    /*x:1 y:2*/(_matrix[6] * matrix[1, 0]) + (_matrix[7] * matrix[1, 1]) + (_matrix[8] * matrix[1, 2]),
-                    /*x:2 y:2*/(_matrix[6] * matrix[2, 0]) + (_matrix[7] * matrix[2, 1]) + (_matrix[8] * matrix[2, 2]),
-                    /*x:3 y:2*/(_matrix[6] * matrix[3, 0]) + (_matrix[7] * matrix[3, 1]) + (_matrix[8] * matrix[3, 2])
-                ));
-        }
-
         public double Determinant()
         {
             return (_matrix[0] * _matrix[4] * _matrix[8]) + (_matrix[1] * _matrix[5] * _matrix[6]) + (_matrix[2] * _matrix[3] * _matrix[7])
@@ -355,21 +227,7 @@ namespace Zene.Structs
             return hash.ToHashCode();
         }
 
-        public float[] GetGLData()
-        {
-            return new float[]
-            {
-                (float)_matrix[0],
-                (float)_matrix[1],
-                (float)_matrix[2],
-                (float)_matrix[3],
-                (float)_matrix[4],
-                (float)_matrix[5],
-                (float)_matrix[6],
-                (float)_matrix[7],
-                (float)_matrix[8]
-            };
-        }
+        public MatrixSpan MatrixData() => new MatrixSpan(3, 3, _matrix);
 
         public override string ToString()
         {
@@ -384,112 +242,11 @@ namespace Zene.Structs
 [{_matrix[6].ToString(format)}, {_matrix[7].ToString(format)}, {_matrix[8].ToString(format)}]";
         }
 
-        public static bool operator ==(Matrix3 a, Matrix3 b)
-        {
-            if (a is null)
-            {
-                a = Identity;
-            }
-            if (b is null)
-            {
-                b = Identity;
-            }
+        public static bool operator ==(Matrix3 a, Matrix3 b) => Equals(a, b);
 
-            return a.Equals(b);
-        }
+        public static bool operator !=(Matrix3 a, Matrix3 b) => !Equals(a, b);
 
-        public static bool operator !=(Matrix3 a, Matrix3 b)
-        {
-            if (a is null)
-            {
-                a = Identity;
-            }
-            if (b is null)
-            {
-                b = Identity;
-            }
-
-            return !a.Equals(b);
-        }
-
-        public static Matrix3 operator +(Matrix3 a, Matrix3 b)
-        {
-            if (a is null)
-            {
-                a = Identity;
-            }
-
-            return a.Add(b);
-        }
-
-        public static Matrix3 operator -(Matrix3 a, Matrix3 b)
-        {
-            if (a is null)
-            {
-                a = Identity;
-            }
-
-            return a.Subtract(b);
-        }
-
-        public static Matrix3 operator *(Matrix3 a, Matrix3 b)
-        {
-            if (a is null)
-            {
-                a = Identity;
-            }
-
-            return a.Multiply(b);
-        }
-
-        public static Matrix3x2 operator *(Matrix3 a, Matrix3x2 b)
-        {
-            if (a is null)
-            {
-                a = Identity;
-            }
-
-            return a.Multiply(b);
-        }
-
-        public static Matrix3x4 operator *(Matrix3 a, Matrix3x4 b)
-        {
-            if (a is null)
-            {
-                a = Identity;
-            }
-
-            return a.Multiply(b);
-        }
-
-        public static Matrix3 operator *(Matrix3 a, double b)
-        {
-            if (a is null)
-            {
-                a = Identity;
-            }
-
-            return a.Multiply(b);
-        }
-
-        public static Matrix3 operator *(double a, Matrix3 b)
-        {
-            if (b is null)
-            {
-                b = Identity;
-            }
-
-            return b.Multiply(a);
-        }
-
-        public static Matrix3 Zero { get; } = new Matrix3(Vector3.Zero, Vector3.Zero, Vector3.Zero);
-
-        public static Matrix3 Identity { get; } = CreateIdentity();
-
-        public static Matrix3 CreateIdentity()
-        {
-            return new Matrix3(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1));
-        }
+        public static MultiplyMatrix operator *(Matrix3 a, IMatrix b) => new MultiplyMatrix(a, b);
 
         public static Matrix3 CreateRotation(Vector3 axis, Radian angle)
         {
@@ -601,34 +358,6 @@ namespace Zene.Structs
                 new Vector3(box.Width, 0, 0),
                 new Vector3(0, box.Height, 0),
                 new Vector3(c.X, c.Y, 1));
-        }
-
-        public static implicit operator Matrix3(Matrix3<double> matrix)
-        {
-            return new Matrix3((Vector3)matrix.Row0, (Vector3)matrix.Row1, (Vector3)matrix.Row2);
-        }
-        public static explicit operator Matrix3(Matrix3<float> matrix)
-        {
-            return new Matrix3((Vector3)matrix.Row0, (Vector3)matrix.Row1, (Vector3)matrix.Row2);
-        }
-
-        public static implicit operator Matrix3<double>(Matrix3 matrix)
-        {
-            if (matrix is null)
-            {
-                matrix = Identity;
-            }
-
-            return new Matrix3<double>((Vector3<double>)matrix.Row0, (Vector3<double>)matrix.Row1, (Vector3<double>)matrix.Row2);
-        }
-        public static explicit operator Matrix3<float>(Matrix3 matrix)
-        {
-            if (matrix is null)
-            {
-                matrix = Identity;
-            }
-
-            return new Matrix3<float>((Vector3<float>)matrix.Row0, (Vector3<float>)matrix.Row1, (Vector3<float>)matrix.Row2);
         }
     }
 }

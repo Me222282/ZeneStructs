@@ -72,17 +72,6 @@ namespace Zene.Structs
                 (float)random.NextDouble(),
                 (float)random.NextDouble());
         }
-        /// <summary>
-        /// Returns a colour in SDR stored as integers with random values for the RGB components.
-        /// </summary>
-        /// <param name="random"></param>
-        public static ColourI3 NextColourI3(this Random random)
-        {
-            return new ColourI3(
-                random.Next(0, 256),
-                random.Next(0, 256),
-                random.Next(0, 256));
-        }
 
         /// <summary>
         /// Returns a colour in SDR stored as floats with random values for the RGB components.
@@ -109,33 +98,6 @@ namespace Zene.Structs
                 (float)random.NextDouble(),
                 (float)random.NextDouble(),
                 (float)random.NextDouble());
-        }
-
-        /// <summary>
-        /// Returns a colour in SDR stored as integers with random values for the RGB components.
-        /// </summary>
-        /// <remarks>
-        /// Alpha has a value of 255.
-        /// </remarks>
-        /// <param name="random"></param>
-        public static ColourI NextColourI(this Random random)
-        {
-            return new ColourI(
-                random.Next(0, 256),
-                random.Next(0, 256),
-                random.Next(0, 256));
-        }
-        /// <summary>
-        /// Returns a colour in SDR stored as integers with random values for the RGBA components.
-        /// </summary>
-        /// <param name="random"></param>
-        public static ColourI NextColourIA(this Random random)
-        {
-            return new ColourI(
-                random.Next(0, 256),
-                random.Next(0, 256),
-                random.Next(0, 256),
-                random.Next(0, 256));
         }
 
         public static Vector2 NextVector2(this Random random)
