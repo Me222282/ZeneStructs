@@ -254,5 +254,44 @@ namespace Zene.Structs
         }
 
         public static double Lerp(this double a, double b, double blend) => (blend * (b - a)) + a;
+        public static float Lerp(this float a, float b, float blend) => (blend * (b - a)) + a;
+        public static int Lerp(this int a, int b, double blend) => (int)(blend * (b - a)) + a;
+        public static uint Lerp(this uint a, uint b, double blend) => (uint)(blend * (b - a)) + a;
+        public static short Lerp(this short a, short b, double blend) => (short)((blend * (b - a)) + a);
+        public static ushort Lerp(this ushort a, ushort b, double blend) => (ushort)((blend * (b - a)) + a);
+        public static byte Lerp(this byte a, byte b, double blend) => (byte)((blend * (b - a)) + a);
+        public static long Lerp(this long a, long b, double blend) => (long)(blend * (b - a)) + a;
+        public static ulong Lerp(this ulong a, ulong b, double blend) => (ulong)(blend * (b - a)) + a;
+
+        public static Colour Lerp(this Colour a, Colour b, double blend)
+        {
+            return new Colour(
+                (byte)((blend * (b.R - a.R)) + a.R),
+                (byte)((blend * (b.G - a.G)) + a.G),
+                (byte)((blend * (b.B - a.B)) + a.B),
+                (byte)((blend * (b.A - a.A)) + a.A));
+        }
+        public static Colour3 Lerp(this Colour3 a, Colour3 b, double blend)
+        {
+            return new Colour3(
+                (byte)((blend * (b.R - a.R)) + a.R),
+                (byte)((blend * (b.G - a.G)) + a.G),
+                (byte)((blend * (b.B - a.B)) + a.B));
+        }
+        public static ColourF Lerp(this ColourF a, ColourF b, float blend)
+        {
+            return new ColourF(
+                (blend * (b.R - a.R)) + a.R,
+                (blend * (b.G - a.G)) + a.G,
+                (blend * (b.B - a.B)) + a.B,
+                (blend * (b.A - a.A)) + a.A);
+        }
+        public static ColourF3 Lerp(this ColourF3 a, ColourF3 b, float blend)
+        {
+            return new ColourF3(
+                (blend * (b.R - a.R)) + a.R,
+                (blend * (b.G - a.G)) + a.G,
+                (blend * (b.B - a.B)) + a.B);
+        }
     }
 }
