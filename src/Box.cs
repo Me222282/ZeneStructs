@@ -165,19 +165,13 @@ namespace Zene.Structs
             return HashCode.Combine(Left, Right, Top, Bottom);
         }
 
-        public static bool operator ==(Box l, Box r)
-        {
-            return l.Equals(r);
-        }
-        public static bool operator !=(Box l, Box r)
-        {
-            return !l.Equals(r);
-        }
+        public static bool operator ==(Box l, Box r) => l.Equals(r);
+        public static bool operator !=(Box l, Box r) => !l.Equals(r);
 
-        public static explicit operator Box(Rectangle box)
-        {
-            return new Box(box);
-        }
+        public static Box operator *(Box box, double scale) => new Box(box.Left * scale, box.Right * scale, box.Top * scale, box.Bottom * scale);
+        public static Box operator /(Box box, double scale) => new Box(box.Left / scale, box.Right / scale, box.Top / scale, box.Bottom / scale);
+
+        public static explicit operator Box(Rectangle box) => new Box(box);
 
         /// <summary>
         /// A <see cref="Box"/> that spans from negative to positive infinity.

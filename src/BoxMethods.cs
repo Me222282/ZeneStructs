@@ -66,6 +66,20 @@ namespace Zene.Structs
             };
         }
 
+        /// <summary>
+        /// Sets <paramref name="box"/> to the smallest box possable that can contain <see cref="IBox"/> <paramref name="box"/> and <see cref="IBox"/> <paramref name="b"/>.
+        /// </summary>
+        /// <param name="box">The first box.</param>
+        /// <param name="b">The second box.</param>
+        /// <returns></returns>
+        public static void Add(this IBox box, IBox b)
+        {
+            box.Left = Math.Min(box.Left, b.Left);
+            box.Right = Math.Max(box.Right, b.Right);
+            box.Bottom = Math.Min(box.Bottom, b.Bottom);
+            box.Top = Math.Max(box.Top, b.Top);
+        }
+
         public static double CombineVolume(this IBox box, IBox b)
         {
             return (Math.Max(box.Right, b.Right) - Math.Min(box.Left, b.Left)) *

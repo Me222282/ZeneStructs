@@ -150,10 +150,7 @@ namespace Zene.Structs
         double IBox.Left
         {
             get => X;
-            set
-            {
-                Left = (int)value;
-            }
+            set => Left = (int)value;
         }
         public int Right
         {
@@ -163,10 +160,7 @@ namespace Zene.Structs
         double IBox.Right
         {
             get => X + Width;
-            set
-            {
-                Right = (int)value;
-            }
+            set => Right = (int)value;
         }
         public int Bottom
         {
@@ -180,10 +174,7 @@ namespace Zene.Structs
         double IBox.Bottom
         {
             get => Y - Height;
-            set
-            {
-                Bottom = (int)value;
-            }
+            set => Bottom = (int)value;
         }
         public int Top
         {
@@ -193,10 +184,7 @@ namespace Zene.Structs
         double IBox.Top
         {
             get => Y;
-            set
-            {
-                Top = (int)value;
-            }
+            set => Top = (int)value;
         }
         public int Front
         {
@@ -210,10 +198,7 @@ namespace Zene.Structs
         double IBox3.Front
         {
             get => Z;
-            set
-            {
-                Front = (int)value;
-            }
+            set => Front = (int)value;
         }
         public int Back
         {
@@ -223,10 +208,7 @@ namespace Zene.Structs
         double IBox3.Back
         {
             get => Z + Depth;
-            set
-            {
-                Back = (int)value;
-            }
+            set => Back = (int)value;
         }
 
 #nullable enable
@@ -248,28 +230,18 @@ namespace Zene.Structs
                     Y == b.Top && Height == b.Height &&
                     Z == b.Front && Depth == b.Depth;
         }
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(X, Y, Z, Width, Height, Depth);
-        }
+        public override int GetHashCode() => HashCode.Combine(X, Y, Z, Width, Height, Depth);
 
-        public static bool operator ==(CuboidI l, CuboidI r)
-        {
-            return l.Equals(r);
-        }
-        public static bool operator !=(CuboidI l, CuboidI r)
-        {
-            return !l.Equals(r);
-        }
+        public static bool operator ==(CuboidI l, CuboidI r) => l.Equals(r);
+        public static bool operator !=(CuboidI l, CuboidI r) => !l.Equals(r);
 
-        public static explicit operator CuboidI(Box3 box)
-        {
-            return new CuboidI(box);
-        }
-        public static explicit operator CuboidI(Cuboid rect)
-        {
-            return new CuboidI(rect);
-        }
+        public static CuboidI operator *(CuboidI box, int scale)
+            => new CuboidI(box.X * scale, box.Y * scale, box.Z * scale, box.Width * scale, box.Height * scale, box.Depth * scale);
+        public static CuboidI operator /(CuboidI box, int scale)
+            => new CuboidI(box.X / scale, box.Y / scale, box.Z / scale, box.Width / scale, box.Height / scale, box.Depth / scale);
+
+        public static explicit operator CuboidI(Box3 box) => new CuboidI(box);
+        public static explicit operator CuboidI(Cuboid rect) => new CuboidI(rect);
 
         /// <summary>
         /// A <see cref="CuboidI"/> with <see cref="X"/>, <see cref="Y"/>, <see cref="Z"/>, <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> all set to 0.

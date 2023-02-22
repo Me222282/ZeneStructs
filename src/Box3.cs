@@ -187,19 +187,15 @@ namespace Zene.Structs
             return HashCode.Combine(Left, Right, Top, Bottom, Front, Back);
         }
 
-        public static bool operator ==(Box3 l, Box3 r)
-        {
-            return l.Equals(r);
-        }
-        public static bool operator !=(Box3 l, Box3 r)
-        {
-            return !l.Equals(r);
-        }
+        public static bool operator ==(Box3 l, Box3 r) => l.Equals(r);
+        public static bool operator !=(Box3 l, Box3 r) => !l.Equals(r);
 
-        public static explicit operator Box3(Cuboid box)
-        {
-            return new Box3(box);
-        }
+        public static explicit operator Box3(Cuboid box) => new Box3(box);
+
+        public static Box3 operator *(Box3 box, double scale)
+            => new Box3(box.Left * scale, box.Right * scale, box.Top * scale, box.Bottom * scale, box.Front * scale, box.Back * scale);
+        public static Box3 operator /(Box3 box, double scale)
+            => new Box3(box.Left / scale, box.Right / scale, box.Top / scale, box.Bottom / scale, box.Front / scale, box.Back / scale);
 
         /// <summary>
         /// A <see cref="Box3"/> that spans from negative to positive infinity.

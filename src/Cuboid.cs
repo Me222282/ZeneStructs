@@ -160,24 +160,17 @@ namespace Zene.Structs
                     Y == b.Top && Height == b.Height &&
                     Z == b.Front && Depth == b.Depth;
         }
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(X, Y, Z, Width, Height, Depth);
-        }
+        public override int GetHashCode() => HashCode.Combine(X, Y, Z, Width, Height, Depth);
 
-        public static bool operator ==(Cuboid l, Cuboid r)
-        {
-            return l.Equals(r);
-        }
-        public static bool operator !=(Cuboid l, Cuboid r)
-        {
-            return !l.Equals(r);
-        }
+        public static bool operator ==(Cuboid l, Cuboid r) => l.Equals(r);
+        public static bool operator !=(Cuboid l, Cuboid r) => !l.Equals(r);
 
-        public static explicit operator Cuboid(Box3 box)
-        {
-            return new Cuboid(box);
-        }
+        public static Cuboid operator *(Cuboid box, double scale)
+            => new Cuboid(box.X * scale, box.Y * scale, box.Z * scale, box.Width * scale, box.Height * scale, box.Depth * scale);
+        public static Cuboid operator /(Cuboid box, double scale)
+            => new Cuboid(box.X / scale, box.Y / scale, box.Z / scale, box.Width / scale, box.Height / scale, box.Depth / scale);
+
+        public static explicit operator Cuboid(Box3 box) => new Cuboid(box);
 
         /// <summary>
         /// A <see cref="Cuboid"/> with <see cref="X"/>, <see cref="Y"/>, <see cref="Z"/>, <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> all set to 0.

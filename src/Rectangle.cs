@@ -164,19 +164,13 @@ namespace Zene.Structs
             return HashCode.Combine(X, Y, Width, Height);
         }
 
-        public static bool operator ==(Rectangle l, Rectangle r)
-        {
-            return l.Equals(r);
-        }
-        public static bool operator !=(Rectangle l, Rectangle r)
-        {
-            return !l.Equals(r);
-        }
+        public static bool operator ==(Rectangle l, Rectangle r) => l.Equals(r);
+        public static bool operator !=(Rectangle l, Rectangle r) => !l.Equals(r);
 
-        public static explicit operator Rectangle(Box box)
-        {
-            return new Rectangle(box);
-        }
+        public static Rectangle operator *(Rectangle box, double scale) => new Rectangle(box.X * scale, box.Y * scale, box.Width * scale, box.Height * scale);
+        public static Rectangle operator /(Rectangle box, double scale) => new Rectangle(box.X / scale, box.Y / scale, box.Width / scale, box.Height / scale);
+
+        public static explicit operator Rectangle(Box box) => new Rectangle(box);
 
         /// <summary>
         /// A <see cref="Rectangle"/> with <see cref="X"/>, <see cref="Y"/>, <see cref="Width"/> and <see cref="Height"/> all set to 0.
