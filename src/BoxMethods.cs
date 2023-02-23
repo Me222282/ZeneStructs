@@ -80,6 +80,12 @@ namespace Zene.Structs
             box.Top = Math.Max(box.Top, b.Top);
         }
 
+        /// <summary>
+        /// Returns the combined volume of <paramref name="box"/> and <paramref name="b"/>.
+        /// </summary>
+        /// <param name="box">The first box.</param>
+        /// <param name="b">The second box.</param>
+        /// <returns></returns>
         public static double CombineVolume(this IBox box, IBox b)
         {
             return (Math.Max(box.Right, b.Right) - Math.Min(box.Left, b.Left)) *
@@ -258,6 +264,20 @@ namespace Zene.Structs
 
             return ((dist.Y + hh >= 0) && (dist.Y - hh <= 0)) ||
                 ((dist.X + hw >= 0) && (dist.X - hw <= 0));
+        }
+
+        /// <summary>
+        /// Determines whether <paramref name="a"/> shares a bound with <paramref name="b"/>.
+        /// </summary>
+        /// <param name="a">The first box.</param>
+        /// <param name="b">THe second box.</param>
+        /// <returns></returns>
+        public static bool ShareBound(this IBox a, IBox b)
+        {
+            return a.Left == b.Left ||
+                a.Right == b.Right ||
+                a.Top == b.Top ||
+                a.Bottom == b.Bottom;
         }
     }
 }

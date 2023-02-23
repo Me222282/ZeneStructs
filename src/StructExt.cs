@@ -263,6 +263,16 @@ namespace Zene.Structs
         public static long Lerp(this long a, long b, double blend) => (long)(blend * (b - a)) + a;
         public static ulong Lerp(this ulong a, ulong b, double blend) => (ulong)(blend * (b - a)) + a;
 
+        public static double InvLerp(this double value, double a, double b) => (value - a) / (b - a);
+        public static float InvLerp(this float value, float a, float b) => (value - a) / (b - a);
+        public static double InvLerp(this int value, int a, int b) => (double)(value - a) / (b - a);
+        public static double InvLerp(this uint value, uint a, uint b) => (double)(value - a) / (b - a);
+        public static double InvLerp(this short value, short a, short b) => (double)(value - a) / (b - a);
+        public static double InvLerp(this ushort value, ushort a, ushort b) => (double)(value - a) / (b - a);
+        public static double InvLerp(this byte value, byte a, byte b) => (double)(value - a) / (b - a);
+        public static double InvLerp(this long value, long a, long b) => (double)(value - a) / (b - a);
+        public static double InvLerp(this ulong value, ulong a, ulong b) => (double)(value - a) / (b - a);
+
         public static Colour Lerp(this Colour a, Colour b, double blend)
         {
             return new Colour(
