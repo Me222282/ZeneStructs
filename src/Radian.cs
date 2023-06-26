@@ -53,6 +53,8 @@ namespace Zene.Structs
             return new Radian(percent * 2 * Math.PI);
         }
 
+        public Radian Lerp(Radian b, double blend) => _radian.Lerp(b._radian, blend);
+
         public override bool Equals(object obj)
         {
             return (obj is double d && _radian == d)
@@ -80,5 +82,10 @@ namespace Zene.Structs
         public static implicit operator Radian(Degrees deg) => new Radian(deg * _over180 * Math.PI);
 
         public static Radian operator -(Radian r) => new Radian(-r._radian);
+
+        public static Radian Zero { get; } = new Radian();
+        public static Radian Quarter { get; } = new Radian(Math.PI / 2d);
+        public static Radian Half { get; } = new Radian(Math.PI);
+        public static Radian Full { get; } = new Radian(Math.PI * 2d);
     }
 }

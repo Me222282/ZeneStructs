@@ -59,6 +59,8 @@ namespace Zene.Structs
             return new Degrees(percent * 360);
         }
 
+        public Degrees Lerp(Degrees b, double blend) => _degrees.Lerp(b._degrees, blend);
+
         public override bool Equals(object obj)
         {
             return (obj is double d && _degrees == d)
@@ -86,5 +88,10 @@ namespace Zene.Structs
         public static implicit operator Degrees(Radian r) => new Degrees(r * 180 * _overPI);
 
         public static Degrees operator -(Degrees d) => new Degrees(-d._degrees);
+
+        public static Degrees Zero { get; } = new Degrees();
+        public static Degrees Quarter { get; } = new Degrees(90d);
+        public static Degrees Half { get; } = new Degrees(180d);
+        public static Degrees Full { get; } = new Degrees(360d);
     }
 }

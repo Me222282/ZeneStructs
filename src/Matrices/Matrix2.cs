@@ -80,7 +80,7 @@ namespace Zene.Structs
                     throw new IndexOutOfRangeException($"X: {x} and Y: {y} are outside the {Columns} x {Rows} range of {nameof(Matrix2)}.");
                 }
 
-                return _matrix[x + (y * Rows)];
+                return _matrix[x + (y * Columns)];
             }
             set
             {
@@ -89,7 +89,7 @@ namespace Zene.Structs
                     throw new IndexOutOfRangeException($"X: {x} and Y: {y} are outside the {Columns} x {Rows} range of {nameof(Matrix2)}.");
                 }
 
-                _matrix[x + (y * Rows)] = value;
+                _matrix[x + (y * Columns)] = value;
             }
         }
 

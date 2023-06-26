@@ -17,7 +17,7 @@ namespace Zene.Structs
         {
             if (max < min)
             {
-                throw new Exception($"{nameof(max)} must be greater than or equal to {nameof(min)}.");
+                throw new ArgumentException($"{nameof(max)} must be greater than or equal to {nameof(min)}.", nameof(min));
             }
 
             return (random.NextDouble() * (max - min)) + min;
@@ -112,6 +112,12 @@ namespace Zene.Structs
                 random.NextDouble() * scale,
                 random.NextDouble() * scale);
         }
+        public static Vector2 NextVector2(this Random random, Vector2 scale)
+        {
+            return new Vector2(
+                random.NextDouble() * scale.X,
+                random.NextDouble() * scale.Y);
+        }
         public static Vector2 NextVector2(this Random random, double min, double max)
         {
             return new Vector2(
@@ -157,6 +163,13 @@ namespace Zene.Structs
                 random.NextDouble() * scale,
                 random.NextDouble() * scale,
                 random.NextDouble() * scale);
+        }
+        public static Vector3 NextVector3(this Random random, Vector3 scale)
+        {
+            return new Vector3(
+                random.NextDouble() * scale.X,
+                random.NextDouble() * scale.Y,
+                random.NextDouble() * scale.Z);
         }
         public static Vector3 NextVector3(this Random random, double min, double max)
         {
@@ -210,6 +223,14 @@ namespace Zene.Structs
                 random.NextDouble() * scale,
                 random.NextDouble() * scale,
                 random.NextDouble() * scale);
+        }
+        public static Vector4 NextVector4(this Random random, Vector4 scale)
+        {
+            return new Vector4(
+                random.NextDouble() * scale.X,
+                random.NextDouble() * scale.Y,
+                random.NextDouble() * scale.Z,
+                random.NextDouble() * scale.W);
         }
         public static Vector4 NextVector4(this Random random, double min, double max)
         {

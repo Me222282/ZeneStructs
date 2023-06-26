@@ -67,7 +67,7 @@ namespace Zene.Structs
                     return x == y ? 1d : 0d;
                 }
 
-                return _data[x + (Rows * y)];
+                return _data[x + (Columns * y)];
             }
         }
 

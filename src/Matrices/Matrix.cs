@@ -20,8 +20,8 @@ namespace Zene.Structs
 
         public double this[int x, int y]
         {
-            get => _matrix[x + (y * Rows)];
-            set => _matrix[x + (y * Rows)] = value;
+            get => _matrix[x + (y * Columns)];
+            set => _matrix[x + (y * Columns)] = value;
         }
         public double this[int index]
         {
