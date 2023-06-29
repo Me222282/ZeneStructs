@@ -134,6 +134,8 @@ namespace Zene.Structs
             return Location.Y + (_gradients.YOverX * (x - Location.X));
         }
 
+        public Line2 GetPerp() => new Line2((-_direction.Y, _direction.X), Location);
+
 #nullable enable
         public override string ToString()
         {
