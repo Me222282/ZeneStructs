@@ -55,6 +55,17 @@ namespace Zene.Structs
 
             _gradients = new Gradient2(_direction);
         }
+        /// <summary>
+        /// Creates a line based off a segment defined as a tuple.
+        /// </summary>
+        /// <param name="seg">The segment tuple to reference from.</param>
+        public Line2I(Tuple<Vector2I, Vector2I> seg)
+        {
+            Location = seg.Item1;
+            _direction = ((Vector2)(seg.Item2 - seg.Item1)).Normalised();
+
+            _gradients = new Gradient2(_direction);
+        }
 
         private Gradient2 _gradients;
         private Vector2 _direction;
