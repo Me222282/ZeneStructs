@@ -472,62 +472,23 @@ namespace Zene.Structs
         /// <summary>
         /// Returns this vector multiplied by <paramref name="matrix"/>.
         /// </summary>
-        /// <param name="matrix">The <see cref="Matrix2x4"/> to multiply by.</param>
+        /// <param name="matrix">The <see cref="MatrixSpan"/> to multiply by.</param>
         /// <returns></returns>
-        public Vector2I MultiplyMatrix(Matrix2x4 matrix)
+        public VariableVector MultiplyMatrix(MatrixSpan matrix)
         {
-            if (matrix == null)
+            if (matrix.Columns > 4)
             {
-                return new Vector2I(X, Y);
+                throw new Exception();
             }
 
-            return new Vector2I(
-                //(matrix[0, 0] * X) + (matrix[0, 1] * Y) + (matrix[0, 2] * Z) + (matrix[0, 3] * W),
-                //(matrix[1, 0] * X) + (matrix[1, 1] * Y) + (matrix[1, 2] * Z) + (matrix[1, 3] * W));
-                (matrix[0, 0] * X) + (matrix[1, 0] * Y) + (matrix[2, 0] * Z) + (matrix[3, 0] * W),
-                (matrix[0, 1] * X) + (matrix[1, 1] * Y) + (matrix[2, 1] * Z) + (matrix[3, 1] * W));
-        }
-        /// <summary>
-        /// Returns this vector multiplied by <paramref name="matrix"/>.
-        /// </summary>
-        /// <param name="matrix">The <see cref="Matrix3x4"/> to multiply by.</param>
-        /// <returns></returns>
-        public Vector3I MultiplyMatrix(Matrix3x4 matrix)
-        {
-            if (matrix == null)
+            double[] vs = new double[matrix.Rows];
+
+            for (int i = 0; i < matrix.Rows; i++)
             {
-                return new Vector3I(X, Y, Z);
+                vs[i] = (matrix[0, i] * X) + (matrix[1, i] * Y) + (matrix[2, i] * Z) + (matrix[3, i] * W);
             }
 
-            return new Vector3I(
-                //(matrix[0, 0] * X) + (matrix[0, 1] * Y) + (matrix[0, 2] * Z) + (matrix[0, 3] * W),
-                //(matrix[1, 0] * X) + (matrix[1, 1] * Y) + (matrix[1, 2] * Z) + (matrix[1, 3] * W),
-                //(matrix[2, 0] * X) + (matrix[2, 1] * Y) + (matrix[2, 2] * Z) + (matrix[2, 3] * W));
-                (matrix[0, 0] * X) + (matrix[1, 0] * Y) + (matrix[2, 0] * Z) + (matrix[3, 0] * W),
-                (matrix[0, 1] * X) + (matrix[1, 1] * Y) + (matrix[2, 1] * Z) + (matrix[3, 1] * W),
-                (matrix[0, 2] * X) + (matrix[1, 2] * Y) + (matrix[2, 2] * Z) + (matrix[3, 2] * W));
-        }
-        /// <summary>
-        /// Returns this vector multiplied by <paramref name="matrix"/>.
-        /// </summary>
-        /// <param name="matrix">The <see cref="Matrix4"/> to multiply by.</param>
-        /// <returns></returns>
-        public Vector4I MultiplyMatrix(Matrix4 matrix)
-        {
-            if (matrix == null)
-            {
-                return new Vector4I(X, Y, Z, W);
-            }
-
-            return new Vector4I(
-                //(matrix[0, 0] * X) + (matrix[0, 1] * Y) + (matrix[0, 2] * Z) + (matrix[0, 3] * W),
-                //(matrix[1, 0] * X) + (matrix[1, 1] * Y) + (matrix[1, 2] * Z) + (matrix[1, 3] * W),
-                //(matrix[2, 0] * X) + (matrix[2, 1] * Y) + (matrix[2, 2] * Z) + (matrix[2, 3] * W),
-                //(matrix[3, 0] * X) + (matrix[3, 1] * Y) + (matrix[3, 2] * Z) + (matrix[3, 3] * W));
-                (matrix[0, 0] * X) + (matrix[1, 0] * Y) + (matrix[2, 0] * Z) + (matrix[3, 0] * W),
-                (matrix[0, 1] * X) + (matrix[1, 1] * Y) + (matrix[2, 1] * Z) + (matrix[3, 1] * W),
-                (matrix[0, 2] * X) + (matrix[1, 2] * Y) + (matrix[2, 2] * Z) + (matrix[3, 2] * W),
-                (matrix[0, 3] * X) + (matrix[1, 3] * Y) + (matrix[2, 3] * Z) + (matrix[3, 3] * W));
+            return new VariableVector(vs);
         }
 
         public override string ToString()
@@ -615,31 +576,13 @@ namespace Zene.Structs
             return new Vector4I(a.X * b.X, a.Y * b.Y, a.Z * b.Z, a.W * b.W);
         }
 
-        public static Vector2I operator *(Vector4I a, Matrix2x4 b)
+        public static VariableVector operator *(Vector4I a, IMatrix b)
         {
-            return a.MultiplyMatrix(b);
+            return a.MultiplyMatrix(b.MatrixData());
         }
-        public static Vector2I operator *(Matrix2x4 a, Vector4I b)
+        public static VariableVector operator *(IMatrix a, Vector4I b)
         {
-            return b.MultiplyMatrix(a);
-        }
-
-        public static Vector3I operator *(Vector4I a, Matrix3x4 b)
-        {
-            return a.MultiplyMatrix(b);
-        }
-        public static Vector3I operator *(Matrix3x4 a, Vector4I b)
-        {
-            return b.MultiplyMatrix(a);
-        }
-
-        public static Vector4I operator *(Vector4I a, Matrix4 b)
-        {
-            return a.MultiplyMatrix(b);
-        }
-        public static Vector4I operator *(Matrix4 a, Vector4I b)
-        {
-            return b.MultiplyMatrix(a);
+            return b.MultiplyMatrix(a.MatrixData());
         }
 
         /*
