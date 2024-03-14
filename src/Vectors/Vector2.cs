@@ -364,6 +364,14 @@ namespace Zene.Structs
         {
             return new Vector2(a.X + b.X, a.Y + b.Y);
         }
+        public static Vector2 operator +(Vector2 a, VariableVector b)
+        {
+            return new Vector2(a.X + b[0], a.Y + b[1]);
+        }
+        public static Vector2 operator +(VariableVector a, Vector2 b)
+        {
+            return new Vector2(a[0] + b.X, a[1] + b.Y);
+        }
         /*
         public static Vector2 operator -(Vector2 a, double b)
         {
@@ -377,6 +385,14 @@ namespace Zene.Structs
         {
             return new Vector2(a.X - b.X, a.Y - b.Y);
         }
+        public static Vector2 operator -(Vector2 a, VariableVector b)
+        {
+            return new Vector2(a.X - b[0], a.Y - b[1]);
+        }
+        public static Vector2 operator -(VariableVector a, Vector2 b)
+        {
+            return new Vector2(a[0] - b.X, a[1] - b.Y);
+        }
         /*
         public static Vector2 operator *(Vector2 a, double b)
         {
@@ -389,6 +405,14 @@ namespace Zene.Structs
         public static Vector2 operator *(Vector2 a, Vector2 b)
         {
             return new Vector2(a.X * b.X, a.Y * b.Y);
+        }
+        public static Vector2 operator *(Vector2 a, VariableVector b)
+        {
+            return new Vector2(a.X * b[0], a.Y * b[1]);
+        }
+        public static Vector2 operator *(VariableVector a, Vector2 b)
+        {
+            return new Vector2(a[0] * b.X, a[1] * b.Y);
         }
 
         public static VariableVector operator *(Vector2 a, IMatrix b)
@@ -407,6 +431,14 @@ namespace Zene.Structs
         public static Vector2 operator /(Vector2 a, Vector2 b)
         {
             return new Vector2(a.X / b.X, a.Y / b.Y);
+        }
+        public static Vector2 operator /(Vector2 a, VariableVector b)
+        {
+            return new Vector2(a.X / b[0], a.Y / b[1]);
+        }
+        public static Vector2 operator /(VariableVector a, Vector2 b)
+        {
+            return new Vector2(a[0] / b.X, a[1] / b.Y);
         }
 
         public static explicit operator Vector2(Vector3 p)

@@ -427,6 +427,14 @@ namespace Zene.Structs
         {
             return new Vector4(a.X + b.X, a.Y + b.Y, a.Z + b.Z, a.W + b.W);
         }
+        public static Vector4 operator +(Vector4 a, VariableVector b)
+        {
+            return new Vector4(a.X + b[0], a.Y + b[1], a.Z + b[2], a.W + b[3]);
+        }
+        public static Vector4 operator +(VariableVector a, Vector4 b)
+        {
+            return new Vector4(a[0] + b.X, a[1] + b.Y, a[2] + b.Z, a[3] + b.W);
+        }
 
         /*
         public static Vector4 operator -(Vector4 a, double b)
@@ -441,6 +449,14 @@ namespace Zene.Structs
         {
             return new Vector4(-v.X, -v.Y, -v.Z, -v.W);
         }
+        public static Vector4 operator -(Vector4 a, VariableVector b)
+        {
+            return new Vector4(a.X - b[0], a.Y - b[1], a.Z - b[2], a.W - b[3]);
+        }
+        public static Vector4 operator -(VariableVector a, Vector4 b)
+        {
+            return new Vector4(a[0] - b.X, a[1] - b.Y, a[2] - b.Z, a[3] - b.W);
+        }
 
         /*
         public static Vector4 operator *(Vector4 a, double b)
@@ -454,6 +470,14 @@ namespace Zene.Structs
         public static Vector4 operator *(Vector4 a, Vector4 b)
         {
             return new Vector4(a.X * b.X, a.Y * b.Y, a.Z * b.Z, a.W * b.W);
+        }
+        public static Vector4 operator *(Vector4 a, VariableVector b)
+        {
+            return new Vector4(a.X * b[0], a.Y * b[1], a.Z * b[2], a.W * b[3]);
+        }
+        public static Vector4 operator *(VariableVector a, Vector4 b)
+        {
+            return new Vector4(a[0] * b.X, a[1] * b.Y, a[2] * b.Z, a[3] * b.W);
         }
 
         public static VariableVector operator *(Vector4 a, IMatrix b)
@@ -473,6 +497,14 @@ namespace Zene.Structs
         public static Vector4 operator /(Vector4 a, Vector4 b)
         {
             return new Vector4(a.X / b.X, a.Y / b.Y, a.Z / b.Z, a.W / b.W);
+        }
+        public static Vector4 operator /(Vector4 a, VariableVector b)
+        {
+            return new Vector4(a.X / b[0], a.Y / b[1], a.Z / b[2], a.W / b[3]);
+        }
+        public static Vector4 operator /(VariableVector a, Vector4 b)
+        {
+            return new Vector4(a[0] / b.X, a[1] / b.Y, a[2] / b.Z, a[3] / b.W);
         }
 
         public static implicit operator Vector4(Vector2 p)

@@ -359,6 +359,14 @@ namespace Zene.Structs
         {
             return new Vector3I(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
         }
+        public static Vector3I operator +(Vector3I a, VariableVector b)
+        {
+            return new Vector3I(a.X + b[0], a.Y + b[1], a.Z + b[2]);
+        }
+        public static Vector3I operator +(VariableVector a, Vector3I b)
+        {
+            return new Vector3I(a[0] + b.X, a[1] + b.Y, a[2] + b.Z);
+        }
 
         /*
         public static Vector3I operator -(Vector3I a, int b)
@@ -373,6 +381,14 @@ namespace Zene.Structs
         {
             return new Vector3I(-v.X, -v.Y, -v.Z);
         }
+        public static Vector3I operator -(Vector3I a, VariableVector b)
+        {
+            return new Vector3I(a.X - b[0], a.Y - b[1], a.Z - b[2]);
+        }
+        public static Vector3I operator -(VariableVector a, Vector3I b)
+        {
+            return new Vector3I(a[0] - b.X, a[1] - b.Y, a[2] - b.Z);
+        }
 
         /*
         public static Vector3I operator *(Vector3I a, int b)
@@ -386,6 +402,14 @@ namespace Zene.Structs
         public static Vector3I operator *(Vector3I a, Vector3I b)
         {
             return new Vector3I(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
+        }
+        public static Vector3I operator *(Vector3I a, VariableVector b)
+        {
+            return new Vector3I(a.X * b[0], a.Y * b[1], a.Z * b[2]);
+        }
+        public static Vector3I operator *(VariableVector a, Vector3I b)
+        {
+            return new Vector3I(a[0] * b.X, a[1] * b.Y, a[2] * b.Z);
         }
 
         public static VariableVector operator *(Vector3I a, IMatrix b)
@@ -405,6 +429,14 @@ namespace Zene.Structs
         public static Vector3I operator /(Vector3I a, Vector3I b)
         {
             return new Vector3I(a.X / b.X, a.Y / b.Y, a.Z / b.Z);
+        }
+        public static Vector3I operator /(Vector3I a, VariableVector b)
+        {
+            return new Vector3I(a.X / b[0], a.Y / b[1], a.Z / b[2]);
+        }
+        public static Vector3I operator /(VariableVector a, Vector3I b)
+        {
+            return new Vector3I(a[0] / b.X, a[1] / b.Y, a[2] / b.Z);
         }
 
         public static explicit operator Vector3I(Vector2 p)

@@ -298,6 +298,14 @@ namespace Zene.Structs
         {
             return new Vector2I(a.X + b.X, a.Y + b.Y);
         }
+        public static Vector2I operator +(Vector2I a, VariableVector b)
+        {
+            return new Vector2I(a.X + b[0], a.Y + b[1]);
+        }
+        public static Vector2I operator +(VariableVector a, Vector2I b)
+        {
+            return new Vector2I(a[0] + b.X, a[1] + b.Y);
+        }
 
         /*
         public static Vector2I operator -(Vector2I a, int b)
@@ -312,6 +320,14 @@ namespace Zene.Structs
         {
             return new Vector2I(a.X - b.X, a.Y - b.Y);
         }
+        public static Vector2I operator -(Vector2I a, VariableVector b)
+        {
+            return new Vector2I(a.X - b[0], a.Y - b[1]);
+        }
+        public static Vector2I operator -(VariableVector a, Vector2I b)
+        {
+            return new Vector2I(a[0] - b.X, a[1] - b.Y);
+        }
 
         /*
         public static Vector2I operator *(Vector2I a, int b)
@@ -325,6 +341,14 @@ namespace Zene.Structs
         public static Vector2I operator *(Vector2I a, Vector2I b)
         {
             return new Vector2I(a.X * b.X, a.Y * b.Y);
+        }
+        public static Vector2I operator *(Vector2I a, VariableVector b)
+        {
+            return new Vector2I(a.X * b[0], a.Y * b[1]);
+        }
+        public static Vector2I operator *(VariableVector a, Vector2I b)
+        {
+            return new Vector2I(a[0] * b.X, a[1] * b.Y);
         }
 
         public static VariableVector operator *(Vector2I a, IMatrix b)
@@ -344,6 +368,14 @@ namespace Zene.Structs
         public static Vector2I operator /(Vector2I a, Vector2I b)
         {
             return new Vector2I(a.X / b.X, a.Y / b.Y);
+        }
+        public static Vector2I operator /(Vector2I a, VariableVector b)
+        {
+            return new Vector2I(a.X / b[0], a.Y / b[1]);
+        }
+        public static Vector2I operator /(VariableVector a, Vector2I b)
+        {
+            return new Vector2I(a[0] / b.X, a[1] / b.Y);
         }
 
         public static explicit operator Vector2I(Vector3 p)
