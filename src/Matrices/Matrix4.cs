@@ -6,7 +6,9 @@ namespace Zene.Structs
     {
         public int Rows => 4;
         public int Columns => 4;
-
+        
+        public bool Constant => true;
+        
         public Matrix4(Vector4 row0, Vector4 row1, Vector4 row2, Vector4 row3)
         {
             Row0 = row0;
@@ -67,7 +69,7 @@ namespace Zene.Structs
         }
         public Matrix4()
         {
-            _matrix = new double[16];
+            //_matrix = new double[16];
         }
 
         private readonly double[] _matrix = new double[16];
@@ -376,6 +378,30 @@ namespace Zene.Structs
         public static bool operator !=(Matrix4 a, Matrix4 b) => !Equals(a, b);
 
         public static MultiplyMatrix operator *(Matrix4 a, IMatrix b) => new MultiplyMatrix(a, b);
+        public static Matrix4 operator *(Matrix4 a, Matrix4 b)
+        {
+            return new Matrix4(
+                (a._matrix[0] * b._matrix[0]) + (a._matrix[1] * b._matrix[4]) + (a._matrix[2] * b._matrix[8]) + (a._matrix[3] * b._matrix[12]),
+                (a._matrix[0] * b._matrix[1]) + (a._matrix[1] * b._matrix[5]) + (a._matrix[2] * b._matrix[9]) + (a._matrix[3] * b._matrix[13]),
+                (a._matrix[0] * b._matrix[2]) + (a._matrix[1] * b._matrix[6]) + (a._matrix[2] * b._matrix[10]) + (a._matrix[3] * b._matrix[14]),
+                (a._matrix[0] * b._matrix[3]) + (a._matrix[1] * b._matrix[7]) + (a._matrix[2] * b._matrix[11]) + (a._matrix[3] * b._matrix[15]),
+                
+                (a._matrix[4] * b._matrix[0]) + (a._matrix[5] * b._matrix[4]) + (a._matrix[6] * b._matrix[8]) + (a._matrix[7] * b._matrix[12]),
+                (a._matrix[4] * b._matrix[1]) + (a._matrix[5] * b._matrix[5]) + (a._matrix[6] * b._matrix[9]) + (a._matrix[7] * b._matrix[13]),
+                (a._matrix[4] * b._matrix[2]) + (a._matrix[5] * b._matrix[6]) + (a._matrix[6] * b._matrix[10]) + (a._matrix[7] * b._matrix[14]),
+                (a._matrix[4] * b._matrix[3]) + (a._matrix[5] * b._matrix[7]) + (a._matrix[6] * b._matrix[11]) + (a._matrix[7] * b._matrix[15]),
+                
+                (a._matrix[8] * b._matrix[0]) + (a._matrix[9] * b._matrix[4]) + (a._matrix[10] * b._matrix[8]) + (a._matrix[11] * b._matrix[12]),
+                (a._matrix[8] * b._matrix[1]) + (a._matrix[9] * b._matrix[5]) + (a._matrix[10] * b._matrix[9]) + (a._matrix[11] * b._matrix[13]),
+                (a._matrix[8] * b._matrix[2]) + (a._matrix[9] * b._matrix[6]) + (a._matrix[10] * b._matrix[10]) + (a._matrix[11] * b._matrix[14]),
+                (a._matrix[8] * b._matrix[3]) + (a._matrix[9] * b._matrix[7]) + (a._matrix[10] * b._matrix[11]) + (a._matrix[11] * b._matrix[15]),
+                
+                (a._matrix[12] * b._matrix[0]) + (a._matrix[13] * b._matrix[4]) + (a._matrix[14] * b._matrix[8]) + (a._matrix[15] * b._matrix[12]),
+                (a._matrix[12] * b._matrix[1]) + (a._matrix[13] * b._matrix[5]) + (a._matrix[14] * b._matrix[9]) + (a._matrix[15] * b._matrix[13]),
+                (a._matrix[12] * b._matrix[2]) + (a._matrix[13] * b._matrix[6]) + (a._matrix[14] * b._matrix[10]) + (a._matrix[15] * b._matrix[14]),
+                (a._matrix[12] * b._matrix[3]) + (a._matrix[13] * b._matrix[7]) + (a._matrix[14] * b._matrix[11]) + (a._matrix[15] * b._matrix[15])
+            );
+        }
 
         public static Matrix4 CreateRotation(Vector3 axis, Radian angle)
         {

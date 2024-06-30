@@ -9,7 +9,9 @@
 
         public int Rows => Source.Rows;
         public int Columns => Source.Columns;
-
+        
+        public bool Constant => Source is null || Source.Constant;
+        
         public IMatrix Source { get; set; }
 
         public MatrixSpan MatrixData()

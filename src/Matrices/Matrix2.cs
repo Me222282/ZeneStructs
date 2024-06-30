@@ -15,7 +15,9 @@ namespace Zene.Structs
         /// The number of columns in this matrix.
         /// </summary>
         public int Columns => 2;
-
+        
+        public bool Constant => true;
+        
         /// <summary>
         /// Creates a 2 x 2 matrix from its row values.
         /// </summary>
@@ -55,7 +57,7 @@ namespace Zene.Structs
         }
         public Matrix2()
         {
-            _matrix = new double[4];
+            //_matrix = new double[4];
         }
 
         private readonly double[] _matrix = new double[4];

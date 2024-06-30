@@ -9,7 +9,9 @@ namespace Zene.Structs
         public int Columns { get; }
 
         //public double this[int x, int y] { get; }
-
+        
+        public bool Constant { get; }
+        
         public MatrixSpan MatrixData();
         /*
         public double SafeGet(ReadOnlySpan<double> data, int x, int y)

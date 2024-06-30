@@ -14,7 +14,9 @@ namespace Zene.Structs
 
         public int Rows { get; }
         public int Columns { get; }
-
+        
+        public bool Constant => true;
+        
         private readonly double[] _matrix;
         public int Length => _matrix.Length;
 

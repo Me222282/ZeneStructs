@@ -6,7 +6,9 @@ namespace Zene.Structs
     {
         public int Rows => 2;
         public int Columns => 3;
-
+        
+        public bool Constant => true;
+        
         public Matrix2x3(Vector3 row0, Vector3 row1)
         {
             Row0 = row0;
@@ -42,7 +44,7 @@ namespace Zene.Structs
         }
         public Matrix2x3()
         {
-            _matrix = new double[6];
+            //_matrix = new double[6];
         }
 
         private readonly double[] _matrix = new double[6];

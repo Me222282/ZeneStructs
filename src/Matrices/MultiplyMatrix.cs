@@ -6,34 +6,62 @@ namespace Zene.Structs
     {
         public MultiplyMatrix(IMatrix left, IMatrix right)
         {
-            Left = left;
-            Right = right;
+            _left = left;
+            _right = right;
         }
 
-        public int Rows => Left.Rows;
-        public int Columns => Right.Columns;
-
-        public IMatrix Left { get; set; }
-        public IMatrix Right { get; set; }
-
+        public int Rows => _left.Rows;
+        public int Columns => _right.Columns;
+        
+        public bool Constant => (_left is null || _left.Constant) && (_right is null || _right.Constant);
+        
+        private IMatrix _left;
+        public IMatrix Left
+        {
+            get => _left;
+            set
+            {
+                _left = value;
+                _dataCache = null;
+            }
+        }
+        private IMatrix _right;
+        public IMatrix Right
+        {
+            get => _right;
+            set
+            {
+                _right = value;
+                _dataCache = null;
+            }
+        }
+        
+        private double[] _dataCache = null;
+        
         public MatrixSpan MatrixData()
         {
-            if (Left == null)
+            if (!Constant) { _dataCache = null; }
+            else if (_dataCache != null)
             {
-                if (Right == null)
+                return new MatrixSpan(_left.Rows, _right.Columns, _dataCache);
+            }
+            
+            if (_left == null)
+            {
+                if (_right == null)
                 {
                     return MatrixSpan.Identity;
                 }
 
-                return Right.MatrixData();
+                return _right.MatrixData();
             }
-            if (Right == null)
+            if (_right == null)
             {
-                return Left.MatrixData();
+                return _left.MatrixData();
             }
 
-            MatrixSpan a = Left.MatrixData();
-            MatrixSpan b = Right.MatrixData();
+            MatrixSpan a = _left.MatrixData();
+            MatrixSpan b = _right.MatrixData();
 
             if (a.Rows == 0 || a.Columns == 0) { return b; }
             if (b.Rows == 0 || b.Columns == 0) { return a; }
@@ -43,16 +71,16 @@ namespace Zene.Structs
             int times = Math.Max(a.Columns, b.Rows);
 
             double[] data = new double[r * c];
-            int i = 0;
             for (int y = 0; y < r; y++)
             {
                 for (int x = 0; x < c; x++)
                 {
                     data[x + (y * r)] = GetValue(a, y, b, x, times);
-                    i++;
                 }
             }
-
+            
+            if (Constant) { _dataCache = data; }
+            
             return new MatrixSpan(r, c, data);
         }
         private static double GetValue(MatrixSpan a, int y, MatrixSpan b, int x, int times)
