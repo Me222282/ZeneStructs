@@ -22,7 +22,7 @@ namespace Zene.Structs
             set
             {
                 _left = value;
-                _dataCache = null;
+                // _dataCache = null;
             }
         }
         private IMatrix _right;
@@ -32,20 +32,20 @@ namespace Zene.Structs
             set
             {
                 _right = value;
-                _dataCache = null;
+                // _dataCache = null;
             }
         }
-        
-        private double[] _dataCache = null;
-        
+
+        //  private double[] _dataCache = null;
+
         public MatrixSpan MatrixData()
         {
-            if (!Constant) { _dataCache = null; }
-            else if (_dataCache != null)
-            {
-                return new MatrixSpan(_left.Rows, _right.Columns, _dataCache);
-            }
-            
+            // if (!Constant) { _dataCache = null; }
+            // else if (_dataCache != null)
+            // {
+            //     return new MatrixSpan(_left.Rows, _right.Columns, _dataCache);
+            // }
+
             if (_left == null)
             {
                 if (_right == null)
@@ -78,9 +78,9 @@ namespace Zene.Structs
                     data[x + (y * r)] = GetValue(a, y, b, x, times);
                 }
             }
-            
-            if (Constant) { _dataCache = data; }
-            
+
+            // if (Constant) { _dataCache = data; }
+
             return new MatrixSpan(r, c, data);
         }
         private static double GetValue(MatrixSpan a, int y, MatrixSpan b, int x, int times)
