@@ -220,8 +220,9 @@ namespace Zene.Structs
         /// <returns></returns>
         public void Rotate90()
         {
+            int t = X;
             X = -Y;
-            Y = X;
+            Y = t;
         }
         /// <summary>
         /// Rotates this vector around origin by 270 degrees.
@@ -229,8 +230,9 @@ namespace Zene.Structs
         /// <returns></returns>
         public void Rotate270()
         {
+            int t = X;
             X = Y;
-            Y = -X;
+            Y = -t;
         }
 
         /// <summary>

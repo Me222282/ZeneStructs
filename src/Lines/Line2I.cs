@@ -106,7 +106,37 @@ namespace Zene.Structs
 
             return Location + (Vector2I)(t * b);
         }
-
+        
+        /// <summary>
+        /// Returns a reflection of the point <see cref="x"/> about this line.
+        /// </summary>
+        /// <param name="x">The point to reflect.</param>
+        /// <returns></returns>
+        public Vector2I Reflect(Vector2I x)
+        {
+            Vector2 dir = Direction;
+            
+            double t = ((Vector2)(x - Location)).Dot(dir) / dir.SquaredLength;
+            return (2 * (Location + (Vector2I)(t * dir))) - x;
+        }
+        /// <summary>
+        /// Returns a reflection of the line <see cref="l2"/> about this line.
+        /// </summary>
+        /// <remarks>
+        /// The direction of the reflected line points away from the point of intersection.
+        /// </remarks>
+        /// <param name="l2">The line to reflect.</param>
+        /// <returns></returns>
+        public Line2I Reflect(Line2I l2)
+        {
+            Vector2 dir = Direction;
+            
+            double t = ((Vector2)(l2.Location - Location)).Dot(dir) / dir.SquaredLength;
+            Vector2 np = (2d * (Location + (t * dir))) - l2.Location;
+            Vector2I i = Intersects(l2);
+            return new Line2I(np - i, i);
+        }
+        
         /// <summary>
         /// Gets the x component of the point along the line with the y component of <paramref name="y"/>.
         /// </summary>
