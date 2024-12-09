@@ -87,7 +87,31 @@ namespace Zene.Structs
         /// A point along the line to define is position in space.
         /// </summary>
         public Vector3I Location { get; set; }
-
+        
+        /// <summary>
+        /// Returns the reflection of the point <see cref="x"/> about this line.
+        /// </summary>
+        /// <param name="x">The point to reflect.</param>
+        /// <returns></returns>
+        public Vector3I Reflect(Vector3I x)
+        {
+            Vector3 dir = Direction;
+            
+            double t = ((Vector3)(x - Location)).Dot(dir) / dir.SquaredLength;
+            return (2 * (Location + (Vector3I)(t * dir))) - x;
+        }
+        /// <summary>
+        /// Returns the projection of the point <see cref="x"/> onto this line.
+        /// </summary>
+        /// <param name="x">The point to reflect.</param>
+        /// <returns></returns>
+        public Vector3I Project(Vector3I x)
+        {
+            Vector3 dir = Direction;
+            double t = ((Vector3)(x - Location)).Dot(dir) / dir.SquaredLength;
+            return Location + (Vector3I)(t * dir);
+        }
+        
         /// <summary>
         /// Gets the x component of the point along the line with the y component of <paramref name="y"/>.
         /// </summary>

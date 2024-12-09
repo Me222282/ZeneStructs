@@ -108,7 +108,7 @@ namespace Zene.Structs
         }
         
         /// <summary>
-        /// Returns a reflection of the point <see cref="x"/> about this line.
+        /// Returns the reflection of the point <see cref="x"/> about this line.
         /// </summary>
         /// <param name="x">The point to reflect.</param>
         /// <returns></returns>
@@ -120,7 +120,18 @@ namespace Zene.Structs
             return (2d * (Location + t * dir)) - x;
         }
         /// <summary>
-        /// Returns a reflection of the line <see cref="l2"/> about this line.
+        /// Returns the projection of the point <see cref="x"/> onto this line.
+        /// </summary>
+        /// <param name="x">The point to reflect.</param>
+        /// <returns></returns>
+        public Vector2 Project(Vector2 x)
+        {
+            Vector2 dir = Direction;
+            double t = (x - Location).Dot(dir) / dir.SquaredLength;
+            return Location + t * dir;
+        }
+        /// <summary>
+        /// Returns the reflection of the line <see cref="l2"/> about this line.
         /// </summary>
         /// <remarks>
         /// The direction of the reflected line points away from the point of intersection.
