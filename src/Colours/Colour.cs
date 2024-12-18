@@ -83,87 +83,7 @@ namespace Zene.Structs
         /// <summary>
         /// Returns this colour stored as HSL values.
         /// </summary>
-        public Vector3 ToHsl()
-        {
-            double h;
-            double s;
-            double l;
-
-            // Convert RGB to a 0.0 to 1.0 range.
-            double r = R / 255.0;
-            double g = G / 255.0;
-            double b = B / 255.0;
-
-            // Get the maximum and minimum RGB components.
-            double max = r;
-            if (max < g) max = g;
-            if (max < b) max = b;
-
-            double min = r;
-            if (min > g) min = g;
-            if (min > b) min = b;
-
-            double diff = max - min;
-            l = (max + min) / 2;
-            if (Math.Abs(diff) < 0.00001)
-            {
-                s = 0;
-                h = 0;  // H is really undefined.
-            }
-            else
-            {
-                if (l <= 0.5) s = diff / (max + min);
-                else s = diff / (2 - max - min);
-
-                double r_dist = (max - r) / diff;
-                double g_dist = (max - g) / diff;
-                double b_dist = (max - b) / diff;
-
-                if (r == max) h = b_dist - g_dist;
-                else if (g == max) h = 2 + r_dist - b_dist;
-                else h = 4 + g_dist - r_dist;
-
-                h *= 60;
-                if (h < 0) h += 360;
-            }
-
-            return new Vector3(h, s, l);
-        }
-        /// <summary>
-        /// Creates a colour from HLS values.
-        /// </summary>
-        /// <remarks>
-        /// Alpha has a value of 255.
-        /// </remarks>
-        /// <param name="h">The hue of the colour.</param>
-        /// <param name="s">The saturation of the colour.</param>
-        /// <param name="l">The luminosity of the colour.</param>
-        public static Colour FromHsl(double h, double s, double l)
-        {
-            double p2;
-            if (l <= 0.5) p2 = l * (1 + s);
-            else p2 = l + s - l * s;
-
-            double p1 = 2 * l - p2;
-            double r, g, b;
-            if (s == 0)
-            {
-                r = l;
-                g = l;
-                b = l;
-            }
-            else
-            {
-                r = QqhToRgb(p1, p2, h + 120);
-                g = QqhToRgb(p1, p2, h);
-                b = QqhToRgb(p1, p2, h - 120);
-            }
-
-            return new Colour(
-                (byte)(r * 255.0),
-                (byte)(g * 255.0),
-                (byte)(b * 255.0));
-        }
+        public Vector3 ToHsl() => ColourF3.ToHsl(R / 255d, G / 255d, B / 255d);
         /// <summary>
         /// Creates a colour from HLS values and opacity.
         /// </summary>
@@ -171,43 +91,17 @@ namespace Zene.Structs
         /// <param name="s">The saturation of the colour.</param>
         /// <param name="l">The luminosity of the colour.</param>
         /// <param name="a">THe alpha component of the colour.</param>
-        public static Colour FromHsl(double h, double s, double l, byte a)
-        {
-            double p2;
-            if (l <= 0.5) p2 = l * (1 + s);
-            else p2 = l + s - l * s;
-
-            double p1 = 2 * l - p2;
-            double r, g, b;
-            if (s == 0)
-            {
-                r = l;
-                g = l;
-                b = l;
-            }
-            else
-            {
-                r = QqhToRgb(p1, p2, h + 120);
-                g = QqhToRgb(p1, p2, h);
-                b = QqhToRgb(p1, p2, h - 120);
-            }
-
-            return new Colour(
-                (byte)(r * 255.0),
-                (byte)(g * 255.0),
-                (byte)(b * 255.0),
-                a);
-        }
-        internal static double QqhToRgb(double q1, double q2, double hue)
-        {
-            if (hue > 360) hue -= 360;
-            else if (hue < 0) hue += 360;
-
-            if (hue < 60) return q1 + (q2 - q1) * hue / 60;
-            if (hue < 180) return q2;
-            if (hue < 240) return q1 + (q2 - q1) * (240 - hue) / 60;
-            return q1;
-        }
+        public static Colour FromHsl(double h, double s, double l, byte a = 255)
+            => new Colour(ColourF3.FromHsl(h, s, l), a);
+        /// <summary>
+        /// Creates a colour from a wavelength of light.
+        /// </summary>
+        /// <remarks>
+        /// Sourced from https://stackoverflow.com/questions/3407942/rgb-values-of-visible-spectrum/22681410#22681410.
+        /// </remarks>
+        /// <param name="l">The wavelength in nm. 400 - 700</param>
+        public static Colour FromWavelength(float l, byte a = 255)
+            => new Colour(ColourF3.FromWavelength(l), a);
 
 #nullable enable
         public override string ToString()

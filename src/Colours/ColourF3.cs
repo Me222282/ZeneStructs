@@ -36,47 +36,7 @@ namespace Zene.Structs
         /// <summary>
         /// Returns this colour stored as HSL values.
         /// </summary>
-        public Vector3 ToHsl()
-        {
-            double h;
-            double s;
-            double l;
-
-            // Get the maximum and minimum RGB components.
-            double max = R;
-            if (max < G) max = G;
-            if (max < B) max = B;
-
-            double min = R;
-            if (min > G) min = G;
-            if (min > B) min = B;
-
-            double diff = max - min;
-            l = (max + min) / 2;
-            if (Math.Abs(diff) < 0.00001)
-            {
-                s = 0;
-                h = 0;  // H is really undefined.
-            }
-            else
-            {
-                if (l <= 0.5) s = diff / (max + min);
-                else s = diff / (2 - max - min);
-
-                double r_dist = (max - R) / diff;
-                double g_dist = (max - G) / diff;
-                double b_dist = (max - B) / diff;
-
-                if (R == max) h = b_dist - g_dist;
-                else if (G == max) h = 2 + r_dist - b_dist;
-                else h = 4 + g_dist - r_dist;
-
-                h *= 60;
-                if (h < 0) h += 360;
-            }
-
-            return new Vector3(h, s, l);
-        }
+        public Vector3 ToHsl() => ToHsl(R, G, B);
         /// <summary>
         /// Creates a colour from HLS values.
         /// </summary>
@@ -99,12 +59,86 @@ namespace Zene.Structs
             }
             else
             {
-                r = Colour.QqhToRgb(p1, p2, h + 120);
-                g = Colour.QqhToRgb(p1, p2, h);
-                b = Colour.QqhToRgb(p1, p2, h - 120);
+                r = QqhToRgb(p1, p2, h + 120);
+                g = QqhToRgb(p1, p2, h);
+                b = QqhToRgb(p1, p2, h - 120);
             }
 
             return new ColourF3((float)r, (float)g, (float)b);
+        }
+        private static double QqhToRgb(double q1, double q2, double hue)
+        {
+            if (hue > 360) hue -= 360;
+            else if (hue < 0) hue += 360;
+
+            if (hue < 60) return q1 + (q2 - q1) * hue / 60;
+            if (hue < 180) return q2;
+            if (hue < 240) return q1 + (q2 - q1) * (240 - hue) / 60;
+            return q1;
+        }
+        internal static Vector3 ToHsl(double r, double g, double b)
+        {
+            double h;
+            double s;
+            double l;
+
+            // Get the maximum and minimum RGB components.
+            double max = r;
+            if (max < g) max = g;
+            if (max < b) max = b;
+
+            double min = r;
+            if (min > g) min = g;
+            if (min > b) min = b;
+
+            double diff = max - min;
+            l = (max + min) / 2;
+            if (Math.Abs(diff) < 0.00001)
+            {
+                s = 0;
+                h = 0;  // H is really undefined.
+            }
+            else
+            {
+                if (l <= 0.5) s = diff / (max + min);
+                else s = diff / (2 - max - min);
+
+                double r_dist = (max - r) / diff;
+                double g_dist = (max - g) / diff;
+                double b_dist = (max - b) / diff;
+
+                if (r == max) h = b_dist - g_dist;
+                else if (g == max) h = 2 + r_dist - b_dist;
+                else h = 4 + g_dist - r_dist;
+
+                h *= 60;
+                if (h < 0) h += 360;
+            }
+
+            return new Vector3(h, s, l);
+        }
+        /// <summary>
+        /// Creates a colour from a wavelength of light.
+        /// </summary>
+        /// <remarks>
+        /// Sourced from https://stackoverflow.com/questions/3407942/rgb-values-of-visible-spectrum/22681410#22681410.
+        /// </remarks>
+        /// <param name="l">The wavelength in nm. 400 - 700</param>
+        public static ColourF3 FromWavelength(float l)
+        {
+            float t, r=0f, g=0f, b=0f;
+                if ((l>=400f)&&(l<410f)) { t=(l-400f)/(410f-400f); r=    +(0.33f*t)-(0.20f*t*t); }
+            else if ((l>=410f)&&(l<475f)) { t=(l-410f)/(475f-410f); r=0.14f         -(0.13f*t*t); }
+            else if ((l>=545f)&&(l<595f)) { t=(l-545f)/(595f-545f); r=    +(1.98f*t)-(     t*t); }
+            else if ((l>=595f)&&(l<650f)) { t=(l-595f)/(650f-595f); r=0.98f+(0.06f*t)-(0.40f*t*t); }
+            else if ((l>=650f)&&(l<700f)) { t=(l-650f)/(700f-650f); r=0.65f-(0.84f*t)+(0.20f*t*t); }
+                if ((l>=415f)&&(l<475f)) { t=(l-415f)/(475f-415f); g=             +(0.80f*t*t); }
+            else if ((l>=475f)&&(l<590f)) { t=(l-475f)/(590f-475f); g=0.8f +(0.76f*t)-(0.80f*t*t); }
+            else if ((l>=585f)&&(l<639f)) { t=(l-585f)/(639f-585f); g=0.84f-(0.84f*t)           ; }
+                if ((l>=400f)&&(l<475f)) { t=(l-400f)/(475f-400f); b=    +(2.20f*t)-(1.50f*t*t); }
+            else if ((l>=475f)&&(l<560f)) { t=(l-475f)/(560f-475f); b=0.7f -(     t)+(0.30f*t*t); }
+            
+            return new ColourF3(r, g, b);
         }
 
 #nullable enable
