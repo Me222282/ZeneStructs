@@ -264,7 +264,24 @@ namespace Zene.Structs
 
             return new VariableVector(vs);
         }
-
+        
+        public void Deconstruct(out double x, out double y, out double z)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+        }
+        public void Deconstruct(out double x, out Vector2 yz)
+        {
+            x = X;
+            yz = new Vector2(Y, Z);
+        }
+        public void Deconstruct(out Vector2 xy, out double z)
+        {
+            xy = new Vector2(X, Y);
+            z = Z;
+        }
+        
         public override string ToString()
         {
             return $"X:{X}, Y:{Y}, Z:{Z}";

@@ -147,7 +147,48 @@ namespace Zene.Structs
         /// The fourth value of the vector.
         /// </summary>
         public T W { get; set; }
-
+        
+        public void Deconstruct(out T x, out T y, out T z, out T w)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+            w = W;
+        }
+        public void Deconstruct(out T x, out Vector3<T> yzw)
+        {
+            x = X;
+            yzw = new Vector3<T>(Y, Z, W);
+        }
+        public void Deconstruct(out Vector3<T> xyz, out T w)
+        {
+            xyz = new Vector3<T>(X, Y, Z);
+            w = W;
+        }
+        public void Deconstruct(out Vector2<T> xy, out T z, out T w)
+        {
+            xy = new Vector2<T>(X, Y);
+            z = Z;
+            w = W;
+        }
+        public void Deconstruct(out T x, out Vector2<T> yz, out T w)
+        {
+            x = X;
+            yz = new Vector2<T>(Y, Z);
+            w = W;
+        }
+        public void Deconstruct(out T x, out T y, out Vector2<T> zw)
+        {
+            x = X;
+            y = Y;
+            zw = new Vector2<T>(Z, W);
+        }
+        public void Deconstruct(out Vector2<T> xy, out Vector2<T> zw)
+        {
+            xy = new Vector2<T>(X, Y);
+            zw = new Vector2<T>(Z, W);
+        }
+        
         public override string ToString()
         {
             return $"X:{X}, Y:{Y}, Z:{Z}, W:{W}";

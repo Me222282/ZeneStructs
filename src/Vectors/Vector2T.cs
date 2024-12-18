@@ -54,7 +54,13 @@ namespace Zene.Structs
         /// The second value of the vector.
         /// </summary>
         public T Y { get; set; }
-
+        
+        public void Deconstruct(out T x, out T y)
+        {
+            x = X;
+            y = Y;
+        }
+        
         public override string ToString()
         {
             return $"X:{X}, Y:{Y}";

@@ -310,7 +310,13 @@ namespace Zene.Structs
         {
             return new Vector2((X - l.GetX(Y)) / 2, (Y - l.GetY(X)) / 2);
         }
-
+        
+        public void Deconstruct(out double x, out double y)
+        {
+            x = X;
+            y = Y;
+        }
+        
         public override string ToString()
         {
             return $"X:{X}, Y:{Y}";

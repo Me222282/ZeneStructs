@@ -85,7 +85,24 @@ namespace Zene.Structs
         /// The third value of the vector.
         /// </summary>
         public T Z { get; set; }
-
+        
+        public void Deconstruct(out T x, out T y, out T z)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+        }
+        public void Deconstruct(out T x, out Vector2<T> yz)
+        {
+            x = X;
+            yz = new Vector2<T>(Y, Z);
+        }
+        public void Deconstruct(out Vector2<T> xy, out T z)
+        {
+            xy = new Vector2<T>(X, Y);
+            z = Z;
+        }
+        
         public override string ToString()
         {
             return $"X:{X}, Y:{Y}, Z:{Z}";
