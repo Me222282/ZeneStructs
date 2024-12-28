@@ -16,8 +16,6 @@ namespace Zene.Structs
         {
             _direction = dir;
             Location = loc;
-
-            _gradients = new Gradient3(_direction);
         }
         /// <summary>
         /// Create a line from a position and direction.
@@ -32,8 +30,6 @@ namespace Zene.Structs
         {
             _direction = new Vector3(dirX, dirY, dirZ);
             Location = new Vector3(locX, locY, locZ);
-
-            _gradients = new Gradient3(_direction);
         }
         /// <summary>
         /// Creates a line based off a segment.
@@ -42,20 +38,7 @@ namespace Zene.Structs
         public Line3(Segment3 seg)
         {
             Location = seg.A;
-            _direction = seg.Change.Normalised();
-
-            _gradients = new Gradient3(_direction);
-        }
-        /// <summary>
-        /// Creates a line based off a segment.
-        /// </summary>
-        /// <param name="seg">The segment to reference from.</param>
-        public Line3(Segment3I seg)
-        {
-            Location = seg.A;
-            _direction = seg.Change.Normalised();
-
-            _gradients = new Gradient3(_direction);
+            _direction = seg.Change;
         }
         /// <summary>
         /// Creates a line based off a segment defined as a tuple.
@@ -64,12 +47,9 @@ namespace Zene.Structs
         public Line3(Tuple<Vector3, Vector3> seg)
         {
             Location = seg.Item1;
-            _direction = (seg.Item2 - seg.Item1).Normalised();
-
-            _gradients = new Gradient3(_direction);
+            _direction = (seg.Item2 - seg.Item1);
         }
 
-        private Gradient3 _gradients;
         private Vector3 _direction;
         /// <summary>
         /// The direction of the line.
@@ -80,14 +60,18 @@ namespace Zene.Structs
             set
             {
                 _direction = value;
-                _gradients = new Gradient3(value);
             }
         }
         /// <summary>
         /// A point along the line to define is position in space.
         /// </summary>
         public Vector3 Location { get; set; }
-        
+
+        /// <summary>
+        /// Normalise the direction component of this line.
+        /// </summary>
+        public void Normalise() => _direction.Normalise();
+
         /// <summary>
         /// Returns the reflection of the point <see cref="x"/> about this line.
         /// </summary>
@@ -123,7 +107,7 @@ namespace Zene.Structs
                 return Location.X;
             }
 
-            return Location.X + (_gradients.XOverY * (y - Location.Y));
+            return Location.X + ((_direction.X / _direction.Y) * (y - Location.Y));
         }
         /// <summary>
         /// Gets the x component of the point along the line with the z component of <paramref name="z"/>.
@@ -136,7 +120,7 @@ namespace Zene.Structs
                 return Location.X;
             }
 
-            return Location.X + (_gradients.XOverZ * (z - Location.Z));
+            return Location.X + ((_direction.X / _direction.Z) * (z - Location.Z));
         }
 
         /// <summary>
@@ -150,7 +134,7 @@ namespace Zene.Structs
                 return Location.Y;
             }
 
-            return Location.Y + (_gradients.YOverX * (x - Location.X));
+            return Location.Y + ((_direction.Y / _direction.X) * (x - Location.X));
         }
         /// <summary>
         /// Gets the y component of the point along the line with the z component of <paramref name="z"/>.
@@ -163,7 +147,7 @@ namespace Zene.Structs
                 return Location.Y;
             }
 
-            return Location.Y + (_gradients.YOverZ * (z - Location.Z));
+            return Location.Y + ((_direction.Y / _direction.Z) * (z - Location.Z));
         }
 
         /// <summary>
@@ -177,7 +161,7 @@ namespace Zene.Structs
                 return Location.Z;
             }
 
-            return Location.Z + (_gradients.ZOverX * (x - Location.X));
+            return Location.Z + ((_direction.Z / _direction.X) * (x - Location.X));
         }
         /// <summary>
         /// Gets the z component of the point along the line with the y component of <paramref name="y"/>.
@@ -190,7 +174,7 @@ namespace Zene.Structs
                 return Location.Z;
             }
 
-            return Location.Z + (_gradients.ZOverY * (y - Location.Y));
+            return Location.Z + ((_direction.Z / _direction.Y) * (y - Location.Y));
         }
 
 #nullable enable
@@ -211,10 +195,5 @@ namespace Zene.Structs
 
         public static bool operator ==(Line3 l, Line3 r) => l.Equals(r);
         public static bool operator !=(Line3 l, Line3 r) => !l.Equals(r);
-
-        public static explicit operator Line3I(Line3 line)
-        {
-            return new Line3I(line._direction, (Vector2I)line.Location);
-        }
     }
 }

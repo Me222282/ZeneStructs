@@ -157,23 +157,14 @@ namespace Zene.Structs
         /// Returns a normalised version of this vector.
         /// </summary>
         /// <returns></returns>
-        public Vector2I Normalised()
+        public Vector2 Normalised()
         {
-            if (Length == 0) { return Zero; }
+            double sl = SquaredLength;
+            if (sl == 0d) { return Vector2.Zero; }
+            if (sl == 1d) { return this; }
 
-            double scale = 1.0 / Length;
-            return new Vector2I(X * scale, Y * scale);
-        }
-        /// <summary>
-        /// Normalises this vector.
-        /// </summary>
-        /// <returns></returns>
-        public void Normalise()
-        {
-            double scale = 1.0 / Length;
-
-            X = (int)(X * scale);
-            Y = (int)(Y * scale);
+            double scale = 1d / Math.Sqrt(sl);
+            return new Vector2(X * scale, Y * scale);
         }
 
         /// <summary>

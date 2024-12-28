@@ -16,8 +16,6 @@ namespace Zene.Structs
         {
             _direction = dir;
             Location = loc;
-
-            _gradients = new Gradient2(_direction);
         }
         /// <summary>
         /// Create a line from a position and direction.
@@ -30,8 +28,6 @@ namespace Zene.Structs
         {
             _direction = new Vector2(dirX, dirY);
             Location = new Vector2(locX, locY);
-
-            _gradients = new Gradient2(_direction);
         }
         /// <summary>
         /// Creates a line based off a segment.
@@ -40,20 +36,7 @@ namespace Zene.Structs
         public Line2(Segment2 seg)
         {
             Location = seg.A;
-            _direction = seg.Change.Normalised();
-
-            _gradients = new Gradient2(_direction);
-        }
-        /// <summary>
-        /// Creates a line based off a segment.
-        /// </summary>
-        /// <param name="seg">The segment to reference from.</param>
-        public Line2(Segment2I seg)
-        {
-            Location = seg.A;
-            _direction = ((Vector2)seg.Change).Normalised();
-
-            _gradients = new Gradient2(_direction);
+            _direction = seg.Change;
         }
         /// <summary>
         /// Creates a line based off a segment defined as a tuple.
@@ -62,12 +45,9 @@ namespace Zene.Structs
         public Line2(Tuple<Vector2, Vector2> seg)
         {
             Location = seg.Item1;
-            _direction = (seg.Item2 - seg.Item1).Normalised();
-
-            _gradients = new Gradient2(_direction);
+            _direction = (seg.Item2 - seg.Item1);
         }
 
-        private Gradient2 _gradients;
         private Vector2 _direction;
         /// <summary>
         /// The direction of the line.
@@ -78,13 +58,17 @@ namespace Zene.Structs
             set
             {
                 _direction = value;
-                _gradients = new Gradient2(value);
             }
         }
         /// <summary>
         /// A point along the line to define is position in space.
         /// </summary>
         public Vector2 Location { get; set; }
+
+        /// <summary>
+        /// Normalise the direction component of this line.
+        /// </summary>
+        public void Normalise() => _direction.Normalise();
 
         /// <summary>
         /// Returns the point at which two lines would intersect. If they are parallel, returns <see cref="Vector2.PositiveInfinity"/>.
@@ -156,7 +140,7 @@ namespace Zene.Structs
                 return Location.X;
             }
 
-            return Location.X + (_gradients.XOverY * (y - Location.Y));
+            return Location.X + ((_direction.X / _direction.Y) * (y - Location.Y));
         }
         /// <summary>
         /// Gets the y component of the point along the line with the x component of <paramref name="x"/>.
@@ -169,7 +153,7 @@ namespace Zene.Structs
                 return Location.Y;
             }
 
-            return Location.Y + (_gradients.YOverX * (x - Location.X));
+            return Location.Y + ((_direction.Y / _direction.X) * (x - Location.X));
         }
 
         public Line2 GetPerp() => new Line2((-_direction.Y, _direction.X), Location);
@@ -177,7 +161,7 @@ namespace Zene.Structs
 #nullable enable
         public override string ToString()
         {
-            double m = _gradients.YOverX;
+            double m = _direction.Y / _direction.X;
 
             if (double.IsInfinity(m))
             {
@@ -206,7 +190,7 @@ namespace Zene.Structs
         }
         public string ToString(string? format)
         {
-            double m = _gradients.YOverX;
+            double m = _direction.Y / _direction.X;
 
             if (double.IsInfinity(m))
             {
@@ -248,10 +232,5 @@ namespace Zene.Structs
 
         public static bool operator ==(Line2 l, Line2 r) => l.Equals(r);
         public static bool operator !=(Line2 l, Line2 r) => !l.Equals(r);
-
-        public static explicit operator Line2I(Line2 line)
-        {
-            return new Line2I(line._direction, (Vector2I)line.Location);
-        }
     }
 }

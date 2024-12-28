@@ -448,25 +448,14 @@ namespace Zene.Structs
         /// Returns a normalised version of this vector.
         /// </summary>
         /// <returns></returns>
-        public Vector4I Normalised()
+        public Vector4 Normalised()
         {
-            if (Length == 0) { return Zero; }
+            double sl = SquaredLength;
+            if (sl == 0d) { return Zero; }
+            if (sl == 1d) { return this; }
 
-            double scale = 1.0 / Length;
-            return new Vector4I(X * scale, Y * scale, Z * scale, W * scale);
-        }
-        /// <summary>
-        /// Normalises this vector.
-        /// </summary>
-        /// <returns></returns>
-        public void Normalise()
-        {
-            double scale = 1.0 / Length;
-
-            X = (int)(X * scale);
-            Y = (int)(Y * scale);
-            Z = (int)(Z * scale);
-            W = (int)(W * scale);
+            double scale = 1d / Math.Sqrt(sl);
+            return new Vector4(X * scale, Y * scale, Z * scale, W * scale);
         }
 
         /// <summary>

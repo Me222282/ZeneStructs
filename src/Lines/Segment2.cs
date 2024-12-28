@@ -119,10 +119,5 @@ namespace Zene.Structs
 
         public static bool operator ==(Segment2 l,Segment2 r) => l.Equals(r);
         public static bool operator !=(Segment2 l, Segment2 r) => l.Equals(r);
-
-        public static explicit operator Segment2I(Segment2 segment)
-        {
-            return new Segment2I((Vector2I)segment.A, (Vector2I)segment.B);
-        }
     }
 }

@@ -324,9 +324,11 @@ namespace Zene.Structs
         /// <returns></returns>
         public Vector4 Normalised()
         {
-            if (Length == 0) { return Zero; }
+            double sl = SquaredLength;
+            if (sl == 0d) { return Zero; }
+            if (sl == 1d) { return this; }
 
-            double scale = 1.0 / Length;
+            double scale = 1d / Math.Sqrt(sl);
             return new Vector4(X * scale, Y * scale, Z * scale, W * scale);
         }
         /// <summary>
@@ -335,8 +337,10 @@ namespace Zene.Structs
         /// <returns></returns>
         public void Normalise()
         {
-            double scale = 1.0 / Length;
+            double sl = SquaredLength;
+            if (sl == 1d || sl == 0d) { return; }
 
+            double scale = 1d / Math.Sqrt(sl);
             X *= scale;
             Y *= scale;
             Z *= scale;
