@@ -122,6 +122,13 @@ namespace Zene.Structs
         {
             return (X * b.Y) - (Y * b.X);
         }
+        /// <summary>
+        /// Determines whether this vector is parallel to <paramref name="b"/>.
+        /// </summary>
+        /// <param name="b">The vector to reference.</param>
+        /// <returns></returns>
+        public bool IsParallel(Vector2 b)
+            => (this * this * b.SquaredLength) == (b * b * SquaredLength);
 
         /// <summary>
         /// A linear interpolation between this vector and <paramref name="b"/>.

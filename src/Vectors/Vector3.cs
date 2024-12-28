@@ -170,7 +170,7 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// The dot cross product of this vector to <paramref name="b"/>.
+        /// The cross product of this vector to <paramref name="b"/>.
         /// </summary>
         /// <param name="b">The vector to reference.</param>
         /// <returns></returns>
@@ -181,6 +181,14 @@ namespace Zene.Structs
                 (Z * b.X) - (X * b.Z),
                 (X * b.Y) - (Y * b.X));
         }
+
+        /// <summary>
+        /// Determines whether this vector is parallel to <paramref name="b"/>.
+        /// </summary>
+        /// <param name="b">The vector to reference.</param>
+        /// <returns></returns>
+        public bool IsParallel(Vector3 b)
+            => (this * this * b.SquaredLength) == (b * b * SquaredLength);
 
         /// <summary>
         /// A linear interpolation between this vector and <paramref name="b"/>.

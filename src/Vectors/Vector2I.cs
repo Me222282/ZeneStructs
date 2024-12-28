@@ -225,15 +225,6 @@ namespace Zene.Structs
             X = Y;
             Y = -t;
         }
-
-        /// <summary>
-        /// Determines the smallest distance a point is from a line.
-        /// </summary>
-        /// <param name="l">The line to compare to.</param>
-        public Vector2I Relative(Line2I l)
-        {
-            return new Vector2I((X - l.GetX(Y)) / 2, (Y - l.GetY(X)) / 2);
-        }
         
         public void Deconstruct(out int x, out int y)
         {

@@ -66,12 +66,17 @@ namespace Zene.Structs
         public Vector2 Location { get; set; }
 
         /// <summary>
+        /// The normal to the direction of the line.
+        /// </summary>
+        public Vector2 Normal => _direction.Rotated90();
+
+        /// <summary>
         /// Normalise the direction component of this line.
         /// </summary>
         public void Normalise() => _direction.Normalise();
 
         /// <summary>
-        /// Returns the point at which two lines would intersect. If they are parallel, returns <see cref="Vector2.PositiveInfinity"/>.
+        /// Returns the point at which two lines intersect. If they are parallel, returns <see cref="Vector2.PositiveInfinity"/>.
         /// </summary>
         /// <param name="line">The line to intersect.</param>
         /// <returns></returns>
@@ -106,7 +111,7 @@ namespace Zene.Structs
         /// <summary>
         /// Returns the projection of the point <see cref="x"/> onto this line.
         /// </summary>
-        /// <param name="x">The point to reflect.</param>
+        /// <param name="x">The point to project.</param>
         /// <returns></returns>
         public Vector2 Project(Vector2 x)
         {
@@ -157,6 +162,46 @@ namespace Zene.Structs
         }
 
         public Line2 GetPerp() => new Line2((-_direction.Y, _direction.X), Location);
+
+        /// <summary>
+        /// Returns the shortest distance from this line to <see cref="point"/>.
+        /// </summary>
+        /// <param name="point">The point to compare.</param>
+        /// <returns></returns>
+        public double DistanceFromPoint(Vector3 point)
+        {
+            Vector2 n = Direction.Rotated90();
+
+            double sl = n.SquaredLength;
+            double v = (point - Location).Dot(n);
+
+            if (sl == 1d)
+            {
+                return v;
+            }
+
+            return v / Math.Sqrt(sl);
+        }
+        /// <summary>
+        /// Returns the squared shortest distance from this line to <see cref="point"/>.
+        /// </summary>
+        /// <param name="point">The point to compare.</param>
+        /// <returns></returns>
+        public double SquaredDistanceFromPoint(Vector3 point)
+        {
+            Vector2 n = Direction.Rotated90();
+
+            double sl = n.SquaredLength;
+            double v = (point - Location).Dot(n);
+            v *= v;
+
+            if (sl == 1d)
+            {
+                return v;
+            }
+
+            return v / sl;
+        }
 
 #nullable enable
         public override string ToString()

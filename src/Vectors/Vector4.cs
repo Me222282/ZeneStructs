@@ -287,6 +287,40 @@ namespace Zene.Structs
         }
 
         /// <summary>
+        /// The cross product of this vector to <paramref name="b"/> and <paramref name="c"/>.
+        /// </summary>
+        /// <param name="b">The second perpendicular vector.</param>
+        /// <param name="c">The third perpendicular vector.</param>
+        /// <returns></returns>
+        public Vector4 Cross(Vector4 b, Vector4 c)
+        {
+            return new Vector4(
+                (Y * ((b.Z * c.W) - (b.W * c.Z))) +
+                (Z * ((b.W * c.Y) - (b.Y * c.W))) +
+                (W * ((b.Y * c.Z) - (b.Z * c.Y))),
+
+                (X * ((b.W * c.Z) - (b.Z * c.W))) +
+                (Z * ((b.X * c.W) - (b.W * c.X))) +
+                (W * ((b.Z * c.X) - (b.X * c.Z))),
+
+                (X * ((b.Y * c.W) - (b.W * c.Y))) +
+                (Y * ((b.W * c.X) - (b.X * c.W))) +
+                (W * ((b.X * c.Y) - (b.Y * c.X))),
+
+                (X * ((b.Z * c.Y) - (b.Y * c.Z))) +
+                (Y * ((b.X * c.Z) - (b.Z * c.X))) +
+                (Z * ((b.Y * c.X) - (b.X * c.Y))));
+        }
+
+        /// <summary>
+        /// Determines whether this vector is parallel to <paramref name="b"/>.
+        /// </summary>
+        /// <param name="b">The vector to reference.</param>
+        /// <returns></returns>
+        public bool IsParallel(Vector4 b)
+            => (this * this * b.SquaredLength) == (b * b * SquaredLength);
+
+        /// <summary>
         /// A linear interpolation between this vector and <paramref name="b"/>.
         /// </summary>
         /// <param name="b">The vector to interpolate to.</param>

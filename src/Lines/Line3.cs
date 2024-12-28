@@ -87,7 +87,7 @@ namespace Zene.Structs
         /// <summary>
         /// Returns the projection of the point <see cref="x"/> onto this line.
         /// </summary>
-        /// <param name="x">The point to reflect.</param>
+        /// <param name="x">The point to project.</param>
         /// <returns></returns>
         public Vector3 Project(Vector3 x)
         {
@@ -95,7 +95,31 @@ namespace Zene.Structs
             double t = (x - Location).Dot(dir) / dir.SquaredLength;
             return Location + t * dir;
         }
-        
+
+        /// <summary>
+        /// Returns the shortest distance from this line to <see cref="line"/>.
+        /// </summary>
+        /// <param name="line">The line to compare.</param>
+        /// <returns></returns>
+        public double DistanceFromLine(Line3 line)
+        {
+            Vector3 x = Direction.Cross(line.Direction);
+
+            return Math.Abs(x.Dot(Location.Cross(line.Location)) / x.Length);
+        }
+        /// <summary>
+        /// Returns the squared shortest distance from this line to <see cref="line"/>.
+        /// </summary>
+        /// <param name="line">The line to compare.</param>
+        /// <returns></returns>
+        public double SquaredDistanceFromLine(Line3 line)
+        {
+            Vector3 x = Direction.Cross(line.Direction);
+            double y = x.Dot(Location.Cross(line.Location));
+
+            return (y * y) / x.SquaredLength;
+        }
+
         /// <summary>
         /// Gets the x component of the point along the line with the y component of <paramref name="y"/>.
         /// </summary>
