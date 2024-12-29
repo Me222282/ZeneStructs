@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Zene.Structs.Lines
+namespace Zene.Structs
 {
     /// <summary>
     /// Defines an infinite plane as a point and normal in 3 dimensional space.
