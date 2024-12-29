@@ -44,7 +44,7 @@ namespace Zene.Structs
         public void Normalise() => Normal.Normalise();
 
         /// <summary>
-        /// Returns the shortest distance from this line to <see cref="point"/>.
+        /// Returns the shortest distance from this line to <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point to compare.</param>
         /// <returns></returns>
@@ -61,7 +61,7 @@ namespace Zene.Structs
             return v / Math.Sqrt(sl);
         }
         /// <summary>
-        /// Returns the squared shortest distance from this line to <see cref="point"/>.
+        /// Returns the squared shortest distance from this line to <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point to compare.</param>
         /// <returns></returns>
@@ -80,7 +80,7 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// Returns the projection of the point <see cref="x"/> onto this plane.
+        /// Returns the projection of the point <paramref name="x"/> onto this plane.
         /// </summary>
         /// <param name="x">The point to project.</param>
         /// <returns></returns>
@@ -91,7 +91,7 @@ namespace Zene.Structs
             return x - diff;
         }
         /// <summary>
-        /// Returns the reflection of the point <see cref="x"/> about this plane.
+        /// Returns the reflection of the point <paramref name="x"/> about this plane.
         /// </summary>
         /// <param name="x">The point to reflect.</param>
         /// <returns></returns>
@@ -102,7 +102,7 @@ namespace Zene.Structs
             return x - (2d * diff);
         }
         /// <summary>
-        /// Returns the projection of the line <see cref="l"/> onto this plane.
+        /// Returns the projection of the line <paramref name="l"/> onto this plane.
         /// </summary>
         /// <param name="l">The line to project.</param>
         /// <returns></returns>
@@ -115,7 +115,7 @@ namespace Zene.Structs
             // return new Line3(b - loc, loc);
         }
         /// <summary>
-        /// Returns the reflection of the line <see cref="l"/> about this plane.
+        /// Returns the reflection of the line <paramref name="l"/> about this plane.
         /// </summary>
         /// <param name="l">The line to reflect.</param>
         /// <returns></returns>
@@ -173,7 +173,7 @@ namespace Zene.Structs
             return new Line3(dir, (0d, y, z));
         }
         /// <summary>
-        /// Returns the point at which this plane and the line <see cref="l"/> intersect. If they are parallel, returns <see cref="Vector2.PositiveInfinity"/>.
+        /// Returns the point at which this plane and the line <paramref name="l"/> intersect. If they are parallel, returns <see cref="Vector2.PositiveInfinity"/>.
         /// </summary>
         /// <param name="l">The line to intersect.</param>
         /// <returns></returns>
@@ -190,6 +190,19 @@ namespace Zene.Structs
 
             return loc + (t * dir);
         }
+
+        /// <summary>
+        /// Determines whether <paramref name="point"/> exists within this plane.
+        /// </summary>
+        /// <param name="point">The point to query</param>
+        /// <returns></returns>
+        public bool Contains(Vector3 point) => (point - Location).Dot(Normal) == 0d;
+        /// <summary>
+        /// Determines whether <paramref name="line"/> exists within this plane.
+        /// </summary>
+        /// <param name="line">The line to query</param>
+        /// <returns></returns>
+        public bool Contains(Line3 line) => Contains(line.Location) && line.Direction.Dot(Normal) == 0d;
 
 #nullable enable
         public override string ToString()

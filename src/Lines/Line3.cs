@@ -73,7 +73,7 @@ namespace Zene.Structs
         public void Normalise() => _direction.Normalise();
 
         /// <summary>
-        /// Returns the reflection of the point <see cref="x"/> about this line.
+        /// Returns the reflection of the point <paramref name="x"/> about this line.
         /// </summary>
         /// <param name="x">The point to reflect.</param>
         /// <returns></returns>
@@ -85,7 +85,7 @@ namespace Zene.Structs
             return (2d * (Location + t * dir)) - x;
         }
         /// <summary>
-        /// Returns the projection of the point <see cref="x"/> onto this line.
+        /// Returns the projection of the point <paramref name="x"/> onto this line.
         /// </summary>
         /// <param name="x">The point to project.</param>
         /// <returns></returns>
@@ -97,7 +97,7 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// Returns the shortest distance from this line to <see cref="line"/>.
+        /// Returns the shortest distance from this line to <paramref name="line"/>.
         /// </summary>
         /// <param name="line">The line to compare.</param>
         /// <returns></returns>
@@ -108,7 +108,7 @@ namespace Zene.Structs
             return Math.Abs(x.Dot(Location.Cross(line.Location)) / x.Length);
         }
         /// <summary>
-        /// Returns the squared shortest distance from this line to <see cref="line"/>.
+        /// Returns the squared shortest distance from this line to <paramref name="line"/>.
         /// </summary>
         /// <param name="line">The line to compare.</param>
         /// <returns></returns>
@@ -119,6 +119,13 @@ namespace Zene.Structs
 
             return (y * y) / x.SquaredLength;
         }
+
+        /// <summary>
+        /// Determines whether <paramref name="point"/> exists within this line.
+        /// </summary>
+        /// <param name="point">The point to query</param>
+        /// <returns></returns>
+        public bool Contains(Vector3 point) => (point - Location).Cross(Direction) == 0d;
 
         /// <summary>
         /// Gets the x component of the point along the line with the y component of <paramref name="y"/>.

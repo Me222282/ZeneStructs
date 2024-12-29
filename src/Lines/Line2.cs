@@ -95,9 +95,9 @@ namespace Zene.Structs
 
             return Location + (t * b);
         }
-        
+
         /// <summary>
-        /// Returns the reflection of the point <see cref="x"/> about this line.
+        /// Returns the reflection of the point <paramref name="x"/> about this line.
         /// </summary>
         /// <param name="x">The point to reflect.</param>
         /// <returns></returns>
@@ -109,7 +109,7 @@ namespace Zene.Structs
             return (2d * (Location + t * dir)) - x;
         }
         /// <summary>
-        /// Returns the projection of the point <see cref="x"/> onto this line.
+        /// Returns the projection of the point <paramref name="x"/> onto this line.
         /// </summary>
         /// <param name="x">The point to project.</param>
         /// <returns></returns>
@@ -120,7 +120,7 @@ namespace Zene.Structs
             return Location + t * dir;
         }
         /// <summary>
-        /// Returns the reflection of the line <see cref="l2"/> about this line.
+        /// Returns the reflection of the line <paramref name="l2"/> about this line.
         /// </summary>
         /// <remarks>
         /// The direction of the reflected line points away from the point of intersection.
@@ -164,7 +164,7 @@ namespace Zene.Structs
         public Line2 GetPerp() => new Line2((-_direction.Y, _direction.X), Location);
 
         /// <summary>
-        /// Returns the shortest distance from this line to <see cref="point"/>.
+        /// Returns the shortest distance from this line to <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point to compare.</param>
         /// <returns></returns>
@@ -183,7 +183,7 @@ namespace Zene.Structs
             return v / Math.Sqrt(sl);
         }
         /// <summary>
-        /// Returns the squared shortest distance from this line to <see cref="point"/>.
+        /// Returns the squared shortest distance from this line to <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point to compare.</param>
         /// <returns></returns>
@@ -202,6 +202,13 @@ namespace Zene.Structs
 
             return v / sl;
         }
+
+        /// <summary>
+        /// Determines whether <paramref name="point"/> exists within this line.
+        /// </summary>
+        /// <param name="point">The point to query</param>
+        /// <returns></returns>
+        public bool Contains(Vector2 point) => (point - Location).PerpDot(Direction) == 0d;
 
 #nullable enable
         public override string ToString()
