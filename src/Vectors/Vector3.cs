@@ -218,7 +218,7 @@ namespace Zene.Structs
         /// <returns></returns>
         public Vector3 BaryCentric(Vector3 b, Vector3 c, double u, double v)
         {
-            return (this + ((b - this) * u)) + ((c - this) * v);
+            return this + ((b - this) * u) + ((c - this) * v);
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
-﻿namespace Zene.Structs
+﻿using System;
+
+namespace Zene.Structs
 {
     /// <summary>
     /// Defines a triangle by its corner points in 2 dimensional space.
@@ -45,6 +47,37 @@
         }
 
         /// <summary>
+        /// The area of the triangle.
+        /// </summary>
+        public double Area => Math.Abs((A - B).PerpDot(B - C)) * 0.5;
+        /// <summary>
+        /// The squared area of the triangle.
+        /// </summary>
+        public double SquaredArea
+        {
+            get
+            {
+                double v = (A - B).PerpDot(B - C) * 0.5;
+                return v * v;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether <paramref name="point"/> is contained within this triangle.
+        /// </summary>
+        // Sourced from https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
+        public bool Contains(Vector2 point)
+        {
+            double s = (A.X - C.X) * (point.Y - C.Y) - (A.Y - C.Y) * (point.X - C.X);
+            double t = (B.X - A.X) * (point.Y - A.Y) - (B.Y - A.Y) * (point.X - A.X);
+
+            if ((s < 0) != (t < 0) && s != 0 && t != 0) { return false; }
+
+            double d = (C.X - B.X) * (point.Y - B.Y) - (C.Y - B.Y) * (point.X - B.X);
+            return d == 0 || (d < 0) == (s + t <= 0);
+        }
+
+        /// <summary>
         /// Determines whether this triangle is right angled.
         /// </summary>
         public bool IsRightAngle()
@@ -66,9 +99,9 @@
             Vector2 ac = C - A;
             Vector2 bc = C - B;
 
-            double a = ab.Dot(ac);
-            double b = ab.Dot(bc);
-            double c = bc.Dot(ac);
+            double a = Math.Abs(ab.Dot(ac));
+            double b = Math.Abs(ab.Dot(bc));
+            double c = Math.Abs(bc.Dot(ac));
 
             return a == b && b == c;
         }
@@ -81,9 +114,9 @@
             Vector2 ac = C - A;
             Vector2 bc = C - B;
 
-            double a = ab.Dot(ac);
-            double b = ab.Dot(bc);
-            double c = bc.Dot(ac);
+            double a = Math.Abs(ab.Dot(ac));
+            double b = Math.Abs(ab.Dot(bc));
+            double c = Math.Abs(bc.Dot(ac));
 
             return a == b || b == c || a == c;
         }
@@ -96,9 +129,9 @@
             Vector2 ac = C - A;
             Vector2 bc = C - B;
 
-            double a = ab.Dot(ac);
-            double b = ab.Dot(bc);
-            double c = bc.Dot(ac);
+            double a = Math.Abs(ab.Dot(ac));
+            double b = Math.Abs(ab.Dot(bc));
+            double c = Math.Abs(bc.Dot(ac));
 
             return a != b && b != c && a != c;
         }
@@ -112,9 +145,9 @@
             Vector2 ac = C - A;
             Vector2 bc = C - B;
 
-            double a = ab.Dot(ac);
-            double b = ab.Dot(bc);
-            double c = bc.Dot(ac);
+            double a = Math.Abs(ab.Dot(ac));
+            double b = Math.Abs(ab.Dot(bc));
+            double c = Math.Abs(bc.Dot(ac));
 
             TriangleType tt;
             TrianglePoint tp = TrianglePoint.None;

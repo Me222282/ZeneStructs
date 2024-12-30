@@ -28,6 +28,15 @@ namespace Zene.Structs
             Normal = dir1.Cross(dir2);
             Location = location;
         }
+        /// <summary>
+        /// Create a plane from a triangle.
+        /// </summary>
+        /// <param name="triangle">The 3 refernece points from which to create the plane.</param>
+        public Plane(Triangle3 triangle)
+        {
+            Normal = (triangle.A - triangle.B).Cross(triangle.C - triangle.B);
+            Location = triangle.A;
+        }
 
         /// <summary>
         /// The normal of the plane.
