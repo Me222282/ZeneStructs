@@ -180,7 +180,7 @@ namespace Zene.Structs
         /// <summary>
         /// A <see cref="Box"/> with <see cref="Left"/>, <see cref="Right"/>, <see cref="Top"/> and <see cref="Bottom"/> all set to 0.
         /// </summary>
-        public static Box Zero { get; } = new Box(0, 0, 0, 0);
+        public static Box Zero { get; } = new Box(0d, 0d, 0d, 0d);
         /// <summary>
         /// A <see cref="Box"/> with a <see cref="Width"/> and <see cref="Height"/> of 1 centred around origin.
         /// </summary>

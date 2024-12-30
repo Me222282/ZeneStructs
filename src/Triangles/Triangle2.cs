@@ -184,5 +184,10 @@ namespace Zene.Structs
 
             return new TriangleProperties(rr, tt, tp);
         }
+
+        /// <summary>
+        /// A <see cref="Triangle2"/> with all values 0.
+        /// </summary>
+        public static Triangle2 Zero { get; } = new Triangle2(0d, 0d, 0d);
     }
 }
