@@ -32,7 +32,28 @@ namespace Zene.Structs
         /// The blue component of the colour.
         /// </summary>
         public byte B { get; set; }
-
+        
+        /// <summary>
+        /// Inverts just the colour components.
+        /// </summary>
+        public void Invert()
+        {
+            R = (byte)(255 - R);
+            G = (byte)(255 - G);
+            B = (byte)(255 - B);
+        }
+        /// <summary>
+        /// Returns a <see cref="Colour"/> with the colour components inverted.
+        /// </summary>
+        public Colour3 Inverted()
+        {
+            return new Colour3(
+                (byte)(255 - R),
+                (byte)(255 - G),
+                (byte)(255 - B)
+            );
+        }
+        
         /// <summary>
         /// Returns this colour stored as HSL values.
         /// </summary>

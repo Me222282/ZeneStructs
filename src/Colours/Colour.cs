@@ -79,7 +79,42 @@ namespace Zene.Structs
         /// The alpha component of the colour.
         /// </summary>
         public byte A { get; set; }
-
+        
+        /// <summary>
+        /// Inverts just the colour components.
+        /// </summary>
+        public void Invert()
+        {
+            R = (byte)(255 - R);
+            G = (byte)(255 - G);
+            B = (byte)(255 - B);
+        }
+        /// <summary>
+        /// Inverts just the alpha component.
+        /// </summary>
+        public void InvertA() => A = (byte)(255 - A);
+        /// <summary>
+        /// Returns a <see cref="Colour"/> with the colour components inverted.
+        /// </summary>
+        public Colour Inverted()
+        {
+            return new Colour(
+                (byte)(255 - R),
+                (byte)(255 - G),
+                (byte)(255 - B)
+            );
+        }
+        /// <summary>
+        /// Returns a <see cref="Colour"/> with the alpha component inverted.
+        /// </summary>
+        public Colour InvertedA()
+        {
+            return new Colour(
+                R, G, B,
+                (byte)(255 - A)
+            );
+        }
+        
         /// <summary>
         /// Returns this colour stored as HSL values.
         /// </summary>

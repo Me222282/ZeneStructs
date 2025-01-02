@@ -79,7 +79,42 @@ namespace Zene.Structs
         /// The alpha component of the colour.
         /// </summary>
         public float A { get; set; }
-
+        
+        /// <summary>
+        /// Inverts just the colour components.
+        /// </summary>
+        public void Invert()
+        {
+            R = 1f - R;
+            G = 1f - G;
+            B = 1f - B;
+        }
+        /// <summary>
+        /// Inverts just the alpha component.
+        /// </summary>
+        public void InvertA() => A = 1f - A;
+        /// <summary>
+        /// Returns a <see cref="ColourF"/> with the colour components inverted.
+        /// </summary>
+        public ColourF Inverted()
+        {
+            return new ColourF(
+                1f - R,
+                1f - G,
+                1f - B
+            );
+        }
+        /// <summary>
+        /// Returns a <see cref="ColourF"/> with the alpha component inverted.
+        /// </summary>
+        public ColourF InvertedA()
+        {
+            return new ColourF(
+                R, G, B,
+                1f - A
+            );
+        }
+        
         /// <summary>
         /// Returns this colour stored as HSL values.
         /// </summary>
@@ -102,7 +137,7 @@ namespace Zene.Structs
         /// <param name="l">The wavelength in nm. 400 - 700</param>
         public static ColourF FromWavelength(float l, float a = 1f)
             => new ColourF(ColourF3.FromWavelength(l), a);
-
+        
 #nullable enable
         public override string ToString()
         {
