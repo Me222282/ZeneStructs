@@ -73,12 +73,14 @@ namespace Zene.Structs
 
             // If b dot d == 0, it means the lines are parallel
             if (pDot == 0) { return false; }
-
+            
+            double div = 1d / pDot;
+            
             Vector2 c = seg.A - A;
-            double t = c.PerpDot(d) / pDot;
+            double t = c.PerpDot(d) * div;
             if (t < 0 || t > 1) { return false; }
 
-            double u = c.PerpDot(b) / pDot;
+            double u = c.PerpDot(b) * div;
             if (u < 0 || u > 1) { return false; }
 
             intersection = A + (t * b);

@@ -96,7 +96,7 @@ namespace Zene.Structs
         public Vector3 Project(Vector3 x)
         {
             double v = (x - Location).Dot(Normal);
-            Vector3 diff = (v * Normal) / Normal.SquaredLength;
+            Vector3 diff = Normal * (v / Normal.SquaredLength);
             return x - diff;
         }
         /// <summary>
@@ -107,7 +107,7 @@ namespace Zene.Structs
         public Vector3 Reflect(Vector3 x)
         {
             double v = (x - Location).Dot(Normal);
-            Vector3 diff = (v * Normal) / Normal.SquaredLength;
+            Vector3 diff = Normal * (v / Normal.SquaredLength);
             return x - (2d * diff);
         }
         /// <summary>
@@ -120,8 +120,6 @@ namespace Zene.Structs
             Vector3 loc = Project(l.Location);
             Vector3 dir = Normal.Cross(Normal.Cross(l.Direction));
             return new Line3(dir, loc);
-            // Vector3 b = Project(l.Location + l.Direction);
-            // return new Line3(b - loc, loc);
         }
         /// <summary>
         /// Returns the reflection of the line <paramref name="l"/> about this plane.
@@ -131,16 +129,7 @@ namespace Zene.Structs
         public Line3 Reflect(Line3 l)
         {
             Vector3 a = Intersects(l);
-            Vector3 b;
-            if (a == l.Location)
-            {
-                b = Reflect(a + l.Direction);
-            }
-            else
-            {
-                b = Reflect(l.Location);
-            }
-
+            Vector3 b = Reflect(a + l.Direction);
             return new Line3(b - a, a);
         }
 
@@ -190,29 +179,44 @@ namespace Zene.Structs
         {
             Vector3 loc = l.Location;
             Vector3 dir = l.Direction;
-            double t = (Location - loc).Dot(Normal) / dir.Dot(Normal);
-
-            if (double.IsInfinity(t))
+            
+            double dn = dir.Dot(Normal);
+            if (dn == 0d)
             {
                 return Vector2.PositiveInfinity;
             }
-
+            double t = (Location - loc).Dot(Normal) / dn;
             return loc + (t * dir);
         }
 
         /// <summary>
         /// Determines whether <paramref name="point"/> exists within this plane.
         /// </summary>
-        /// <param name="point">The point to query</param>
+        /// <param name="point">The point to query.</param>
         /// <returns></returns>
         public bool Contains(Vector3 point) => (point - Location).Dot(Normal) == 0d;
         /// <summary>
         /// Determines whether <paramref name="line"/> exists within this plane.
         /// </summary>
-        /// <param name="line">The line to query</param>
+        /// <param name="line">The line to query.</param>
         /// <returns></returns>
         public bool Contains(Line3 line) => Contains(line.Location) && line.Direction.Dot(Normal) == 0d;
-
+        
+        /// <summary>
+        /// Determines whether <paramref name="p"/> represents an equivalent plane to this.
+        /// </summary>
+        /// <param name="p">The plane to query.</param>
+        /// <returns></returns>
+        public bool GeometricallyEquals(Plane p)
+        {
+            if (Normal.Cross(p.Normal) != 0d) { return false; }
+            
+            double d1 = Location.Dot(Normal);
+            double d2 = p.Location.Dot(Normal);
+            
+            return d1 == d2;
+        }
+        
 #nullable enable
         public override string ToString()
         {

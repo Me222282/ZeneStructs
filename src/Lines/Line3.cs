@@ -123,7 +123,7 @@ namespace Zene.Structs
         /// <summary>
         /// Determines whether <paramref name="point"/> exists within this line.
         /// </summary>
-        /// <param name="point">The point to query</param>
+        /// <param name="point">The point to query.</param>
         /// <returns></returns>
         public bool Contains(Vector3 point) => (point - Location).Cross(Direction) == 0d;
 
@@ -206,6 +206,22 @@ namespace Zene.Structs
             }
 
             return Location.Z + ((_direction.Z / _direction.Y) * (y - Location.Y));
+        }
+        
+        /// <summary>
+        /// Determines whether <paramref name="l"/> represents an equivalent line to this.
+        /// </summary>
+        /// <param name="l">The line to query.</param>
+        /// <returns></returns>
+        public bool GeometricallyEquals(Line3 l)
+        {
+            Vector3 c = Direction.Cross(l.Direction);
+            
+            if (c != 0d) { return false; }
+            
+            Vector3 diff = Location - l.Location;
+            
+            return diff == 0d || diff.Cross(Direction) == 0d;
         }
 
 #nullable enable

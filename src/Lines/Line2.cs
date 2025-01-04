@@ -82,8 +82,8 @@ namespace Zene.Structs
         /// <returns></returns>
         public Vector2 Intersects(Line2 line)
         {
-            Vector2 b = Direction * 10;
-            Vector2 d = line.Direction * 10;
+            Vector2 b = Direction;
+            Vector2 d = line.Direction;
 
             double pDot = b.PerpDot(d);
 
@@ -206,10 +206,26 @@ namespace Zene.Structs
         /// <summary>
         /// Determines whether <paramref name="point"/> exists within this line.
         /// </summary>
-        /// <param name="point">The point to query</param>
+        /// <param name="point">The point to query.</param>
         /// <returns></returns>
         public bool Contains(Vector2 point) => (point - Location).PerpDot(Direction) == 0d;
-
+        
+        /// <summary>
+        /// Determines whether <paramref name="l"/> represents an equivalent line to this.
+        /// </summary>
+        /// <param name="l">The line to query.</param>
+        /// <returns></returns>
+        public bool GeometricallyEquals(Line2 l)
+        {
+            Vector2 c = Direction.PerpDot(l.Direction);
+            
+            if (c != 0d) { return false; }
+            
+            Vector2 diff = Location - l.Location;
+            
+            return diff == 0d || diff.PerpDot(Direction) == 0d;
+        }
+        
 #nullable enable
         public override string ToString()
         {
