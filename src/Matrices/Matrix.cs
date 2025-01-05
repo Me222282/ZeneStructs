@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Zene.Structs
 {
-    public class Matrix : IMatrix
+    public struct Matrix : IMatrix
     {
         public Matrix(int rows, int columns)
         {
@@ -36,7 +36,7 @@ namespace Zene.Structs
             set => _matrix[index.Value] = value;
         }
 
-        public MatrixSpan MatrixData() => new MatrixSpan(Rows, Columns, _matrix);
+        public void MatrixData(MatrixSpan ms) => ms.Fill(_matrix, Rows, Columns);
 
         public override string ToString()
         {

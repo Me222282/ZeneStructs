@@ -2,7 +2,7 @@
 
 namespace Zene.Structs
 {
-    public unsafe class Matrix3 : IMatrix
+    public unsafe struct Matrix3 : IMatrix
     {
         public int Rows => 3;
         public int Columns => 3;
@@ -37,28 +37,13 @@ namespace Zene.Structs
         }
         public Matrix3(IMatrix matrix)
         {
-            MatrixSpan ms = matrix.MatrixData();
-
-            _matrix[0] = ms[0, 0];
-            _matrix[1] = ms[1, 0];
-            _matrix[2] = ms[2, 0];
-
-            _matrix[3] = ms[0, 1];
-            _matrix[4] = ms[1, 1];
-            _matrix[5] = ms[2, 1];
-
-            _matrix[6] = ms[0, 2];
-            _matrix[7] = ms[1, 2];
-            _matrix[8] = ms[2, 2];
-        }
-        public Matrix3()
-        {
-            //_matrix = new double[9];
+            fixed (void* ptr = _matrix)
+            {
+                matrix.MatrixData(new MatrixSpan(3, 3, new Span<double>(ptr, 9)));
+            }
         }
 
-        private readonly double[] _matrix = new double[9];
-
-        public ReadOnlySpan<double> Data => _matrix;
+        internal fixed double _matrix[9];
 
         public double this[int x, int y]
         {
@@ -196,17 +181,17 @@ namespace Zene.Structs
             double invDet = 1.0 / det;
 
             return new Matrix3(
-                (
+                new Vector3(
                     /*x:0 y:0*/((+_matrix[4] * _matrix[8]) - (_matrix[5] * _matrix[7])) * invDet,
                     /*x:1 y:0*/((-_matrix[1] * _matrix[8]) + (_matrix[2] * _matrix[7])) * invDet,
                     /*x:2 y:0*/((+_matrix[1] * _matrix[5]) - (_matrix[2] * _matrix[4])) * invDet
                 ),
-                (
+                new Vector3(
                     /*x:0 y:1*/((-_matrix[3] * _matrix[8]) + (_matrix[5] * _matrix[6])) * invDet,
                     /*x:1 y:1*/((+_matrix[0] * _matrix[8]) - (_matrix[2] * _matrix[6])) * invDet,
                     /*x:2 y:1*/((-_matrix[0] * _matrix[5]) + (_matrix[2] * _matrix[3])) * invDet
                 ),
-                (
+                new Vector3(
                     /*x:0 y:2*/((+_matrix[3] * _matrix[7]) - (_matrix[4] * _matrix[6])) * invDet,
                     /*x:1 y:2*/((-_matrix[0] * _matrix[7]) + (_matrix[1] * _matrix[6])) * invDet,
                     /*x:2 y:2*/((+_matrix[0] * _matrix[4]) - (_matrix[1] * _matrix[3])) * invDet
@@ -217,7 +202,7 @@ namespace Zene.Structs
 
         public override bool Equals(object obj)
         {
-            return obj is Matrix3 matrix && matrix is not null &&
+            return obj is Matrix3 matrix &&
                 _matrix[0] == matrix._matrix[0] &&
                 _matrix[1] == matrix._matrix[1] &&
                 _matrix[2] == matrix._matrix[2] &&
@@ -245,7 +230,14 @@ namespace Zene.Structs
             return hash.ToHashCode();
         }
 
-        public MatrixSpan MatrixData() => new MatrixSpan(3, 3, _matrix);
+        public void MatrixData(MatrixSpan ms)
+        {
+            fixed (void* ptr = _matrix)
+            {
+                Span<double> s = new Span<double>(ptr, 9);
+                ms.Fill(s, 3, 3);
+            }
+        }
 
         public override string ToString()
         {
@@ -265,7 +257,136 @@ namespace Zene.Structs
         public static bool operator !=(Matrix3 a, Matrix3 b) => !Equals(a, b);
 
         public static MultiplyMatrix operator *(Matrix3 a, IMatrix b) => new MultiplyMatrix(a, b);
+        
+        public static Matrix3 operator *(Matrix3 a, double b)
+        {
+            Matrix3 m = new Matrix3();
 
+            m._matrix[0] = a._matrix[0] * b;
+            m._matrix[1] = a._matrix[1] * b;
+            m._matrix[2] = a._matrix[2] * b;
+            m._matrix[3] = a._matrix[3] * b;
+            m._matrix[4] = a._matrix[4] * b;
+            m._matrix[5] = a._matrix[5] * b;
+            m._matrix[6] = a._matrix[6] * b;
+            m._matrix[7] = a._matrix[7] * b;
+            m._matrix[8] = a._matrix[8] * b;
+
+            return m;
+        }
+        public static Matrix3 operator *(double b, Matrix3 a)
+        {
+            Matrix3 m = new Matrix3();
+
+            m._matrix[0] = a._matrix[0] * b;
+            m._matrix[1] = a._matrix[1] * b;
+            m._matrix[2] = a._matrix[2] * b;
+            m._matrix[3] = a._matrix[3] * b;
+            m._matrix[4] = a._matrix[4] * b;
+            m._matrix[5] = a._matrix[5] * b;
+            m._matrix[6] = a._matrix[6] * b;
+            m._matrix[7] = a._matrix[7] * b;
+            m._matrix[8] = a._matrix[8] * b;
+
+            return m;
+        }
+        
+        public static Matrix3 operator +(Matrix3 a, Matrix3 b)
+        {
+            Matrix3 m = new Matrix3();
+
+            m._matrix[0] = a._matrix[0] + b._matrix[0];
+            m._matrix[1] = a._matrix[1] + b._matrix[1];
+            m._matrix[2] = a._matrix[2] + b._matrix[2];
+            m._matrix[3] = a._matrix[3] + b._matrix[3];
+            m._matrix[4] = a._matrix[4] + b._matrix[4];
+            m._matrix[5] = a._matrix[5] + b._matrix[5];
+            m._matrix[6] = a._matrix[6] + b._matrix[6];
+            m._matrix[7] = a._matrix[7] + b._matrix[7];
+            m._matrix[8] = a._matrix[8] + b._matrix[8];
+
+            return m;
+        }
+        public static Matrix3 operator -(Matrix3 a, Matrix3 b)
+        {
+            Matrix3 m = new Matrix3();
+
+            m._matrix[0] = a._matrix[0] - b._matrix[0];
+            m._matrix[1] = a._matrix[1] - b._matrix[1];
+            m._matrix[2] = a._matrix[2] - b._matrix[2];
+            m._matrix[3] = a._matrix[3] - b._matrix[3];
+            m._matrix[4] = a._matrix[4] - b._matrix[4];
+            m._matrix[5] = a._matrix[5] - b._matrix[5];
+            m._matrix[6] = a._matrix[6] - b._matrix[6];
+            m._matrix[7] = a._matrix[7] - b._matrix[7];
+            m._matrix[8] = a._matrix[8] - b._matrix[8];
+
+            return m;
+        }
+        
+        public static Matrix3 operator *(Matrix3 a, Matrix3 b)
+        {
+            Matrix3 m = new Matrix3();
+
+            m._matrix[0] = (a._matrix[0] * b._matrix[0]) + (a._matrix[1] * b._matrix[3]) + (a._matrix[2] * b._matrix[6]);
+            m._matrix[1] = (a._matrix[0] * b._matrix[1]) + (a._matrix[1] * b._matrix[4]) + (a._matrix[2] * b._matrix[7]);
+            m._matrix[2] = (a._matrix[0] * b._matrix[2]) + (a._matrix[1] * b._matrix[5]) + (a._matrix[2] * b._matrix[8]);
+            
+            m._matrix[3] = (a._matrix[3] * b._matrix[0]) + (a._matrix[4] * b._matrix[3]) + (a._matrix[5] * b._matrix[6]);
+            m._matrix[4] = (a._matrix[3] * b._matrix[1]) + (a._matrix[4] * b._matrix[4]) + (a._matrix[5] * b._matrix[7]);
+            m._matrix[5] = (a._matrix[3] * b._matrix[2]) + (a._matrix[4] * b._matrix[5]) + (a._matrix[5] * b._matrix[8]);
+            
+            m._matrix[6] = (a._matrix[6] * b._matrix[0]) + (a._matrix[7] * b._matrix[3]) + (a._matrix[8] * b._matrix[6]);
+            m._matrix[7] = (a._matrix[6] * b._matrix[1]) + (a._matrix[7] * b._matrix[4]) + (a._matrix[8] * b._matrix[7]);
+            m._matrix[8] = (a._matrix[6] * b._matrix[2]) + (a._matrix[7] * b._matrix[5]) + (a._matrix[8] * b._matrix[8]);
+
+            return m;
+        }
+
+        public static Matrix3x2 operator *(Matrix3 a, Matrix3x2 b)
+        {
+            Matrix3x2 m = new Matrix3x2();
+
+            m._matrix[0] = (a._matrix[0] * b._matrix[0]) + (a._matrix[1] * b._matrix[2]) + (a._matrix[2] * b._matrix[4]);
+            m._matrix[1] = (a._matrix[0] * b._matrix[1]) + (a._matrix[1] * b._matrix[3]) + (a._matrix[2] * b._matrix[5]);
+            
+            m._matrix[2] = (a._matrix[3] * b._matrix[0]) + (a._matrix[4] * b._matrix[2]) + (a._matrix[5] * b._matrix[4]);
+            m._matrix[3] = (a._matrix[3] * b._matrix[1]) + (a._matrix[4] * b._matrix[3]) + (a._matrix[5] * b._matrix[5]);
+            
+            m._matrix[4] = (a._matrix[6] * b._matrix[0]) + (a._matrix[7] * b._matrix[2]) + (a._matrix[8] * b._matrix[4]);
+            m._matrix[5] = (a._matrix[6] * b._matrix[1]) + (a._matrix[7] * b._matrix[3]) + (a._matrix[8] * b._matrix[5]);
+
+            return m;
+        }
+
+        public static Matrix3x4 operator *(Matrix3 a, Matrix3x4 b)
+        {
+            Matrix3x4 m = new Matrix3x4();
+
+            m._matrix[0] = (a._matrix[0] * b._matrix[0]) + (a._matrix[1] * b._matrix[4]) + (a._matrix[2] * b._matrix[8]);
+            m._matrix[1] = (a._matrix[0] * b._matrix[1]) + (a._matrix[1] * b._matrix[5]) + (a._matrix[2] * b._matrix[9]);
+            m._matrix[2] = (a._matrix[0] * b._matrix[2]) + (a._matrix[1] * b._matrix[6]) + (a._matrix[2] * b._matrix[10]);
+            m._matrix[3] = (a._matrix[0] * b._matrix[3]) + (a._matrix[1] * b._matrix[7]) + (a._matrix[2] * b._matrix[11]);
+            
+            m._matrix[4] = (a._matrix[3] * b._matrix[0]) + (a._matrix[4] * b._matrix[4]) + (a._matrix[5] * b._matrix[8]);
+            m._matrix[5] = (a._matrix[3] * b._matrix[1]) + (a._matrix[4] * b._matrix[5]) + (a._matrix[5] * b._matrix[9]);
+            m._matrix[6] = (a._matrix[3] * b._matrix[2]) + (a._matrix[4] * b._matrix[6]) + (a._matrix[5] * b._matrix[10]);
+            m._matrix[7] = (a._matrix[3] * b._matrix[3]) + (a._matrix[4] * b._matrix[7]) + (a._matrix[5] * b._matrix[11]);
+            
+            m._matrix[8] = (a._matrix[6] * b._matrix[0]) + (a._matrix[7] * b._matrix[4]) + (a._matrix[8] * b._matrix[8]);
+            m._matrix[9] = (a._matrix[6] * b._matrix[1]) + (a._matrix[7] * b._matrix[5]) + (a._matrix[8] * b._matrix[9]);
+            m._matrix[10] = (a._matrix[6] * b._matrix[2]) + (a._matrix[7] * b._matrix[6]) + (a._matrix[8] * b._matrix[10]);
+            m._matrix[11] = (a._matrix[6] * b._matrix[3]) + (a._matrix[7] * b._matrix[7]) + (a._matrix[8] * b._matrix[11]);
+
+            return m;
+        }
+        
+        private static Matrix3 _zero = new Matrix3(Vector3.Zero, Vector3.Zero, Vector3.Zero);
+        public static ref Matrix3 Zero => ref _zero;
+
+        private static Matrix3 _identity = new Matrix3(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1));
+        public static ref Matrix3 Identity => ref _identity;
+        
         public static Matrix3 CreateRotation(Vector3 axis, Radian angle)
         {
             // normalize and create a local copy of the vector.

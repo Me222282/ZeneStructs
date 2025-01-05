@@ -2,7 +2,7 @@
 
 namespace Zene.Structs
 {
-    public unsafe class Matrix2x4 : IMatrix
+    public unsafe struct Matrix2x4 : IMatrix
     {
         public int Rows => 2;
         public int Columns => 4;
@@ -34,26 +34,13 @@ namespace Zene.Structs
         }
         public Matrix2x4(IMatrix matrix)
         {
-            MatrixSpan ms = matrix.MatrixData();
-
-            _matrix[0] = ms[0, 0];
-            _matrix[1] = ms[1, 0];
-            _matrix[2] = ms[2, 0];
-            _matrix[3] = ms[3, 0];
-
-            _matrix[4] = ms[0, 1];
-            _matrix[5] = ms[1, 1];
-            _matrix[6] = ms[2, 1];
-            _matrix[7] = ms[3, 1];
-        }
-        public Matrix2x4()
-        {
-            //_matrix = new double[8];
+            fixed (void* ptr = _matrix)
+            {
+                matrix.MatrixData(new MatrixSpan(2, 4, new Span<double>(ptr, 8)));
+            }
         }
 
-        private readonly double[] _matrix = new double[8];
-
-        public ReadOnlySpan<double> Data => _matrix;
+        internal fixed double _matrix[8];
 
         public double this[int x, int y]
         {
@@ -165,7 +152,7 @@ namespace Zene.Structs
 
         public override bool Equals(object obj)
         {
-            return obj is Matrix2x4 matrix && matrix is not null &&
+            return obj is Matrix2x4 matrix &&
                 _matrix[0] == matrix._matrix[0] &&
                 _matrix[1] == matrix._matrix[1] &&
                 _matrix[2] == matrix._matrix[2] &&
@@ -181,7 +168,14 @@ namespace Zene.Structs
             return HashCode.Combine(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5], _matrix[6], _matrix[7]);
         }
 
-        public MatrixSpan MatrixData() => new MatrixSpan(2, 4, _matrix);
+        public void MatrixData(MatrixSpan ms)
+        {
+            fixed (void* ptr = _matrix)
+            {
+                Span<double> s = new Span<double>(ptr, 8);
+                ms.Fill(s, 2, 4);
+            }
+        }
 
         public override string ToString()
         {
@@ -199,7 +193,120 @@ namespace Zene.Structs
         public static bool operator !=(Matrix2x4 a, Matrix2x4 b) => !Equals(a, b);
 
         public static MultiplyMatrix operator *(Matrix2x4 a, IMatrix b) => new MultiplyMatrix(a, b);
+        
+        public static Matrix2x4 operator *(Matrix2x4 a, double b)
+        {
+            Matrix2x4 m = new Matrix2x4();
 
+            m._matrix[0] = a._matrix[0] * b;
+            m._matrix[1] = a._matrix[1] * b;
+            m._matrix[2] = a._matrix[2] * b;
+            m._matrix[3] = a._matrix[3] * b;
+            m._matrix[4] = a._matrix[4] * b;
+            m._matrix[5] = a._matrix[5] * b;
+            m._matrix[6] = a._matrix[6] * b;
+            m._matrix[7] = a._matrix[7] * b;
+
+            return m;
+        }
+        public static Matrix2x4 operator *(double b, Matrix2x4 a)
+        {
+            Matrix2x4 m = new Matrix2x4();
+
+            m._matrix[0] = a._matrix[0] * b;
+            m._matrix[1] = a._matrix[1] * b;
+            m._matrix[2] = a._matrix[2] * b;
+            m._matrix[3] = a._matrix[3] * b;
+            m._matrix[4] = a._matrix[4] * b;
+            m._matrix[5] = a._matrix[5] * b;
+            m._matrix[6] = a._matrix[6] * b;
+            m._matrix[7] = a._matrix[7] * b;
+
+            return m;
+        }
+        
+        public static Matrix2x4 operator +(Matrix2x4 a, Matrix2x4 b)
+        {
+            Matrix2x4 m = new Matrix2x4();
+
+            m._matrix[0] = a._matrix[0] + b._matrix[0];
+            m._matrix[1] = a._matrix[1] + b._matrix[1];
+            m._matrix[2] = a._matrix[2] + b._matrix[2];
+            m._matrix[3] = a._matrix[3] + b._matrix[3];
+            m._matrix[4] = a._matrix[4] + b._matrix[4];
+            m._matrix[5] = a._matrix[5] + b._matrix[5];
+            m._matrix[6] = a._matrix[6] + b._matrix[6];
+            m._matrix[6] = a._matrix[6] + b._matrix[7];
+
+            return m;
+        }
+        public static Matrix2x4 operator -(Matrix2x4 a, Matrix2x4 b)
+        {
+            Matrix2x4 m = new Matrix2x4();
+
+            m._matrix[0] = a._matrix[0] - b._matrix[0];
+            m._matrix[1] = a._matrix[1] - b._matrix[1];
+            m._matrix[2] = a._matrix[2] - b._matrix[2];
+            m._matrix[3] = a._matrix[3] - b._matrix[3];
+            m._matrix[4] = a._matrix[4] - b._matrix[4];
+            m._matrix[5] = a._matrix[5] - b._matrix[5];
+            m._matrix[6] = a._matrix[6] - b._matrix[6];
+            m._matrix[6] = a._matrix[6] - b._matrix[7];
+
+            return m;
+        }
+        
+        public static Matrix2 operator *(Matrix2x4 a, Matrix4x2 b)
+        {
+            Matrix2 m = new Matrix2();
+
+            m._matrix[0] = (a._matrix[0] * b._matrix[0]) + (a._matrix[1] * b._matrix[2]) + (a._matrix[2] * b._matrix[4]) + (a._matrix[3] * b._matrix[6]);
+            m._matrix[1] = (a._matrix[0] * b._matrix[1]) + (a._matrix[1] * b._matrix[3]) + (a._matrix[2] * b._matrix[5]) + (a._matrix[3] * b._matrix[7]);
+            
+            m._matrix[2] = (a._matrix[4] * b._matrix[0]) + (a._matrix[5] * b._matrix[2]) + (a._matrix[6] * b._matrix[4]) + (a._matrix[7] * b._matrix[6]);
+            m._matrix[3] = (a._matrix[4] * b._matrix[1]) + (a._matrix[5] * b._matrix[3]) + (a._matrix[6] * b._matrix[5]) + (a._matrix[7] * b._matrix[7]);
+
+            return m;
+        }
+
+        public static Matrix2x3 operator *(Matrix2x4 a, Matrix4x3 b)
+        {
+            Matrix2x3 m = new Matrix2x3();
+
+            m._matrix[0] = (a._matrix[0] * b._matrix[0]) + (a._matrix[1] * b._matrix[3]) + (a._matrix[2] * b._matrix[6]) + (a._matrix[3] * b._matrix[9]);
+            m._matrix[1] = (a._matrix[0] * b._matrix[1]) + (a._matrix[1] * b._matrix[4]) + (a._matrix[2] * b._matrix[7]) + (a._matrix[3] * b._matrix[10]);
+            m._matrix[2] = (a._matrix[0] * b._matrix[2]) + (a._matrix[1] * b._matrix[5]) + (a._matrix[2] * b._matrix[8]) + (a._matrix[3] * b._matrix[11]);
+            
+            m._matrix[3] = (a._matrix[4] * b._matrix[0]) + (a._matrix[5] * b._matrix[3]) + (a._matrix[6] * b._matrix[6]) + (a._matrix[7] * b._matrix[9]);
+            m._matrix[4] = (a._matrix[4] * b._matrix[1]) + (a._matrix[5] * b._matrix[4]) + (a._matrix[6] * b._matrix[7]) + (a._matrix[7] * b._matrix[10]);
+            m._matrix[5] = (a._matrix[4] * b._matrix[2]) + (a._matrix[5] * b._matrix[5]) + (a._matrix[6] * b._matrix[8]) + (a._matrix[7] * b._matrix[11]);
+
+            return m;
+        }
+
+        public static Matrix2x4 operator *(Matrix2x4 a, Matrix4 b)
+        {
+            Matrix2x4 m = new Matrix2x4();
+
+            m._matrix[0] = (a._matrix[0] * b._matrix[0]) + (a._matrix[1] * b._matrix[4]) + (a._matrix[2] * b._matrix[8]) + (a._matrix[3] * b._matrix[12]);
+            m._matrix[1] = (a._matrix[0] * b._matrix[1]) + (a._matrix[1] * b._matrix[5]) + (a._matrix[2] * b._matrix[9]) + (a._matrix[3] * b._matrix[13]);
+            m._matrix[2] = (a._matrix[0] * b._matrix[2]) + (a._matrix[1] * b._matrix[6]) + (a._matrix[2] * b._matrix[10]) + (a._matrix[3] * b._matrix[14]);
+            m._matrix[3] = (a._matrix[0] * b._matrix[3]) + (a._matrix[1] * b._matrix[7]) + (a._matrix[2] * b._matrix[11]) + (a._matrix[3] * b._matrix[15]);
+            
+            m._matrix[4] = (a._matrix[4] * b._matrix[0]) + (a._matrix[5] * b._matrix[4]) + (a._matrix[6] * b._matrix[8]) + (a._matrix[7] * b._matrix[12]);
+            m._matrix[5] = (a._matrix[4] * b._matrix[1]) + (a._matrix[5] * b._matrix[5]) + (a._matrix[6] * b._matrix[9]) + (a._matrix[7] * b._matrix[13]);
+            m._matrix[6] = (a._matrix[4] * b._matrix[2]) + (a._matrix[5] * b._matrix[6]) + (a._matrix[6] * b._matrix[10]) + (a._matrix[7] * b._matrix[14]);
+            m._matrix[7] = (a._matrix[4] * b._matrix[3]) + (a._matrix[5] * b._matrix[7]) + (a._matrix[6] * b._matrix[11]) + (a._matrix[7] * b._matrix[15]);
+
+            return m;
+        }
+        
+        private static Matrix2x4 _zero = new Matrix2x4(Vector4.Zero, Vector4.Zero);
+        public static ref Matrix2x4 Zero => ref _zero;
+
+        private static Matrix2x4 _identity = new Matrix2x4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0));
+        public static ref Matrix2x4 Identity => ref _identity;
+        
         public static Matrix2x4 CreateRotation(Radian angle)
         {
             double cos = Math.Cos(angle);

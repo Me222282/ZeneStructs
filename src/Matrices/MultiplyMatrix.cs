@@ -2,7 +2,7 @@
 
 namespace Zene.Structs
 {
-    public class MultiplyMatrix : IMatrix
+    public struct MultiplyMatrix : IMatrix
     {
         public MultiplyMatrix(IMatrix left, IMatrix right)
         {
@@ -38,7 +38,7 @@ namespace Zene.Structs
 
         //  private double[] _dataCache = null;
 
-        public MatrixSpan MatrixData()
+        public void MatrixData(MatrixSpan ms)
         {
             // if (!Constant) { _dataCache = null; }
             // else if (_dataCache != null)
@@ -46,50 +46,56 @@ namespace Zene.Structs
             //     return new MatrixSpan(_left.Rows, _right.Columns, _dataCache);
             // }
 
-            if (_left == null)
+            Vector2I ls = (_left.Columns, _left.Rows);
+            Vector2I rs = (_right.Columns, _right.Rows);
+
+            if (_left == null || ls.X == 0 || ls.Y == 0)
             {
-                if (_right == null)
+                if (_right == null || rs.X == 0 || rs.Y == 0)
                 {
-                    return MatrixSpan.Identity;
+                    ms.Padding(0, 0);
+                    return;
                 }
 
-                return _right.MatrixData();
+                _right.MatrixData(ms);
+                return;
             }
-            if (_right == null)
+            if (_right == null || rs.X == 0 || rs.Y == 0)
             {
-                return _left.MatrixData();
+                _left.MatrixData(ms);
+                return;
             }
 
-            MatrixSpan a = _left.MatrixData();
-            MatrixSpan b = _right.MatrixData();
+            MatrixSpan a = new MatrixSpan(ls.Y, ls.X, stackalloc double[ls.Y * ls.X]);
+            _left.MatrixData(a);
+            MatrixSpan b = new MatrixSpan(rs.Y, rs.X, stackalloc double[rs.Y * rs.X]);
+            _right.MatrixData(b);
 
-            if (a.Rows == 0 || a.Columns == 0) { return b; }
-            if (b.Rows == 0 || b.Columns == 0) { return a; }
-
-            int r = a.Rows;
-            int c = b.Columns;
+            int r = Math.Min(a.Rows, ms.Rows);
+            int c = Math.Min(b.Columns, ms.Columns);
             int times = Math.Max(a.Columns, b.Rows);
 
-            double[] data = new double[r * c];
             for (int y = 0; y < r; y++)
             {
+                int off1 = y * a.Columns;
+                int off2 = y * ms.Columns;
                 for (int x = 0; x < c; x++)
                 {
-                    data[x + (y * r)] = GetValue(a, y, b, x, times);
+                    ms.Data[x + off2] = GetValue(a, off1, b, x, times);
                 }
             }
 
-            // if (Constant) { _dataCache = data; }
+            ms.Padding(r, c);
 
-            return new MatrixSpan(r, c, data);
+            // if (Constant) { _dataCache = data; }
         }
-        private static double GetValue(MatrixSpan a, int y, MatrixSpan b, int x, int times)
+        private static double GetValue(MatrixSpan a, int off, MatrixSpan b, int x, int times)
         {
             double value = 0;
 
             for (int i = 0; i < times; i++)
             {
-                value += a[i, y] * b[x, i];
+                value += a.Data[i + off] * b[x, i];
             }
 
             return value;

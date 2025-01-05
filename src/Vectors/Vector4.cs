@@ -403,7 +403,8 @@ namespace Zene.Structs
 
             for (int i = 0; i < matrix.Rows; i++)
             {
-                vs[i] = (matrix[0, i] * X) + (matrix[1, i] * Y) + (matrix[2, i] * Z) + (matrix[3, i] * W);
+                vs[i] = (matrix.Data[i] * X) + (matrix.Data[i + matrix.Columns] * Y) +
+                    (matrix.Data[i + (2 * matrix.Columns)] * Z) + (matrix.Data[i + (3 * matrix.Columns)] * W);
             }
 
             return new VariableVector(vs);
@@ -561,11 +562,39 @@ namespace Zene.Structs
 
         public static VariableVector operator *(Vector4 a, IMatrix b)
         {
-            return a.MultiplyMatrix(b.MatrixData());
+            MatrixSpan ms = new MatrixSpan(b.Rows, b.Columns, stackalloc double[b.Rows * b.Columns]);
+            b.MatrixData(ms);
+            return a.MultiplyMatrix(ms);
         }
         public static VariableVector operator *(IMatrix a, Vector4 b)
         {
-            return b.MultiplyMatrix(a.MatrixData());
+            MatrixSpan ms = new MatrixSpan(a.Rows, a.Columns, stackalloc double[a.Rows * a.Columns]);
+            a.MatrixData(ms);
+            return b.MultiplyMatrix(ms);
+        }
+        public static unsafe Vector2 operator *(Vector4 a, Matrix4x2 b)
+        {
+            return new Vector2(
+                (a.X * b._matrix[0]) + (a.Y * b._matrix[2]) + (a.Z * b._matrix[4]) + (a.W * b._matrix[6]),
+                (a.X * b._matrix[1]) + (a.Y * b._matrix[3]) + (a.Z * b._matrix[5]) + (a.W * b._matrix[7])
+            );
+        }
+        public static unsafe Vector3 operator *(Vector4 a, Matrix4x3 b)
+        {
+            return new Vector3(
+                (a.X * b._matrix[0]) + (a.Y * b._matrix[3]) + (a.Z * b._matrix[6]) + (a.W * b._matrix[9]),
+                (a.X * b._matrix[1]) + (a.Y * b._matrix[4]) + (a.Z * b._matrix[7]) + (a.W * b._matrix[10]),
+                (a.X * b._matrix[2]) + (a.Y * b._matrix[5]) + (a.Z * b._matrix[8]) + (a.W * b._matrix[11])
+            );
+        }
+        public static unsafe Vector4 operator *(Vector4 a, Matrix4 b)
+        {
+            return new Vector4(
+                (a.X * b._matrix[0]) + (a.Y * b._matrix[4]) + (a.Z * b._matrix[8]) + (a.W * b._matrix[12]),
+                (a.X * b._matrix[1]) + (a.Y * b._matrix[5]) + (a.Z * b._matrix[9]) + (a.W * b._matrix[13]),
+                (a.X * b._matrix[2]) + (a.Y * b._matrix[6]) + (a.Z * b._matrix[10]) + (a.W * b._matrix[14]),
+                (a.X * b._matrix[3]) + (a.Y * b._matrix[7]) + (a.Z * b._matrix[11]) + (a.W * b._matrix[15])
+            );
         }
 
         /*

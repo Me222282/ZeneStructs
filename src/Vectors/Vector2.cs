@@ -209,7 +209,7 @@ namespace Zene.Structs
 
             for (int i = 0; i < matrix.Rows; i++)
             {
-                vs[i] = (matrix[0, i] * X) + (matrix[1, i] * Y);
+                vs[i] = (matrix.Data[i] * X) + (matrix.Data[i + matrix.Columns] * Y);
             }
 
             return new VariableVector(vs);
@@ -437,11 +437,39 @@ namespace Zene.Structs
 
         public static VariableVector operator *(Vector2 a, IMatrix b)
         {
-            return a.MultiplyMatrix(b.MatrixData());
+            MatrixSpan ms = new MatrixSpan(b.Rows, b.Columns, stackalloc double[b.Rows * b.Columns]);
+            b.MatrixData(ms);
+            return a.MultiplyMatrix(ms);
         }
         public static VariableVector operator *(IMatrix a, Vector2 b)
         {
-            return b.MultiplyMatrix(a.MatrixData());
+            MatrixSpan ms = new MatrixSpan(a.Rows, a.Columns, stackalloc double[a.Rows * a.Columns]);
+            a.MatrixData(ms);
+            return b.MultiplyMatrix(ms);
+        }
+        public static unsafe Vector2 operator *(Vector2 a, Matrix2 b)
+        {
+            return new Vector2(
+                (a.X * b._matrix[0]) + (a.Y * b._matrix[2]),
+                (a.X * b._matrix[1]) + (a.Y * b._matrix[3])
+            );
+        }
+        public static unsafe Vector3 operator *(Vector2 a, Matrix2x3 b)
+        {
+            return new Vector3(
+                (a.X * b._matrix[0]) + (a.Y * b._matrix[3]),
+                (a.X * b._matrix[1]) + (a.Y * b._matrix[4]),
+                (a.X * b._matrix[2]) + (a.Y * b._matrix[5])
+            );
+        }
+        public static unsafe Vector4 operator *(Vector2 a, Matrix2x4 b)
+        {
+            return new Vector4(
+                (a.X * b._matrix[0]) + (a.Y * b._matrix[4]),
+                (a.X * b._matrix[1]) + (a.Y * b._matrix[5]),
+                (a.X * b._matrix[2]) + (a.Y * b._matrix[6]),
+                (a.X * b._matrix[3]) + (a.Y * b._matrix[7])
+            );
         }
         /*
         public static Vector2 operator /(Vector2 a, double b)
