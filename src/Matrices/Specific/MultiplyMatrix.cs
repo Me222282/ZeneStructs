@@ -66,9 +66,9 @@ namespace Zene.Structs
                 return;
             }
 
-            MatrixSpan a = new MatrixSpan(ls.Y, ls.X, stackalloc double[ls.Y * ls.X]);
+            MatrixSpan a = new MatrixSpan(ls.Y, ls.X, stackalloc floatv[ls.Y * ls.X]);
             _left.MatrixData(a);
-            MatrixSpan b = new MatrixSpan(rs.Y, rs.X, stackalloc double[rs.Y * rs.X]);
+            MatrixSpan b = new MatrixSpan(rs.Y, rs.X, stackalloc floatv[rs.Y * rs.X]);
             _right.MatrixData(b);
 
             int r = Math.Min(a.Rows, ms.Rows);
@@ -89,9 +89,9 @@ namespace Zene.Structs
 
             // if (Constant) { _dataCache = data; }
         }
-        private static double GetValue(MatrixSpan a, int off, MatrixSpan b, int x, int times)
+        private static floatv GetValue(MatrixSpan a, int off, MatrixSpan b, int x, int times)
         {
-            double value = 0;
+            floatv value = 0;
 
             for (int i = 0; i < times; i++)
             {

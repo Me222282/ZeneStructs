@@ -24,6 +24,22 @@ namespace Zene.Structs
             A = 1;
         }
         /// <summary>
+        /// Creates a colour from RGB values.
+        /// </summary>
+        /// <remarks>
+        /// Alpha has a value of 1.0f.
+        /// </remarks>
+        /// <param name="r">The red component of the colour.</param>
+        /// <param name="g">The green component of the colour.</param>
+        /// <param name="b">The blue component of the colour.</param>
+        public ColourF(double r, double g, double b)
+        {
+            R = (float)r;
+            G = (float)g;
+            B = (float)b;
+            A = (float)1;
+        }
+        /// <summary>
         /// Creates a colour from RGBA values.
         /// </summary>
         /// <param name="r">The red component of the colour.</param>
@@ -36,6 +52,20 @@ namespace Zene.Structs
             G = g;
             B = b;
             A = a;
+        }
+        /// <summary>
+        /// Creates a colour from RGBA values.
+        /// </summary>
+        /// <param name="r">The red component of the colour.</param>
+        /// <param name="g">The green component of the colour.</param>
+        /// <param name="b">The blue component of the colour.</param>
+        /// <param name="a">The alpha component of the colour.</param>
+        public ColourF(double r, double g, double b, double a)
+        {
+            R = (float)r;
+            G = (float)g;
+            B = (float)b;
+            A = (float)a;
         }
 
         /// <summary>
@@ -126,7 +156,7 @@ namespace Zene.Structs
         /// <param name="s">The saturation of the colour.</param>
         /// <param name="l">The luminosity of the colour.</param>
         /// <param name="a">THe alpha component of the colour.</param>
-        public static ColourF FromHsl(double h, double s, double l, float a = 1f)
+        public static ColourF FromHsl(floatv h, floatv s, floatv l, float a = 1f)
             => new ColourF(ColourF3.FromHsl(h, s, l), a);
         /// <summary>
         /// Creates a colour from a wavelength of light.
@@ -203,20 +233,11 @@ namespace Zene.Structs
             return new ColourF(v.X * ByteToFloat, v.Y * ByteToFloat, v.Z * ByteToFloat, v.W * ByteToFloat);
         }
 
-        public static explicit operator Vector4<int>(ColourF c)
+        public static explicit operator Vector4(ColourF c)
         {
-            return new Vector4<int>((int)(c.R * 255), (int)(c.G * 255), (int)(c.B * 255), (int)(c.A * 255));
+            return new Vector4(c.R, c.G, c.B, c.A);
         }
-        public static explicit operator ColourF(Vector4<int> v)
-        {
-            return new ColourF(v.X * ByteToFloat, v.Y * ByteToFloat, v.Z * ByteToFloat, v.W * ByteToFloat);
-        }
-
-        public static explicit operator Vector4<float>(ColourF c)
-        {
-            return new Vector4<float>(c.R, c.G, c.B, c.A);
-        }
-        public static explicit operator ColourF(Vector4<float> v)
+        public static explicit operator ColourF(Vector4 v)
         {
             return new ColourF(v.X, v.Y, v.Z, v.W);
         }
@@ -228,15 +249,6 @@ namespace Zene.Structs
         public static explicit operator ColourF(Vector4I v)
         {
             return new ColourF(v.X * ByteToFloat, v.Y * ByteToFloat, v.Z * ByteToFloat, v.W * ByteToFloat);
-        }
-
-        public static explicit operator Vector4(ColourF c)
-        {
-            return new Vector4(c.R, c.G, c.B, c.A);
-        }
-        public static explicit operator ColourF(Vector4 v)
-        {
-            return new ColourF((float)v.X, (float)v.Y, (float)v.Z, (float)v.W);
         }
 
         public const float ByteToFloat = /*0.00392156862745098f*/ (float)1 / 255;

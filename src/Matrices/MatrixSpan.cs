@@ -5,7 +5,7 @@ namespace Zene.Structs
 {
     public unsafe ref struct MatrixSpan
     {
-        public MatrixSpan(int rows, int columns, Span<double> data)
+        public MatrixSpan(int rows, int columns, Span<floatv> data)
         {
             Rows = rows;
             Columns = columns;
@@ -17,15 +17,15 @@ namespace Zene.Structs
 
         public int Length => Data.Length;
 
-        public readonly Span<double> Data;
+        public readonly Span<floatv> Data;
 
-        public double this[int x, int y]
+        public floatv this[int x, int y]
         {
             get => Data[x + (Columns * y)];
             set => Data[x + (Columns * y)] = value;
         }
 
-        public void Fill(ReadOnlySpan<double> s, int r, int c)
+        public void Fill(ReadOnlySpan<floatv> s, int r, int c)
         {
             if (r == Rows && c == Columns)
             {
@@ -50,7 +50,7 @@ namespace Zene.Structs
             int l = Math.Min(Rows, Columns);
             for (int i = Math.Min(r, c); i < l; i++)
             {
-                this[i, i] = 1d;
+                this[i, i] = 1;
             }
         }
 
@@ -109,13 +109,13 @@ namespace Zene.Structs
             return sb.ToString();
         }
 
-        public static MatrixSpan Identity => new MatrixSpan(0, 0, new Span<double>());
+        public static MatrixSpan Identity => new MatrixSpan(0, 0, new Span<floatv>());
 
-        public double* Pointer
+        public floatv* Pointer
         {
             get
             {
-                fixed (double* ptr = &Data[0])
+                fixed (floatv* ptr = &Data[0])
                 {
                     return ptr;
                 }

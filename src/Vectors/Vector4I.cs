@@ -19,10 +19,10 @@ namespace Zene.Structs
             W = value;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a single <see cref="double"/>.
+        /// Creates a 4 dimensional vector from a single <see cref="floatv"/>.
         /// </summary>
         /// <param name="value">The value to set to <see cref="X"/>, <see cref="Y"/>, <see cref="Z"/> and <see cref="W"/>.</param>
-        public Vector4I(double value)
+        public Vector4I(floatv value)
         {
             X = (int)value;
             Y = X;
@@ -44,13 +44,13 @@ namespace Zene.Structs
             W = w;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from four <see cref="double"/>.
+        /// Creates a 4 dimensional vector from four <see cref="floatv"/>.
         /// </summary>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
         /// <param name="y">The value to set to <see cref="Y"/>.</param>
         /// <param name="z">The value to set to <see cref="Z"/>.</param>
         /// <param name="w">The value to set to <see cref="W"/>.</param>
-        public Vector4I(double x, double y, double z, double w)
+        public Vector4I(floatv x, floatv y, floatv z, floatv w)
         {
             X = (int)x;
             Y = (int)y;
@@ -82,7 +82,7 @@ namespace Zene.Structs
             W = zw.Y;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a <see cref="double"/> based 2 dimensional vector and an <see cref="int"/> Z and W.
+        /// Creates a 4 dimensional vector from a <see cref="floatv"/> based 2 dimensional vector and an <see cref="int"/> Z and W.
         /// </summary>
         /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
         /// <param name="z">The value to set to <see cref="Z"/>.</param>
@@ -95,7 +95,7 @@ namespace Zene.Structs
             W = w;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a <see cref="double"/> based 2 dimensional vector and an <see cref="int"/> X and W.
+        /// Creates a 4 dimensional vector from a <see cref="floatv"/> based 2 dimensional vector and an <see cref="int"/> X and W.
         /// </summary>
         /// <param name="yz">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
@@ -108,7 +108,7 @@ namespace Zene.Structs
             W = w;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a <see cref="double"/> based 2 dimensional vector and an <see cref="int"/> X and Y.
+        /// Creates a 4 dimensional vector from a <see cref="floatv"/> based 2 dimensional vector and an <see cref="int"/> X and Y.
         /// </summary>
         /// <param name="zw">The vector to reference for <see cref="Z"/> and <see cref="W"/>.</param>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
@@ -121,12 +121,12 @@ namespace Zene.Structs
             Y = y;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a <see cref="double"/> based 2 dimensional vector and a <see cref="double"/> Z and W.
+        /// Creates a 4 dimensional vector from a <see cref="floatv"/> based 2 dimensional vector and a <see cref="floatv"/> Z and W.
         /// </summary>
         /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
         /// <param name="z">The value to set to <see cref="Z"/>.</param>
         /// <param name="w">The value to set to <see cref="W"/>.</param>
-        public Vector4I(Vector2 xy, double z, double w)
+        public Vector4I(Vector2 xy, floatv z, floatv w)
         {
             X = (int)xy.X;
             Y = (int)xy.Y;
@@ -134,12 +134,12 @@ namespace Zene.Structs
             W = (int)w;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a <see cref="double"/> based 2 dimensional vector and a <see cref="double"/> X and W.
+        /// Creates a 4 dimensional vector from a <see cref="floatv"/> based 2 dimensional vector and a <see cref="floatv"/> X and W.
         /// </summary>
         /// <param name="yz">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
         /// <param name="w">The value to set to <see cref="W"/>.</param>
-        public Vector4I(double x, Vector2 yz, double w)
+        public Vector4I(floatv x, Vector2 yz, floatv w)
         {
             Y = (int)yz.X;
             Z = (int)yz.Y;
@@ -147,12 +147,12 @@ namespace Zene.Structs
             W = (int)w;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a <see cref="double"/> based 2 dimensional vector and a <see cref="double"/> X and Y.
+        /// Creates a 4 dimensional vector from a <see cref="floatv"/> based 2 dimensional vector and a <see cref="floatv"/> X and Y.
         /// </summary>
         /// <param name="zw">The vector to reference for <see cref="Z"/> and <see cref="W"/>.</param>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
         /// <param name="y">The value to set to <see cref="Y"/>.</param>
-        public Vector4I(double x, double y, Vector2 zw)
+        public Vector4I(floatv x, floatv y, Vector2 zw)
         {
             Z = (int)zw.X;
             W = (int)zw.Y;
@@ -199,12 +199,12 @@ namespace Zene.Structs
             Y = y;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a 2 dimensional vector and a <see cref="double"/> Z and W.
+        /// Creates a 4 dimensional vector from a 2 dimensional vector and a <see cref="floatv"/> Z and W.
         /// </summary>
         /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
         /// <param name="z">The value to set to <see cref="Z"/>.</param>
         /// <param name="w">The value to set to <see cref="W"/>.</param>
-        public Vector4I(Vector2I xy, double z, double w)
+        public Vector4I(Vector2I xy, floatv z, floatv w)
         {
             X = xy.X;
             Y = xy.Y;
@@ -212,12 +212,12 @@ namespace Zene.Structs
             W = (int)w;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a 2 dimensional vector and a <see cref="double"/> X and W.
+        /// Creates a 4 dimensional vector from a 2 dimensional vector and a <see cref="floatv"/> X and W.
         /// </summary>
         /// <param name="yz">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
         /// <param name="w">The value to set to <see cref="W"/>.</param>
-        public Vector4I(double x, Vector2I yz, double w)
+        public Vector4I(floatv x, Vector2I yz, floatv w)
         {
             Y = yz.X;
             Z = yz.Y;
@@ -225,12 +225,12 @@ namespace Zene.Structs
             W = (int)w;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a 2 dimensional vector and a <see cref="double"/> X and Y.
+        /// Creates a 4 dimensional vector from a 2 dimensional vector and a <see cref="floatv"/> X and Y.
         /// </summary>
         /// <param name="zw">The vector to reference for <see cref="Z"/> and <see cref="W"/>.</param>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
         /// <param name="y">The value to set to <see cref="Y"/>.</param>
-        public Vector4I(double x, double y, Vector2I zw)
+        public Vector4I(floatv x, floatv y, Vector2I zw)
         {
             Z = zw.X;
             W = zw.Y;
@@ -238,7 +238,7 @@ namespace Zene.Structs
             Y = (int)y;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a <see cref="double"/> based 3 dimensional vector and an <see cref="int"/> W.
+        /// Creates a 4 dimensional vector from a <see cref="floatv"/> based 3 dimensional vector and an <see cref="int"/> W.
         /// </summary>
         /// <param name="xyz">The vector to reference for <see cref="X"/>, <see cref="Y"/> and <see cref="Z"/>.</param>
         /// <param name="w">The value to set to <see cref="W"/>.</param>
@@ -250,7 +250,7 @@ namespace Zene.Structs
             W = w;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a <see cref="double"/> based 3 dimensional vector and an <see cref="int"/> X.
+        /// Creates a 4 dimensional vector from a <see cref="floatv"/> based 3 dimensional vector and an <see cref="int"/> X.
         /// </summary>
         /// <param name="yzw">The vector to reference for <see cref="Y"/>, <see cref="Z"/> and <see cref="W"/>.</param>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
@@ -262,11 +262,11 @@ namespace Zene.Structs
             X = x;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a <see cref="double"/> based 3 dimensional vector and a <see cref="double"/> W.
+        /// Creates a 4 dimensional vector from a <see cref="floatv"/> based 3 dimensional vector and a <see cref="floatv"/> W.
         /// </summary>
         /// <param name="xyz">The vector to reference for <see cref="X"/>, <see cref="Y"/> and <see cref="Z"/>.</param>
         /// <param name="w">The value to set to <see cref="W"/>.</param>
-        public Vector4I(Vector3 xyz, double w)
+        public Vector4I(Vector3 xyz, floatv w)
         {
             X = (int)xyz.X;
             Y = (int)xyz.Y;
@@ -274,11 +274,11 @@ namespace Zene.Structs
             W = (int)w;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a <see cref="double"/> based 3 dimensional vector and a <see cref="double"/> X.
+        /// Creates a 4 dimensional vector from a <see cref="floatv"/> based 3 dimensional vector and a <see cref="floatv"/> X.
         /// </summary>
         /// <param name="yzw">The vector to reference for <see cref="Y"/>, <see cref="Z"/> and <see cref="W"/>.</param>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
-        public Vector4I(double x, Vector3 yzw)
+        public Vector4I(floatv x, Vector3 yzw)
         {
             Y = (int)yzw.X;
             Z = (int)yzw.Y;
@@ -310,11 +310,11 @@ namespace Zene.Structs
             X = x;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a 3 dimensional vector and a <see cref="double"/> W.
+        /// Creates a 4 dimensional vector from a 3 dimensional vector and a <see cref="floatv"/> W.
         /// </summary>
         /// <param name="xyz">The vector to reference for <see cref="X"/>, <see cref="Y"/> and <see cref="Z"/>.</param>
         /// <param name="w">The value to set to <see cref="W"/>.</param>
-        public Vector4I(Vector3I xyz, double w)
+        public Vector4I(Vector3I xyz, floatv w)
         {
             X = xyz.X;
             Y = xyz.Y;
@@ -322,11 +322,11 @@ namespace Zene.Structs
             W = (int)w;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a 3 dimensional vector and a <see cref="double"/> X.
+        /// Creates a 4 dimensional vector from a 3 dimensional vector and a <see cref="floatv"/> X.
         /// </summary>
         /// <param name="yzw">The vector to reference for <see cref="Y"/>, <see cref="Z"/> and <see cref="W"/>.</param>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
-        public Vector4I(double x, Vector3I yzw)
+        public Vector4I(floatv x, Vector3I yzw)
         {
             Y = yzw.X;
             Z = yzw.Y;
@@ -334,7 +334,7 @@ namespace Zene.Structs
             X = (int)x;
         }
         /// <summary>
-        /// Creates a 4 dimensional vector from a <see cref="double"/> based vector.
+        /// Creates a 4 dimensional vector from a <see cref="floatv"/> based vector.
         /// </summary>
         /// <param name="xyzw">The vector to reference for <see cref="X"/>, <see cref="Y"/>, <see cref="Z"/> and <see cref="W"/>.</param>
         public Vector4I(Vector4 xyzw)
@@ -365,11 +365,11 @@ namespace Zene.Structs
         /// <summary>
         /// The length of the vector (distance from origin).
         /// </summary>
-        public double Length
+        public floatv Length
         {
             get
             {
-                return Math.Sqrt((X * X) + (Y * Y) + (Z * Z) + (W * W));
+                return Maths.Sqrt((X * X) + (Y * Y) + (Z * Z) + (W * W));
             }
         }
         /// <summary>
@@ -388,9 +388,9 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="b">The vector to reference.</param>
         /// <returns></returns>
-        public double Distance(Vector4I b)
+        public floatv Distance(Vector4I b)
         {
-            return Math.Sqrt(SquaredDistance(b));
+            return Maths.Sqrt(SquaredDistance(b));
         }
         /// <summary>
         /// The squared distance from this vector to <paramref name="b"/>.
@@ -418,7 +418,7 @@ namespace Zene.Structs
         /// <param name="b">The vector to interpolate to.</param>
         /// <param name="blend">The percentage interpolation.</param>
         /// <returns></returns>
-        public Vector4I Lerp(Vector4I b, double blend)
+        public Vector4I Lerp(Vector4I b, floatv blend)
         {
             return new Vector4I(
                 (blend * (b.X - X)) + X,
@@ -439,9 +439,9 @@ namespace Zene.Structs
         /// <param name="u">The percentage <paramref name="b"/> is included.</param>
         /// <param name="v">The percentage <paramref name="c"/> is included.</param>
         /// <returns></returns>
-        public Vector4I BaryCentric(Vector4I b, Vector4I c, int u, int v)
+        public Vector4I BaryCentric(Vector4I b, Vector4I c, floatv u, floatv v)
         {
-            return (this + ((b - this) * u)) + ((c - this) * v);
+            return (Vector4I)(this + ((b - this) * u) + ((c - this) * v));
         }
 
         /// <summary>
@@ -450,11 +450,11 @@ namespace Zene.Structs
         /// <returns></returns>
         public Vector4 Normalised()
         {
-            double sl = SquaredLength;
-            if (sl == 0d) { return Zero; }
-            if (sl == 1d) { return this; }
+            floatv sl = SquaredLength;
+            if (sl == 0) { return Zero; }
+            if (sl == 1) { return this; }
 
-            double scale = 1d / Math.Sqrt(sl);
+            floatv scale = 1 / Maths.Sqrt(sl);
             return new Vector4(X * scale, Y * scale, Z * scale, W * scale);
         }
 
@@ -470,7 +470,7 @@ namespace Zene.Structs
                 throw new Exception();
             }
 
-            double[] vs = new double[matrix.Rows];
+            floatv[] vs = new floatv[matrix.Rows];
 
             for (int i = 0; i < matrix.Rows; i++)
             {
@@ -609,13 +609,13 @@ namespace Zene.Structs
 
         public static VariableVector operator *(Vector4I a, IMatrix b)
         {
-            MatrixSpan ms = new MatrixSpan(b.Rows, b.Columns, stackalloc double[b.Rows * b.Columns]);
+            MatrixSpan ms = new MatrixSpan(b.Rows, b.Columns, stackalloc floatv[b.Rows * b.Columns]);
             b.MatrixData(ms);
             return a.MultiplyMatrix(ms);
         }
         public static VariableVector operator *(IMatrix a, Vector4I b)
         {
-            MatrixSpan ms = new MatrixSpan(a.Rows, a.Columns, stackalloc double[a.Rows * a.Columns]);
+            MatrixSpan ms = new MatrixSpan(a.Rows, a.Columns, stackalloc floatv[a.Rows * a.Columns]);
             a.MatrixData(ms);
             return b.MultiplyMatrix(ms);
         }
@@ -730,6 +730,22 @@ namespace Zene.Structs
             return new Vector4(a.X * b.X, a.Y * b.Y, a.Z * b.Z, a.W * b.W);
         }
         public static Vector4 operator /(Vector4I a, Vector4 b)
+        {
+            return new Vector4(a.X / b.X, a.Y / b.Y, a.Z / b.Z, a.W / b.W);
+        }
+        public static Vector4 operator +(Vector4 a, Vector4I b)
+        {
+            return new Vector4(a.X + b.X, a.Y + b.Y, a.Z + b.Z, a.W + b.W);
+        }
+        public static Vector4 operator -(Vector4 a, Vector4I b)
+        {
+            return new Vector4(a.X - b.X, a.Y - b.Y, a.Z - b.Z, a.W - b.W);
+        }
+        public static Vector4 operator *(Vector4 a, Vector4I b)
+        {
+            return new Vector4(a.X * b.X, a.Y * b.Y, a.Z * b.Z, a.W * b.W);
+        }
+        public static Vector4 operator /(Vector4 a, Vector4I b)
         {
             return new Vector4(a.X / b.X, a.Y / b.Y, a.Z / b.Z, a.W / b.W);
         }

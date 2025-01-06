@@ -26,7 +26,7 @@ namespace Zene.Structs
         /// <param name="locX">The x value for the reference location for the line.</param>
         /// <param name="locY">The y value for the reference location for the line.</param>
         /// <param name="locZ">The z value for the reference location for the line.</param>
-        public Line3(double dirX, double dirY, double dirZ, double locX, double locY, double locZ)
+        public Line3(floatv dirX, floatv dirY, floatv dirZ, floatv locX, floatv locY, floatv locZ)
         {
             _direction = new Vector3(dirX, dirY, dirZ);
             Location = new Vector3(locX, locY, locZ);
@@ -80,8 +80,8 @@ namespace Zene.Structs
         public Vector3 Reflect(Vector3 x)
         {
             Vector3 dir = Direction;
-            
-            double t = (x - Location).Dot(dir) / dir.SquaredLength;
+
+            floatv t = (x - Location).Dot(dir) / dir.SquaredLength;
             return (2d * (Location + t * dir)) - x;
         }
         /// <summary>
@@ -92,7 +92,7 @@ namespace Zene.Structs
         public Vector3 Project(Vector3 x)
         {
             Vector3 dir = Direction;
-            double t = (x - Location).Dot(dir) / dir.SquaredLength;
+            floatv t = (x - Location).Dot(dir) / dir.SquaredLength;
             return Location + t * dir;
         }
 
@@ -101,7 +101,7 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="line">The line to compare.</param>
         /// <returns></returns>
-        public double DistanceFromLine(Line3 line)
+        public floatv DistanceFromLine(Line3 line)
         {
             Vector3 x = Direction.Cross(line.Direction);
 
@@ -112,10 +112,10 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="line">The line to compare.</param>
         /// <returns></returns>
-        public double SquaredDistanceFromLine(Line3 line)
+        public floatv SquaredDistanceFromLine(Line3 line)
         {
             Vector3 x = Direction.Cross(line.Direction);
-            double y = x.Dot(Location.Cross(line.Location));
+            floatv y = x.Dot(Location.Cross(line.Location));
 
             return (y * y) / x.SquaredLength;
         }
@@ -130,7 +130,7 @@ namespace Zene.Structs
         /// <summary>
         /// Gets the x component of the point along the line with the y component of <paramref name="y"/>.
         /// </summary>
-        public double GetXFromY(double y)
+        public floatv GetXFromY(floatv y)
         {
             // Line is straight
             if (_direction.X == 0)
@@ -143,7 +143,7 @@ namespace Zene.Structs
         /// <summary>
         /// Gets the x component of the point along the line with the z component of <paramref name="z"/>.
         /// </summary>
-        public double GetXFromZ(double z)
+        public floatv GetXFromZ(floatv z)
         {
             // Line is straight
             if (_direction.X == 0)
@@ -157,7 +157,7 @@ namespace Zene.Structs
         /// <summary>
         /// Gets the y component of the point along the line with the x component of <paramref name="x"/>.
         /// </summary>
-        public double GetYFromX(double x)
+        public floatv GetYFromX(floatv x)
         {
             // Line is straight
             if (_direction.Y == 0)
@@ -170,7 +170,7 @@ namespace Zene.Structs
         /// <summary>
         /// Gets the y component of the point along the line with the z component of <paramref name="z"/>.
         /// </summary>
-        public double GetYFromZ(double z)
+        public floatv GetYFromZ(floatv z)
         {
             // Line is straight
             if (_direction.Y == 0)
@@ -184,7 +184,7 @@ namespace Zene.Structs
         /// <summary>
         /// Gets the z component of the point along the line with the x component of <paramref name="x"/>.
         /// </summary>
-        public double GetZFromX(double x)
+        public floatv GetZFromX(floatv x)
         {
             // Line is straight
             if (_direction.Z == 0)
@@ -197,7 +197,7 @@ namespace Zene.Structs
         /// <summary>
         /// Gets the z component of the point along the line with the y component of <paramref name="y"/>.
         /// </summary>
-        public double GetZFromY(double y)
+        public floatv GetZFromY(floatv y)
         {
             // Line is straight
             if (_direction.Z == 0)

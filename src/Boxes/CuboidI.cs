@@ -40,7 +40,7 @@ namespace Zene.Structs
             Depth = size.Z;
         }
         /// <summary>
-        /// Creates a cuboid box from a <see cref="double"/> based location and size.
+        /// Creates a cuboid box from a <see cref="floatv"/> based location and size.
         /// </summary>
         /// <param name="x">The x value of the location.</param>
         /// <param name="y">The y value of the location.</param>
@@ -48,7 +48,7 @@ namespace Zene.Structs
         /// <param name="w">The width value of the size.</param>
         /// <param name="h">The height value of the size.</param>
         /// <param name="d">The depth value of the size.</param>
-        public CuboidI(double x, double y, double z, double w, double h, double d)
+        public CuboidI(floatv x, floatv y, floatv z, floatv w, floatv h, floatv d)
         {
             X = (int)x;
             Y = (int)y;
@@ -58,7 +58,7 @@ namespace Zene.Structs
             Depth = (int)d;
         }
         /// <summary>
-        /// Creates a cuboid box from a <see cref="double"/> based location and size.
+        /// Creates a cuboid box from a <see cref="floatv"/> based location and size.
         /// </summary>
         /// <param name="location">The location of the rectangle.</param>
         /// <param name="size">The size of the rectangle.</param>
@@ -89,25 +89,25 @@ namespace Zene.Structs
         /// The left x location of the box.
         /// </summary>
         public int X { get; set; }
-        double IBox.X => X;
+        floatv IBox.X => X;
         /// <summary>
         /// The top y location of the box.
         /// </summary>
         public int Y { get; set; }
-        double IBox.Y => Y;
+        floatv IBox.Y => Y;
         /// <summary>
         /// The front z location of the box.
         /// </summary>
         public int Z { get; set; }
-        double IBox3.Z => Z;
+        floatv IBox3.Z => Z;
         public int Width { get; set; }
-        double IBox.Width => Width;
+        floatv IBox.Width => Width;
         public int Height { get; set; }
-        double IBox.Height => Height;
+        floatv IBox.Height => Height;
         public int Depth { get; set; }
-        double IBox3.Depth => Depth;
+        floatv IBox3.Depth => Depth;
 
-        public Vector3I Centre => new Vector3I(X + (Width * 0.5), Y - (Height * 0.5), Z + (Depth * 0.5));
+        public Vector3I Centre => new Vector3I(X + (Width * 0.5f), Y - (Height * 0.5f), Z + (Depth * 0.5f));
         Vector3 IBox3.Centre => new Vector3(X + (Width * 0.5), Y - (Height * 0.5), Z + (Depth * 0.5));
         Vector3 IBox3.Size => new Vector3(Width, Height, Depth);
 
@@ -147,7 +147,7 @@ namespace Zene.Structs
                 X = value;
             }
         }
-        double IBox.Left
+        floatv IBox.Left
         {
             get => X;
             set => Left = (int)value;
@@ -157,7 +157,7 @@ namespace Zene.Structs
             get => X + Width;
             set => Width = value - X;
         }
-        double IBox.Right
+        floatv IBox.Right
         {
             get => X + Width;
             set => Right = (int)value;
@@ -171,7 +171,7 @@ namespace Zene.Structs
                 Y = value;
             }
         }
-        double IBox.Bottom
+        floatv IBox.Bottom
         {
             get => Y - Height;
             set => Bottom = (int)value;
@@ -181,7 +181,7 @@ namespace Zene.Structs
             get => Y;
             set => Height += value - Y;
         }
-        double IBox.Top
+        floatv IBox.Top
         {
             get => Y;
             set => Top = (int)value;
@@ -195,7 +195,7 @@ namespace Zene.Structs
                 Z = value;
             }
         }
-        double IBox3.Front
+        floatv IBox3.Front
         {
             get => Z;
             set => Front = (int)value;
@@ -205,7 +205,7 @@ namespace Zene.Structs
             get => Z + Depth;
             set => Depth = value - Z;
         }
-        double IBox3.Back
+        floatv IBox3.Back
         {
             get => Z + Depth;
             set => Back = (int)value;

@@ -17,10 +17,10 @@ namespace Zene.Structs
             Y = value;
         }
         /// <summary>
-        /// Creates a 2 dimensional vector from a single <see cref="double"/>.
+        /// Creates a 2 dimensional vector from a single <see cref="floatv"/>.
         /// </summary>
         /// <param name="value">The value to set to both <see cref="X"/> and <see cref="Y"/>.</param>
-        public Vector2I(double value)
+        public Vector2I(floatv value)
         {
             X = (int)value;
             Y = X;
@@ -36,17 +36,17 @@ namespace Zene.Structs
             Y = y;
         }
         /// <summary>
-        /// Creates a 2 dimensional vector from two <see cref="double"/>.
+        /// Creates a 2 dimensional vector from two <see cref="floatv"/>.
         /// </summary>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
         /// <param name="y">The value to set to <see cref="Y"/>.</param>
-        public Vector2I(double x, double y)
+        public Vector2I(floatv x, floatv y)
         {
             X = (int)x;
             Y = (int)y;
         }
         /// <summary>
-        /// Creates a 2 dimensional vector from an <see cref="double"/> based vector.
+        /// Creates a 2 dimensional vector from an <see cref="floatv"/> based vector.
         /// </summary>
         /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
         public Vector2I(Vector2 xy)
@@ -67,11 +67,11 @@ namespace Zene.Structs
         /// <summary>
         /// The length of the vector (distance from origin).
         /// </summary>
-        public double Length
+        public floatv Length
         {
             get
             {
-                return Math.Sqrt((X * X) + (Y * Y));
+                return Maths.Sqrt((X * X) + (Y * Y));
             }
         }
         /// <summary>
@@ -90,9 +90,9 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="b">The vector to reference.</param>
         /// <returns></returns>
-        public double Distance(Vector2I b)
+        public floatv Distance(Vector2I b)
         {
-            return Math.Sqrt(SquaredDistance(b));
+            return Maths.Sqrt(SquaredDistance(b));
         }
         /// <summary>
         /// The squared distance from this vector to <paramref name="b"/>.
@@ -129,7 +129,7 @@ namespace Zene.Structs
         /// <param name="b">The vector to interpolate to.</param>
         /// <param name="blend">The percentage interpolation.</param>
         /// <returns></returns>
-        public Vector2I Lerp(Vector2I b, double blend)
+        public Vector2I Lerp(Vector2I b, floatv blend)
         {
             return new Vector2I(
                 (blend * (b.X - X)) + X,
@@ -148,9 +148,9 @@ namespace Zene.Structs
         /// <param name="u">The percentage <paramref name="b"/> is included.</param>
         /// <param name="v">The percentage <paramref name="c"/> is included.</param>
         /// <returns></returns>
-        public Vector2I BaryCentric(Vector2I b, Vector2I c, int u, int v)
+        public Vector2I BaryCentric(Vector2I b, Vector2I c, floatv u, floatv v)
         {
-            return (this + ((b - this) * u)) + ((c - this) * v);
+            return (Vector2I)((this + ((b - this) * u)) + ((c - this) * v));
         }
 
         /// <summary>
@@ -159,11 +159,11 @@ namespace Zene.Structs
         /// <returns></returns>
         public Vector2 Normalised()
         {
-            double sl = SquaredLength;
-            if (sl == 0d) { return Vector2.Zero; }
-            if (sl == 1d) { return this; }
+            floatv sl = SquaredLength;
+            if (sl == 0) { return Vector2.Zero; }
+            if (sl == 1) { return this; }
 
-            double scale = 1d / Math.Sqrt(sl);
+            floatv scale = 1 / Maths.Sqrt(sl);
             return new Vector2(X * scale, Y * scale);
         }
 
@@ -179,7 +179,7 @@ namespace Zene.Structs
                 throw new Exception();
             }
 
-            double[] vs = new double[matrix.Rows];
+            floatv[] vs = new floatv[matrix.Rows];
 
             for (int i = 0; i < matrix.Rows; i++)
             {
@@ -343,13 +343,13 @@ namespace Zene.Structs
 
         public static VariableVector operator *(Vector2I a, IMatrix b)
         {
-            MatrixSpan ms = new MatrixSpan(b.Rows, b.Columns, stackalloc double[b.Rows * b.Columns]);
+            MatrixSpan ms = new MatrixSpan(b.Rows, b.Columns, stackalloc floatv[b.Rows * b.Columns]);
             b.MatrixData(ms);
             return a.MultiplyMatrix(ms);
         }
         public static VariableVector operator *(IMatrix a, Vector2I b)
         {
-            MatrixSpan ms = new MatrixSpan(a.Rows, a.Columns, stackalloc double[a.Rows * a.Columns]);
+            MatrixSpan ms = new MatrixSpan(a.Rows, a.Columns, stackalloc floatv[a.Rows * a.Columns]);
             a.MatrixData(ms);
             return b.MultiplyMatrix(ms);
         }
@@ -420,11 +420,11 @@ namespace Zene.Structs
         /// <summary>
         /// A vector with both <see cref="X"/> and <see cref="Y"/> set to 0.
         /// </summary>
-        public static Vector2I Zero { get; } = new Vector2I(0, 0);
+        public static Vector2I Zero { get; } = new Vector2I(0);
         /// <summary>
         /// A vector with both <see cref="X"/> and <see cref="Y"/> set to 1.
         /// </summary>
-        public static Vector2I One { get; } = new Vector2I(1, 1);
+        public static Vector2I One { get; } = new Vector2I(1);
 
         public static Vector2 operator +(Vector2I a, Vector2 b)
         {
@@ -439,6 +439,22 @@ namespace Zene.Structs
             return new Vector2(a.X / b.X, a.Y / b.Y);
         }
         public static Vector2 operator *(Vector2I a, Vector2 b)
+        {
+            return new Vector2(a.X * b.X, a.Y * b.Y);
+        }
+        public static Vector2 operator +(Vector2 a, Vector2I b)
+        {
+            return new Vector2(a.X + b.X, a.Y + b.Y);
+        }
+        public static Vector2 operator -(Vector2 a, Vector2I b)
+        {
+            return new Vector2(a.X - b.X, a.Y - b.Y);
+        }
+        public static Vector2 operator /(Vector2 a, Vector2I b)
+        {
+            return new Vector2(a.X / b.X, a.Y / b.Y);
+        }
+        public static Vector2 operator *(Vector2 a, Vector2I b)
         {
             return new Vector2(a.X * b.X, a.Y * b.Y);
         }

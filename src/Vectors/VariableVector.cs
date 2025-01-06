@@ -11,15 +11,15 @@ namespace Zene.Structs
         /// Creates a <see cref="VariableVector"/> from an array of values.
         /// </summary>
         /// <param name="d">The values to store in the vector.</param>
-        public VariableVector(params double[] d)
+        public VariableVector(params floatv[] d)
         {
             _values = d;
         }
         /// <summary>
-        /// Creates a <see cref="VariableVector"/> from a <see cref="ReadOnlySpan{double}"/> of values.
+        /// Creates a <see cref="VariableVector"/> from a <see cref="ReadOnlySpan{floatv}"/> of values.
         /// </summary>
         /// <param name="d">The values to store in the vector.</param>
-        public VariableVector(ReadOnlySpan<double> d)
+        public VariableVector(ReadOnlySpan<floatv> d)
         {
             _values = d.ToArray();
         }
@@ -28,7 +28,7 @@ namespace Zene.Structs
         /// The number of Dimensions this vector contains.
         /// </summary>
         public int Dimensions => _values.Length;
-        private readonly double[] _values;
+        private readonly floatv[] _values;
 
         /// <summary>
         /// Gets the value at a given dimension.
@@ -38,11 +38,11 @@ namespace Zene.Structs
         /// </remarks>
         /// <param name="d">The dimension to query.</param>
         /// <returns></returns>
-        public double this[int d]
+        public floatv this[int d]
         {
             get
             {
-                if (d >= Dimensions || d < 0) { return 0d; }
+                if (d >= Dimensions || d < 0) { return 0; }
 
                 return _values[d];
             }

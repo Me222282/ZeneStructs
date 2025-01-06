@@ -8,19 +8,19 @@
         /// <summary>
         /// The x position of the left side of the box. Negative.
         /// </summary>
-        public double Left { get; set; }
+        public floatv Left { get; set; }
         /// <summary>
         /// The x position of the right side of the box. Positive.
         /// </summary>
-        public double Right { get; set; }
+        public floatv Right { get; set; }
         /// <summary>
         /// The y position of the Bottom size of the box. Negative.
         /// </summary>
-        public double Bottom { get; set; }
+        public floatv Bottom { get; set; }
         /// <summary>
         /// The y position of the top side of the box. Positive.
         /// </summary>
-        public double Top { get; set; }
+        public floatv Top { get; set; }
 
         /// <summary>
         /// The centre location of the box.
@@ -35,19 +35,19 @@
         /// <summary>
         /// The x location of the box.
         /// </summary>
-        public double X { get; }
+        public floatv X { get; }
         /// <summary>
         /// The y location of the box.
         /// </summary>
-        public double Y { get; }
+        public floatv Y { get; }
         /// <summary>
         /// The width of the box (<see cref="Right"/> - <see cref="Left"/>).
         /// </summary>
-        public double Width { get; }
+        public floatv Width { get; }
         /// <summary>
         /// The height of the box (<see cref="Top"/> - <see cref="Bottom"/>).
         /// </summary>
-        public double Height { get; }
+        public floatv Height { get; }
         
         /// <summary>
         /// The top left position of the box.

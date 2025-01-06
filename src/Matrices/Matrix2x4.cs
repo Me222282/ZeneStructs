@@ -15,7 +15,7 @@ namespace Zene.Structs
             Row1 = row1;
         }
 
-        public Matrix2x4(params double[] matrix)
+        public Matrix2x4(params floatv[] matrix)
         {
             if (matrix.Length < (Rows * Columns))
             {
@@ -36,13 +36,13 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                matrix.MatrixData(new MatrixSpan(2, 4, new Span<double>(ptr, 8)));
+                matrix.MatrixData(new MatrixSpan(2, 4, new Span<floatv>(ptr, 8)));
             }
         }
 
-        internal fixed double _matrix[8];
+        internal fixed floatv _matrix[8];
 
-        public double this[int x, int y]
+        public floatv this[int x, int y]
         {
             get
             {
@@ -146,7 +146,7 @@ namespace Zene.Structs
             }
         }
 
-        public double Trace() => _matrix[0] + _matrix[5];
+        public floatv Trace() => _matrix[0] + _matrix[5];
 
         public Matrix4x2 Transpose() => new Matrix4x2(Column0, Column1, Column2, Column3);
 
@@ -172,7 +172,7 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                Span<double> s = new Span<double>(ptr, 8);
+                Span<floatv> s = new Span<floatv>(ptr, 8);
                 ms.Fill(s, 2, 4);
             }
         }
@@ -194,7 +194,7 @@ namespace Zene.Structs
 
         public static MultiplyMatrix operator *(Matrix2x4 a, IMatrix b) => new MultiplyMatrix(a, b);
         
-        public static Matrix2x4 operator *(Matrix2x4 a, double b)
+        public static Matrix2x4 operator *(Matrix2x4 a, floatv b)
         {
             Matrix2x4 m = new Matrix2x4();
 
@@ -209,7 +209,7 @@ namespace Zene.Structs
 
             return m;
         }
-        public static Matrix2x4 operator *(double b, Matrix2x4 a)
+        public static Matrix2x4 operator *(floatv b, Matrix2x4 a)
         {
             Matrix2x4 m = new Matrix2x4();
 
@@ -309,17 +309,17 @@ namespace Zene.Structs
         
         public static Matrix2x4 CreateRotation(Radian angle)
         {
-            double cos = Math.Cos(angle);
-            double sin = Math.Sin(angle);
+            floatv cos = Maths.Cos(angle);
+            floatv sin = Maths.Sin(angle);
 
             return new Matrix2x4(new Vector4(cos, sin, 0, 0), new Vector4(-sin, cos, 0, 0));
         }
 
-        public static Matrix2x4 CreateScale(double scale)
+        public static Matrix2x4 CreateScale(floatv scale)
         {
             return new Matrix2x4(new Vector4(scale, 0, 0, 0), new Vector4(0, scale, 0, 0));
         }
-        public static Matrix2x4 CreateScale(double scaleX, double scaleY)
+        public static Matrix2x4 CreateScale(floatv scaleX, floatv scaleY)
         {
             return new Matrix2x4(new Vector4(scaleX, 0, 0, 0), new Vector4(0, scaleY, 0, 0));
         }

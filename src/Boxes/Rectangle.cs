@@ -14,7 +14,7 @@ namespace Zene.Structs
         /// <param name="y">The y value of the location.</param>
         /// <param name="w">The width value of the size.</param>
         /// <param name="h">The height value of the size.</param>
-        public Rectangle(double x, double y, double w, double h)
+        public Rectangle(floatv x, floatv y, floatv w, floatv h)
         {
             X = x;
             Y = y;
@@ -48,21 +48,21 @@ namespace Zene.Structs
         /// <summary>
         /// The left x location of the box.
         /// </summary>
-        public double X { get; set; }
+        public floatv X { get; set; }
         /// <summary>
         /// The top y location of the box.
         /// </summary>
-        public double Y { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
+        public floatv Y { get; set; }
+        public floatv Width { get; set; }
+        public floatv Height { get; set; }
 
         public Vector2 Centre
         {
-            get => new Vector2(X + (Width * 0.5), Y - (Height * 0.5));
+            get => new Vector2(X + (Width * 0.5f), Y - (Height * 0.5f));
             set
             {
-                X = value.X - (Width * 0.5);
-                Y = value.Y - (Height * 0.5);
+                X = value.X - (Width * 0.5f);
+                Y = value.Y - (Height * 0.5f);
             }
         }
 
@@ -91,7 +91,7 @@ namespace Zene.Structs
             }
         }
 
-        public double Left
+        public floatv Left
         {
             get => X;
             set
@@ -104,7 +104,7 @@ namespace Zene.Structs
                 X = value;
             }
         }
-        public double Right
+        public floatv Right
         {
             get => X + Width;
             set
@@ -116,7 +116,7 @@ namespace Zene.Structs
                 }
             }
         }
-        public double Bottom
+        public floatv Bottom
         {
             get => Y - Height;
             set
@@ -129,7 +129,7 @@ namespace Zene.Structs
                 Y = value;
             }
         }
-        public double Top
+        public floatv Top
         {
             get => Y;
             set
@@ -167,8 +167,8 @@ namespace Zene.Structs
         public static bool operator ==(Rectangle l, Rectangle r) => l.Equals(r);
         public static bool operator !=(Rectangle l, Rectangle r) => !l.Equals(r);
 
-        public static Rectangle operator *(Rectangle box, double scale) => new Rectangle(box.X * scale, box.Y * scale, box.Width * scale, box.Height * scale);
-        public static Rectangle operator /(Rectangle box, double scale) => new Rectangle(box.X / scale, box.Y / scale, box.Width / scale, box.Height / scale);
+        public static Rectangle operator *(Rectangle box, floatv scale) => new Rectangle(box.X * scale, box.Y * scale, box.Width * scale, box.Height * scale);
+        public static Rectangle operator /(Rectangle box, floatv scale) => new Rectangle(box.X / scale, box.Y / scale, box.Width / scale, box.Height / scale);
 
         public static explicit operator Rectangle(Box box) => new Rectangle(box);
 
@@ -179,6 +179,6 @@ namespace Zene.Structs
         /// <summary>
         /// A <see cref="Rectangle"/> with a <see cref="Width"/> and <see cref="Height"/> of 1 centred around origin.
         /// </summary>
-        public static Rectangle One { get; } = new Rectangle(-0.5, 0.5, 1, 1);
+        public static Rectangle One { get; } = new Rectangle(-0.5f, 0.5f, 1, 1);
     }
 }

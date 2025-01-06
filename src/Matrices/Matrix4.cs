@@ -16,7 +16,7 @@ namespace Zene.Structs
             Row2 = row2;
             Row3 = row3;
         }
-        public Matrix4(params double[] matrix)
+        public Matrix4(params floatv[] matrix)
         {
             if (matrix.Length < (Rows * Columns))
             {
@@ -47,13 +47,13 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                matrix.MatrixData(new MatrixSpan(4, 4, new Span<double>(ptr, 16)));
+                matrix.MatrixData(new MatrixSpan(4, 4, new Span<floatv>(ptr, 16)));
             }
         }
 
-        internal fixed double _matrix[16];
+        internal fixed floatv _matrix[16];
 
-        public double this[int x, int y]
+        public floatv this[int x, int y]
         {
             get
             {
@@ -195,7 +195,7 @@ namespace Zene.Structs
             }
         }
 
-        public double Determinant()
+        public floatv Determinant()
         {
             return
                 (_matrix[0] * _matrix[5] * _matrix[10] * _matrix[15]) - (_matrix[0] * _matrix[5] * _matrix[11] * _matrix[14]) + (_matrix[0] * _matrix[6] * _matrix[11] * _matrix[13])
@@ -211,31 +211,31 @@ namespace Zene.Structs
 
         public Matrix4 Invert()
         {
-            double a = _matrix[0], b = _matrix[4], c = _matrix[8], d = _matrix[12];
-            double e = _matrix[1], f = _matrix[5], g = _matrix[9], h = _matrix[13];
-            double i = _matrix[2], j = _matrix[6], k = _matrix[10], l = _matrix[14];
-            double m = _matrix[3], n = _matrix[7], o = _matrix[11], p = _matrix[15];
+            floatv a = _matrix[0], b = _matrix[4], c = _matrix[8], d = _matrix[12];
+            floatv e = _matrix[1], f = _matrix[5], g = _matrix[9], h = _matrix[13];
+            floatv i = _matrix[2], j = _matrix[6], k = _matrix[10], l = _matrix[14];
+            floatv m = _matrix[3], n = _matrix[7], o = _matrix[11], p = _matrix[15];
 
-            double kp_lo = k * p - l * o;
-            double jp_ln = j * p - l * n;
-            double jo_kn = j * o - k * n;
-            double ip_lm = i * p - l * m;
-            double io_km = i * o - k * m;
-            double in_jm = i * n - j * m;
+            floatv kp_lo = k * p - l * o;
+            floatv jp_ln = j * p - l * n;
+            floatv jo_kn = j * o - k * n;
+            floatv ip_lm = i * p - l * m;
+            floatv io_km = i * o - k * m;
+            floatv in_jm = i * n - j * m;
 
-            double a11 = +(f * kp_lo - g * jp_ln + h * jo_kn);
-            double a12 = -(e * kp_lo - g * ip_lm + h * io_km);
-            double a13 = +(e * jp_ln - f * ip_lm + h * in_jm);
-            double a14 = -(e * jo_kn - f * io_km + g * in_jm);
+            floatv a11 = +(f * kp_lo - g * jp_ln + h * jo_kn);
+            floatv a12 = -(e * kp_lo - g * ip_lm + h * io_km);
+            floatv a13 = +(e * jp_ln - f * ip_lm + h * in_jm);
+            floatv a14 = -(e * jo_kn - f * io_km + g * in_jm);
 
-            double det = a * a11 + b * a12 + c * a13 + d * a14;
+            floatv det = a * a11 + b * a12 + c * a13 + d * a14;
 
-            if (Math.Abs(det) < double.Epsilon)
+            if (Math.Abs(det) < floatv.Epsilon)
             {
                 throw new InvalidOperationException("Matrix is singular and cannot be inverted.");
             }
 
-            double invDet = 1.0f / det;
+            floatv invDet = 1 / det;
 
             Vector4 row0 = new Vector4(a11, a12, a13, a14) * invDet;
 
@@ -245,12 +245,12 @@ namespace Zene.Structs
                 -(a * jp_ln - b * ip_lm + d * in_jm),
                 +(a * jo_kn - b * io_km + c * in_jm)) * invDet;
 
-            double gp_ho = g * p - h * o;
-            double fp_hn = f * p - h * n;
-            double fo_gn = f * o - g * n;
-            double ep_hm = e * p - h * m;
-            double eo_gm = e * o - g * m;
-            double en_fm = e * n - f * m;
+            floatv gp_ho = g * p - h * o;
+            floatv fp_hn = f * p - h * n;
+            floatv fo_gn = f * o - g * n;
+            floatv ep_hm = e * p - h * m;
+            floatv eo_gm = e * o - g * m;
+            floatv en_fm = e * n - f * m;
 
             Vector4 row2 = new Vector4(
                 +(b * gp_ho - c * fp_hn + d * fo_gn),
@@ -258,12 +258,12 @@ namespace Zene.Structs
                 +(a * fp_hn - b * ep_hm + d * en_fm),
                 -(a * fo_gn - b * eo_gm + c * en_fm)) * invDet;
 
-            double gl_hk = g * l - h * k;
-            double fl_hj = f * l - h * j;
-            double fk_gj = f * k - g * j;
-            double el_hi = e * l - h * i;
-            double ek_gi = e * k - g * i;
-            double ej_fi = e * j - f * i;
+            floatv gl_hk = g * l - h * k;
+            floatv fl_hj = f * l - h * j;
+            floatv fk_gj = f * k - g * j;
+            floatv el_hi = e * l - h * i;
+            floatv ek_gi = e * k - g * i;
+            floatv ej_fi = e * j - f * i;
 
             Vector4 row3 = new Vector4(
                 -(b * gl_hk - c * fl_hj + d * fk_gj),
@@ -274,11 +274,11 @@ namespace Zene.Structs
             return new Matrix4(row0, row1, row2, row3);
         }
 
-        public double Trace() => _matrix[0] + _matrix[5] + _matrix[10] + _matrix[15];
+        public floatv Trace() => _matrix[0] + _matrix[5] + _matrix[10] + _matrix[15];
 
         public Matrix4 Normalize()
         {
-            double det = Determinant();
+            floatv det = Determinant();
 
             return new Matrix4(
                 Row0 / det,
@@ -337,8 +337,16 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                Span<double> s = new Span<double>(ptr, 16);
+                Span<floatv> s = new Span<floatv>(ptr, 16);
                 ms.Fill(s, 4, 4);
+            }
+        }
+
+        public Span<floatv> AsSpan()
+        {
+            fixed (floatv* ptr = _matrix)
+            {
+                return new Span<floatv>(ptr, 16);
             }
         }
 
@@ -363,7 +371,7 @@ namespace Zene.Structs
 
         public static MultiplyMatrix operator *(Matrix4 a, IMatrix b) => new MultiplyMatrix(a, b);
         
-        public static Matrix4 operator *(Matrix4 a, double b)
+        public static Matrix4 operator *(Matrix4 a, floatv b)
         {
             Matrix4 m = new Matrix4();
 
@@ -386,7 +394,7 @@ namespace Zene.Structs
 
             return m;
         }
-        public static Matrix4 operator *(double b, Matrix4 a)
+        public static Matrix4 operator *(floatv b, Matrix4 a)
         {
             Matrix4 m = new Matrix4();
 
@@ -536,26 +544,26 @@ namespace Zene.Structs
         {
             // normalize and create a local copy of the vector.
             axis.Normalise();
-            double axisX = axis.X;
-            double axisY = axis.Y;
-            double axisZ = axis.Z;
+            floatv axisX = axis.X;
+            floatv axisY = axis.Y;
+            floatv axisZ = axis.Z;
 
             // calculate angles
-            double cos = Math.Cos(-angle);
-            double sin = Math.Sin(-angle);
-            double t = 1.0f - cos;
+            floatv cos = Maths.Cos(-angle);
+            floatv sin = Maths.Sin(-angle);
+            floatv t = 1.0f - cos;
 
             // do the conversion math once
-            double tXX = t * axisX * axisX;
-            double tXY = t * axisX * axisY;
-            double tXZ = t * axisX * axisZ;
-            double tYY = t * axisY * axisY;
-            double tYZ = t * axisY * axisZ;
-            double tZZ = t * axisZ * axisZ;
+            floatv tXX = t * axisX * axisX;
+            floatv tXY = t * axisX * axisY;
+            floatv tXZ = t * axisX * axisZ;
+            floatv tYY = t * axisY * axisY;
+            floatv tYZ = t * axisY * axisZ;
+            floatv tZZ = t * axisZ * axisZ;
 
-            double sinX = sin * axisX;
-            double sinY = sin * axisY;
-            double sinZ = sin * axisZ;
+            floatv sinX = sin * axisX;
+            floatv sinY = sin * axisY;
+            floatv sinZ = sin * axisZ;
 
             return new Matrix4(
                 new Vector4(tXX + cos, tXY - sinZ, tXZ + sinY, 0),
@@ -566,8 +574,8 @@ namespace Zene.Structs
 
         public static Matrix4 CreateRotationX(Radian angle)
         {
-            double cos = Math.Cos(angle);
-            double sin = Math.Sin(angle);
+            floatv cos = Maths.Cos(angle);
+            floatv sin = Maths.Sin(angle);
 
             return new Matrix4(
                 new Vector4(1, 0, 0, 0),
@@ -578,8 +586,8 @@ namespace Zene.Structs
 
         public static Matrix4 CreateRotationY(Radian angle)
         {
-            double cos = Math.Cos(angle);
-            double sin = Math.Sin(angle);
+            floatv cos = Maths.Cos(angle);
+            floatv sin = Maths.Sin(angle);
 
             return new Matrix4(
                 new Vector4(cos, 0, -sin, 0),
@@ -590,8 +598,8 @@ namespace Zene.Structs
 
         public static Matrix4 CreateRotationZ(Radian angle)
         {
-            double cos = Math.Cos(angle);
-            double sin = Math.Sin(angle);
+            floatv cos = Maths.Cos(angle);
+            floatv sin = Maths.Sin(angle);
 
             return new Matrix4(
                 new Vector4(cos, sin, 0, 0),
@@ -600,7 +608,7 @@ namespace Zene.Structs
                 new Vector4(0, 0, 0, 1));
         }
 
-        public static Matrix4 CreateScale(double scale)
+        public static Matrix4 CreateScale(floatv scale)
         {
             return new Matrix4(
                 new Vector4(scale, 0, 0, 0),
@@ -609,7 +617,7 @@ namespace Zene.Structs
                 new Vector4(0, 0, 0, 1));
         }
 
-        public static Matrix4 CreateScale(double scaleX, double scaleY, double scaleZ)
+        public static Matrix4 CreateScale(floatv scaleX, floatv scaleY, floatv scaleZ)
         {
             return new Matrix4(
                 new Vector4(scaleX, 0, 0, 0),
@@ -618,7 +626,7 @@ namespace Zene.Structs
                 new Vector4(0, 0, 0, 1));
         }
 
-        public static Matrix4 CreateScale(double scaleX, double scaleY)
+        public static Matrix4 CreateScale(floatv scaleX, floatv scaleY)
         {
             return new Matrix4(
                 new Vector4(scaleX, 0, 0, 0),
@@ -631,7 +639,7 @@ namespace Zene.Structs
 
         public static Matrix4 CreateScale(Vector2 scale) => CreateScale(scale.X, scale.Y);
 
-        public static Matrix4 CreateTranslation(double xyz)
+        public static Matrix4 CreateTranslation(floatv xyz)
         {
             return new Matrix4(
                 new Vector4(1, 0, 0, 0),
@@ -640,7 +648,7 @@ namespace Zene.Structs
                 new Vector4(xyz, xyz, xyz, 1));
         }
 
-        public static Matrix4 CreateTranslation(double x, double y, double z)
+        public static Matrix4 CreateTranslation(floatv x, floatv y, floatv z)
         {
             return new Matrix4(
                 new Vector4(1, 0, 0, 0),
@@ -649,7 +657,7 @@ namespace Zene.Structs
                 new Vector4(x, y, z, 1));
         }
 
-        public static Matrix4 CreateTranslation(double x, double y)
+        public static Matrix4 CreateTranslation(floatv x, floatv y)
         {
             return new Matrix4(
                 new Vector4(1, 0, 0, 0),
@@ -673,7 +681,7 @@ namespace Zene.Structs
                 new Vector4(c.X, c.Y, 0, 1));
         }
 
-        public static Matrix4 CreateBox(IBox box, double depth)
+        public static Matrix4 CreateBox(IBox box, floatv depth)
         {
             Vector2 c = box.Centre;
 
@@ -695,11 +703,11 @@ namespace Zene.Structs
                 new Vector4(c.X, c.Y, c.Z, 1));
         }
 
-        public static Matrix4 CreateOrthographicOffCentre(double left, double right, double top, double bottom, double depthNear, double depthFar)
+        public static Matrix4 CreateOrthographicOffCentre(floatv left, floatv right, floatv top, floatv bottom, floatv depthNear, floatv depthFar)
         {
-            double invRL = 1.0 / (right - left);
-            double invTB = 1.0 / (top - bottom);
-            double invFN = 1.0 / (depthFar - depthNear);
+            floatv invRL = 1 / (right - left);
+            floatv invTB = 1 / (top - bottom);
+            floatv invFN = 1 / (depthFar - depthNear);
 
             return new Matrix4(
                 new Vector4(2 * invRL, 0, 0, 0),
@@ -708,12 +716,12 @@ namespace Zene.Structs
                 new Vector4(-(right + left) * invRL, -(top + bottom) * invTB, -(depthFar + depthNear) * invFN, 1));
         }
 
-        public static Matrix4 CreateOrthographic(double width, double height, double depthNear, double depthFar)
+        public static Matrix4 CreateOrthographic(floatv width, floatv height, floatv depthNear, floatv depthFar)
         {
             return CreateOrthographicOffCentre(-width / 2, width / 2, height / 2, -height / 2, depthNear, depthFar);
         }
 
-        public static Matrix4 CreatePerspectiveOffCentre(double left, double right, double top, double bottom, double depthNear, double depthFar)
+        public static Matrix4 CreatePerspectiveOffCentre(floatv left, floatv right, floatv top, floatv bottom, floatv depthNear, floatv depthFar)
         {
             if (depthNear <= 0)
             {
@@ -730,12 +738,12 @@ namespace Zene.Structs
                 throw new ArgumentOutOfRangeException(nameof(depthNear));
             }
             /*
-            double x = 2.0 * depthNear / (right - left);
-            double y = 2.0 * depthNear / (top - bottom);
-            double a = (right + left) / (right - left);
-            double b = (top + bottom) / (top - bottom);
-            double c = -(depthFar + depthNear) / (depthFar - depthNear);
-            double d = -(2.0 * depthFar * depthNear) / (depthFar - depthNear);
+            floatv x = 2.0 * depthNear / (right - left);
+            floatv y = 2.0 * depthNear / (top - bottom);
+            floatv a = (right + left) / (right - left);
+            floatv b = (top + bottom) / (top - bottom);
+            floatv c = -(depthFar + depthNear) / (depthFar - depthNear);
+            floatv d = -(2.0 * depthFar * depthNear) / (depthFar - depthNear);
 
             return new Matrix4(
                 new Vector4(x, 0, 0, 0),
@@ -743,10 +751,10 @@ namespace Zene.Structs
                 new Vector4(a, b, c, -1),
                 new Vector4(0, 0, d, 0));*/
 
-            double widthMulti = 1 / (right - left);
-            double heightMulti = 1 / (bottom - top);
-            double depthMutli = 1 / (depthFar - depthNear);
-            double near2 = depthNear * 2;
+            floatv widthMulti = 1 / (right - left);
+            floatv heightMulti = 1 / (bottom - top);
+            floatv depthMutli = 1 / (depthFar - depthNear);
+            floatv near2 = depthNear * 2;
 
             return new Matrix4(
                 new Vector4(near2 * widthMulti, 0, 0, 0),
@@ -755,7 +763,7 @@ namespace Zene.Structs
                 new Vector4(0, 0, -depthFar * depthNear * depthMutli, 0));
         }
 
-        public static Matrix4 CreatePerspectiveFieldOfView(Radian fovy, double aspect, double depthNear, double depthFar)
+        public static Matrix4 CreatePerspectiveFieldOfView(Radian fovy, floatv aspect, floatv depthNear, floatv depthFar)
         {
             if (fovy <= 0 || fovy > Math.PI)
             {
@@ -777,15 +785,15 @@ namespace Zene.Structs
                 throw new ArgumentOutOfRangeException(nameof(depthFar));
             }
             /*
-            double maxY = depthNear * Math.Tan(0.5 * fovy);
-            double minY = -maxY;
-            double minX = minY * aspect;
-            double maxX = maxY * aspect;
+            floatv maxY = depthNear * Math.Tan(0.5 * fovy);
+            floatv minY = -maxY;
+            floatv minX = minY * aspect;
+            floatv maxX = maxY * aspect;
 
             return CreatePerspectiveOffCenter(minX, maxX, minY, maxY, depthNear, depthFar);*/
 
-            double depthMutli = 1 / (depthFar - depthNear);
-            double degree = Math.Tan(fovy * 0.5);
+            floatv depthMutli = 1 / (depthFar - depthNear);
+            floatv degree = Maths.Tan(fovy * 0.5f);
 
             return new Matrix4(
                 new Vector4(1 / (aspect * degree), 0, 0, 0),
@@ -807,7 +815,7 @@ namespace Zene.Structs
                 new Vector4(-((x.X * eye.X) + (x.Y * eye.Y) + (x.Z * eye.Z)), -((y.X * eye.X) + (y.Y * eye.Y) + (y.Z * eye.Z)), -((z.X * eye.X) + (z.Y * eye.Y) + (z.Z * eye.Z)), 1));
         }
 
-        public static Matrix4 LookAt(double eyeX, double eyeY, double eyeZ, double targetX, double targetY, double targetZ, double upX, double upY, double upZ)
+        public static Matrix4 LookAt(floatv eyeX, floatv eyeY, floatv eyeZ, floatv targetX, floatv targetY, floatv targetZ, floatv upX, floatv upY, floatv upZ)
         {
             return LookAt(new Vector3(eyeX, eyeY, eyeZ), new Vector3(targetX, targetY, targetZ), new Vector3(upX, upY, upZ));
         }

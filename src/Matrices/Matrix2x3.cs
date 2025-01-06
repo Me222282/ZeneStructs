@@ -15,7 +15,7 @@ namespace Zene.Structs
             Row1 = row1;
         }
 
-        public Matrix2x3(params double[] matrix)
+        public Matrix2x3(params floatv[] matrix)
         {
             if (matrix.Length < (Rows * Columns))
             {
@@ -34,13 +34,13 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                matrix.MatrixData(new MatrixSpan(2, 3, new Span<double>(ptr, 6)));
+                matrix.MatrixData(new MatrixSpan(2, 3, new Span<floatv>(ptr, 6)));
             }
         }
 
-        internal fixed double _matrix[6];
+        internal fixed floatv _matrix[6];
 
-        public double this[int x, int y]
+        public floatv this[int x, int y]
         {
             get
             {
@@ -129,7 +129,7 @@ namespace Zene.Structs
             }
         }
 
-        public double Trace() => _matrix[0] + _matrix[4];
+        public floatv Trace() => _matrix[0] + _matrix[4];
 
         public Matrix3x2 Transpose() => new Matrix3x2(Column0, Column1, Column2);
 
@@ -153,7 +153,7 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                Span<double> s = new Span<double>(ptr, 6);
+                Span<floatv> s = new Span<floatv>(ptr, 6);
                 ms.Fill(s, 2, 3);
             }
         }
@@ -175,7 +175,7 @@ namespace Zene.Structs
 
         public static MultiplyMatrix operator *(Matrix2x3 a, IMatrix b) => new MultiplyMatrix(a, b);
         
-        public static Matrix2x3 operator *(Matrix2x3 a, double b)
+        public static Matrix2x3 operator *(Matrix2x3 a, floatv b)
         {
             Matrix2x3 m = new Matrix2x3();
 
@@ -188,7 +188,7 @@ namespace Zene.Structs
 
             return m;
         }
-        public static Matrix2x3 operator *(double b, Matrix2x3 a)
+        public static Matrix2x3 operator *(floatv b, Matrix2x3 a)
         {
             Matrix2x3 m = new Matrix2x3();
 
@@ -282,17 +282,17 @@ namespace Zene.Structs
         
         public static Matrix2x3 CreateRotation(Radian angle)
         {
-            double cos = Math.Cos(angle);
-            double sin = Math.Sin(angle);
+            floatv cos = Maths.Cos(angle);
+            floatv sin = Maths.Sin(angle);
 
             return new Matrix2x3(new Vector3(cos, sin, 0), new Vector3(-sin, cos, 0));
         }
 
-        public static Matrix2x3 CreateScale(double scale)
+        public static Matrix2x3 CreateScale(floatv scale)
         {
             return new Matrix2x3(new Vector3(scale, 0, 0), new Vector3(0, scale, 0));
         }
-        public static Matrix2x3 CreateScale(double scaleX, double scaleY)
+        public static Matrix2x3 CreateScale(floatv scaleX, floatv scaleY)
         {
             return new Matrix2x3(new Vector3(scaleX, 0, 0), new Vector3(0, scaleY, 0));
         }
@@ -301,13 +301,13 @@ namespace Zene.Structs
             return CreateScale(scale.X, scale.Y);
         }
 
-        public static Matrix2x3 CreateTranslation(double xy)
+        public static Matrix2x3 CreateTranslation(floatv xy)
         {
             return new Matrix2x3(
                 new Vector3(1, 0, xy),
                 new Vector3(0, 1, xy));
         }
-        public static Matrix2x3 CreateTranslation(double x, double y)
+        public static Matrix2x3 CreateTranslation(floatv x, floatv y)
         {
             return new Matrix2x3(
                 new Vector3(1, 0, x),

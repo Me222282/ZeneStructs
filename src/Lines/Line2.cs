@@ -24,7 +24,7 @@ namespace Zene.Structs
         /// <param name="dirY">The y value for the direction of the line.</param>
         /// <param name="locX">The x value for the reference location for the line.</param>
         /// <param name="locY">The y value for the reference location for the line.</param>
-        public Line2(double dirX, double dirY, double locX, double locY)
+        public Line2(floatv dirX, floatv dirY, floatv locX, floatv locY)
         {
             _direction = new Vector2(dirX, dirY);
             Location = new Vector2(locX, locY);
@@ -85,13 +85,13 @@ namespace Zene.Structs
             Vector2 b = Direction;
             Vector2 d = line.Direction;
 
-            double pDot = b.PerpDot(d);
+            floatv pDot = b.PerpDot(d);
 
             // If b dot d == 0, it means the lines are parallel and have an intersection of infinity
             if (pDot == 0) { return Vector2.PositiveInfinity; }
 
             Vector2 c = line.Location - Location;
-            double t = c.PerpDot(d) / pDot;
+            floatv t = c.PerpDot(d) / pDot;
 
             return Location + (t * b);
         }
@@ -104,8 +104,8 @@ namespace Zene.Structs
         public Vector2 Reflect(Vector2 x)
         {
             Vector2 dir = Direction;
-            
-            double t = (x - Location).Dot(dir) / dir.SquaredLength;
+
+            floatv t = (x - Location).Dot(dir) / dir.SquaredLength;
             return (2d * (Location + t * dir)) - x;
         }
         /// <summary>
@@ -116,7 +116,7 @@ namespace Zene.Structs
         public Vector2 Project(Vector2 x)
         {
             Vector2 dir = Direction;
-            double t = (x - Location).Dot(dir) / dir.SquaredLength;
+            floatv t = (x - Location).Dot(dir) / dir.SquaredLength;
             return Location + t * dir;
         }
         /// <summary>
@@ -137,7 +137,7 @@ namespace Zene.Structs
         /// <summary>
         /// Gets the x component of the point along the line with the y component of <paramref name="y"/>.
         /// </summary>
-        public double GetX(double y)
+        public floatv GetX(floatv y)
         {
             // Line is straight
             if (_direction.X == 0)
@@ -150,7 +150,7 @@ namespace Zene.Structs
         /// <summary>
         /// Gets the y component of the point along the line with the x component of <paramref name="x"/>.
         /// </summary>
-        public double GetY(double x)
+        public floatv GetY(floatv x)
         {
             // Line is straight
             if (_direction.Y == 0)
@@ -168,31 +168,31 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="point">The point to compare.</param>
         /// <returns></returns>
-        public double DistanceFromPoint(Vector3 point)
+        public floatv DistanceFromPoint(Vector3 point)
         {
             Vector2 n = Direction.Rotated90();
 
-            double sl = n.SquaredLength;
-            double v = (point - Location).Dot(n);
+            floatv sl = n.SquaredLength;
+            floatv v = (point - Location).Dot(n);
 
             if (sl == 1d)
             {
                 return v;
             }
 
-            return v / Math.Sqrt(sl);
+            return v / Maths.Sqrt(sl);
         }
         /// <summary>
         /// Returns the squared shortest distance from this line to <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point to compare.</param>
         /// <returns></returns>
-        public double SquaredDistanceFromPoint(Vector3 point)
+        public floatv SquaredDistanceFromPoint(Vector3 point)
         {
             Vector2 n = Direction.Rotated90();
 
-            double sl = n.SquaredLength;
-            double v = (point - Location).Dot(n);
+            floatv sl = n.SquaredLength;
+            floatv v = (point - Location).Dot(n);
             v *= v;
 
             if (sl == 1d)
@@ -229,9 +229,9 @@ namespace Zene.Structs
 #nullable enable
         public override string ToString()
         {
-            double m = _direction.Y / _direction.X;
+            floatv m = _direction.Y / _direction.X;
 
-            if (double.IsInfinity(m))
+            if (floatv.IsInfinity(m))
             {
                 return $"x = {Location.X}";
             }
@@ -239,7 +239,7 @@ namespace Zene.Structs
             {
                 return $"y = {Location.Y}";
             }
-            double c = Location.Y - (m * Location.X);
+            floatv c = Location.Y - (m * Location.X);
 
             if (c < 0)
             {
@@ -258,9 +258,9 @@ namespace Zene.Structs
         }
         public string ToString(string? format)
         {
-            double m = _direction.Y / _direction.X;
+            floatv m = _direction.Y / _direction.X;
 
-            if (double.IsInfinity(m))
+            if (floatv.IsInfinity(m))
             {
                 return $"x = {Location.X.ToString(format)}";
             }
@@ -268,7 +268,7 @@ namespace Zene.Structs
             {
                 return $"y = {Location.Y.ToString(format)}";
             }
-            double c = Location.Y - (m * Location.X);
+            floatv c = Location.Y - (m * Location.X);
 
             if (c < 0)
             {

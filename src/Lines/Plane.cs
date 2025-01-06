@@ -57,27 +57,27 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="point">The point to compare.</param>
         /// <returns></returns>
-        public double DistanceFromPoint(Vector3 point)
+        public floatv DistanceFromPoint(Vector3 point)
         {
-            double sl = Normal.SquaredLength;
-            double v = (point - Location).Dot(Normal);
+            floatv sl = Normal.SquaredLength;
+            floatv v = (point - Location).Dot(Normal);
 
             if (sl == 1d)
             {
                 return v;
             }
 
-            return v / Math.Sqrt(sl);
+            return v / Maths.Sqrt(sl);
         }
         /// <summary>
         /// Returns the squared shortest distance from this line to <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point to compare.</param>
         /// <returns></returns>
-        public double SquaredDistanceFromPoint(Vector3 point)
+        public floatv SquaredDistanceFromPoint(Vector3 point)
         {
-            double sl = Normal.SquaredLength;
-            double v = (point - Location).Dot(Normal);
+            floatv sl = Normal.SquaredLength;
+            floatv v = (point - Location).Dot(Normal);
             v *= v;
 
             if (sl == 1d)
@@ -95,7 +95,7 @@ namespace Zene.Structs
         /// <returns></returns>
         public Vector3 Project(Vector3 x)
         {
-            double v = (x - Location).Dot(Normal);
+            floatv v = (x - Location).Dot(Normal);
             Vector3 diff = Normal * (v / Normal.SquaredLength);
             return x - diff;
         }
@@ -106,7 +106,7 @@ namespace Zene.Structs
         /// <returns></returns>
         public Vector3 Reflect(Vector3 x)
         {
-            double v = (x - Location).Dot(Normal);
+            floatv v = (x - Location).Dot(Normal);
             Vector3 diff = Normal * (v / Normal.SquaredLength);
             return x - (2d * diff);
         }
@@ -151,22 +151,22 @@ namespace Zene.Structs
                 return new Line3(Vector3.PositiveInfinity, Vector3.PositiveInfinity);
             }
 
-            double d1 = n1.Dot(Location);
-            double d2 = n2.Dot(p.Location);
-            double z;
+            floatv d1 = n1.Dot(Location);
+            floatv d2 = n2.Dot(p.Location);
+            floatv z;
 
             // annoying
             if ((n1.Y == 0d && n1.Z == 0d) ||
                 (n2.Y == 0d && n2.Z == 0d))
             {
                 z = ((d1 * n2.X) - (d2 * n1.X)) / ((n1.Z * n2.X) - (n2.Z * n1.X));
-                double x = (d1 - (z * n1.Z)) / n1.X;
+                floatv x = (d1 - (z * n1.Z)) / n1.X;
 
                 return new Line3(dir, (x, 0d, z));
             }
 
             z = ((d1 * n2.Y) - (d2 * n1.Y)) / ((n1.Z * n2.Y) - (n2.Z * n1.Y));
-            double y = (d1 - (z * n1.Z)) / n1.Y;
+            floatv y = (d1 - (z * n1.Z)) / n1.Y;
 
             return new Line3(dir, (0d, y, z));
         }
@@ -180,12 +180,12 @@ namespace Zene.Structs
             Vector3 loc = l.Location;
             Vector3 dir = l.Direction;
             
-            double dn = dir.Dot(Normal);
+            floatv dn = dir.Dot(Normal);
             if (dn == 0d)
             {
                 return Vector2.PositiveInfinity;
             }
-            double t = (Location - loc).Dot(Normal) / dn;
+            floatv t = (Location - loc).Dot(Normal) / dn;
             return loc + (t * dir);
         }
 
@@ -211,8 +211,8 @@ namespace Zene.Structs
         {
             if (Normal.Cross(p.Normal) != 0d) { return false; }
             
-            double d1 = Location.Dot(Normal);
-            double d2 = p.Location.Dot(Normal);
+            floatv d1 = Location.Dot(Normal);
+            floatv d2 = p.Location.Dot(Normal);
             
             return d1 == d2;
         }

@@ -7,7 +7,7 @@ namespace Zene.Structs
     /// </summary>
     public struct Radian
     {
-        private const double _over180 = 1.0 / 180;
+        private const floatv _over180 = (floatv)1 / 180;
 
         /// <summary>
         /// Creates a radians value from a <see cref="double"/>.
@@ -15,7 +15,7 @@ namespace Zene.Structs
         /// <param name="radians">The radians angle.</param>
         public Radian(double radians)
         {
-            _radian = radians;
+            _radian = (floatv)radians;
         }
         /// <summary>
         /// Creates a radians value from a <see cref="float"/>.
@@ -23,10 +23,10 @@ namespace Zene.Structs
         /// <param name="radians">The radians angle.</param>
         public Radian(float radians)
         {
-            _radian = radians;
+            _radian = (floatv)radians;
         }
 
-        private readonly double _radian;
+        private readonly floatv _radian;
 
 #nullable enable
         public override string ToString() => _radian.ToString();
@@ -38,9 +38,9 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="degrees">The degrees angle.</param>
         /// <returns></returns>
-        public static Radian Degrees(double degrees)
+        public static Radian Degrees(floatv degrees)
         {
-            return new Radian(degrees * _over180 * Math.PI);
+            return new Radian(degrees * _over180 * Maths.PI);
         }
 
         /// <summary>
@@ -48,12 +48,12 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="percent">The percentage around the angle.</param>
         /// <returns></returns>
-        public static Radian Percent(double percent)
+        public static Radian Percent(floatv percent)
         {
-            return new Radian(percent * 2 * Math.PI);
+            return new Radian(percent * 2 * Maths.PI);
         }
 
-        public Radian Lerp(Radian b, double blend) => _radian.Lerp(b._radian, blend);
+        public Radian Lerp(Radian b, floatv blend) => _radian.Lerp(b._radian, blend);
 
         public override bool Equals(object obj)
         {
@@ -76,7 +76,7 @@ namespace Zene.Structs
         public static implicit operator double(Radian r) => r._radian;
         public static implicit operator Radian(double d) => new Radian(d);
 
-        public static explicit operator float(Radian r) => (float)r._radian;
+        public static implicit operator float(Radian r) => (float)r._radian;
         public static implicit operator Radian(float f) => new Radian(f);
 
         public static implicit operator Radian(Degrees deg) => new Radian(deg * _over180 * Math.PI);
@@ -84,8 +84,8 @@ namespace Zene.Structs
         public static Radian operator -(Radian r) => new Radian(-r._radian);
 
         public static Radian Zero { get; } = new Radian();
-        public static Radian Quarter { get; } = new Radian(Math.PI / 2d);
-        public static Radian Half { get; } = new Radian(Math.PI);
-        public static Radian Full { get; } = new Radian(Math.PI * 2d);
+        public static Radian Quarter { get; } = new Radian(Maths.PI * 0.5);
+        public static Radian Half { get; } = new Radian(Maths.PI);
+        public static Radian Full { get; } = new Radian(Maths.PI * 2);
     }
 }

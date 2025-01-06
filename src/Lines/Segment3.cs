@@ -26,7 +26,7 @@ namespace Zene.Structs
         /// <param name="bX">The x value of the second point to reference.</param>
         /// <param name="bY">The y value of the second point to reference.</param>
         /// <param name="bZ">The z value of the second point to reference.</param>
-        public Segment3(double aX, double aY, double aZ, double bX, double bY, double bZ)
+        public Segment3(floatv aX, floatv aY, floatv aZ, floatv bX, floatv bY, floatv bZ)
         {
             A = new Vector3(aX, aY, aZ);
             B = new Vector3(bX, bY, bZ);
@@ -39,7 +39,7 @@ namespace Zene.Structs
         /// </remarks>
         /// <param name="l">The line to use as a reference.</param>
         /// <param name="distance">THe distance along the line to bee used as the segment.</param>
-        public Segment3(Line3 l, double distance)
+        public Segment3(Line3 l, floatv distance)
         {
             A = l.Location;
             B = l.Location + (l.Direction * distance);

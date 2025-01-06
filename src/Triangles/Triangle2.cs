@@ -30,7 +30,7 @@ namespace Zene.Structs
         /// </summary>
         public Vector2 C { get; set; }
 
-        private const double _div3 = 1d / 3d;
+        private const floatv _div3 = (floatv)1 / 3;
         /// <summary>
         /// The central point of the triangle.
         /// </summary>
@@ -49,15 +49,15 @@ namespace Zene.Structs
         /// <summary>
         /// The area of the triangle.
         /// </summary>
-        public double Area => Math.Abs((A - B).PerpDot(B - C)) * 0.5;
+        public floatv Area => Math.Abs((A - B).PerpDot(B - C)) * 0.5f;
         /// <summary>
         /// The squared area of the triangle.
         /// </summary>
-        public double SquaredArea
+        public floatv SquaredArea
         {
             get
             {
-                double v = (A - B).PerpDot(B - C) * 0.5;
+                floatv v = (A - B).PerpDot(B - C) * 0.5f;
                 return v * v;
             }
         }
@@ -68,12 +68,12 @@ namespace Zene.Structs
         // Sourced from https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
         public bool Contains(Vector2 point)
         {
-            double s = (A.X - C.X) * (point.Y - C.Y) - (A.Y - C.Y) * (point.X - C.X);
-            double t = (B.X - A.X) * (point.Y - A.Y) - (B.Y - A.Y) * (point.X - A.X);
+            floatv s = (A.X - C.X) * (point.Y - C.Y) - (A.Y - C.Y) * (point.X - C.X);
+            floatv t = (B.X - A.X) * (point.Y - A.Y) - (B.Y - A.Y) * (point.X - A.X);
 
             if ((s < 0) != (t < 0) && s != 0 && t != 0) { return false; }
 
-            double d = (C.X - B.X) * (point.Y - B.Y) - (C.Y - B.Y) * (point.X - B.X);
+            floatv d = (C.X - B.X) * (point.Y - B.Y) - (C.Y - B.Y) * (point.X - B.X);
             return d == 0 || (d < 0) == (s + t <= 0);
         }
 
@@ -99,9 +99,9 @@ namespace Zene.Structs
             Vector2 ac = C - A;
             Vector2 bc = C - B;
 
-            double a = Math.Abs(ab.Dot(ac));
-            double b = Math.Abs(ab.Dot(bc));
-            double c = Math.Abs(bc.Dot(ac));
+            floatv a = Math.Abs(ab.Dot(ac));
+            floatv b = Math.Abs(ab.Dot(bc));
+            floatv c = Math.Abs(bc.Dot(ac));
 
             return a == b && b == c;
         }
@@ -114,9 +114,9 @@ namespace Zene.Structs
             Vector2 ac = C - A;
             Vector2 bc = C - B;
 
-            double a = Math.Abs(ab.Dot(ac));
-            double b = Math.Abs(ab.Dot(bc));
-            double c = Math.Abs(bc.Dot(ac));
+            floatv a = Math.Abs(ab.Dot(ac));
+            floatv b = Math.Abs(ab.Dot(bc));
+            floatv c = Math.Abs(bc.Dot(ac));
 
             return a == b || b == c || a == c;
         }
@@ -129,9 +129,9 @@ namespace Zene.Structs
             Vector2 ac = C - A;
             Vector2 bc = C - B;
 
-            double a = Math.Abs(ab.Dot(ac));
-            double b = Math.Abs(ab.Dot(bc));
-            double c = Math.Abs(bc.Dot(ac));
+            floatv a = Math.Abs(ab.Dot(ac));
+            floatv b = Math.Abs(ab.Dot(bc));
+            floatv c = Math.Abs(bc.Dot(ac));
 
             return a != b && b != c && a != c;
         }
@@ -145,9 +145,9 @@ namespace Zene.Structs
             Vector2 ac = C - A;
             Vector2 bc = C - B;
 
-            double a = Math.Abs(ab.Dot(ac));
-            double b = Math.Abs(ab.Dot(bc));
-            double c = Math.Abs(bc.Dot(ac));
+            floatv a = Math.Abs(ab.Dot(ac));
+            floatv b = Math.Abs(ab.Dot(bc));
+            floatv c = Math.Abs(bc.Dot(ac));
 
             TriangleType tt;
             TrianglePoint tp = TrianglePoint.None;
@@ -188,6 +188,6 @@ namespace Zene.Structs
         /// <summary>
         /// A <see cref="Triangle2"/> with all values 0.
         /// </summary>
-        public static Triangle2 Zero { get; } = new Triangle2(0d, 0d, 0d);
+        public static Triangle2 Zero { get; } = new Triangle2(0, 0, 0);
     }
 }

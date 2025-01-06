@@ -16,8 +16,8 @@ namespace Zene.Structs
             Row2 = row2;
             Row3 = row3;
         }
-
-        public Matrix4x2(params double[] matrix)
+        
+        public Matrix4x2(params floatv[] matrix)
         {
             if (matrix.Length < (Rows * Columns))
             {
@@ -40,13 +40,13 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                matrix.MatrixData(new MatrixSpan(4, 2, new Span<double>(ptr, 8)));
+                matrix.MatrixData(new MatrixSpan(4, 2, new Span<floatv>(ptr, 8)));
             }
         }
 
-        internal fixed double _matrix[8];
+        internal fixed floatv _matrix[8];
 
-        public double this[int x, int y]
+        public floatv this[int x, int y]
         {
             get
             {
@@ -150,7 +150,7 @@ namespace Zene.Structs
             }
         }
 
-        public double Trace() => _matrix[0] + _matrix[3];
+        public floatv Trace() => _matrix[0] + _matrix[3];
 
         public Matrix2x4 Transpose() => new Matrix2x4(Column0, Column1);
 
@@ -176,7 +176,7 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                Span<double> s = new Span<double>(ptr, 8);
+                Span<floatv> s = new Span<floatv>(ptr, 8);
                 ms.Fill(s, 4, 2);
             }
         }
@@ -202,7 +202,7 @@ namespace Zene.Structs
 
         public static MultiplyMatrix operator *(Matrix4x2 a, IMatrix b) => new MultiplyMatrix(a, b);
         
-        public static Matrix4x2 operator *(Matrix4x2 a, double b)
+        public static Matrix4x2 operator *(Matrix4x2 a, floatv b)
         {
             Matrix4x2 m = new Matrix4x2();
 
@@ -217,7 +217,7 @@ namespace Zene.Structs
 
             return m;
         }
-        public static Matrix4x2 operator *(double b, Matrix4x2 a)
+        public static Matrix4x2 operator *(floatv b, Matrix4x2 a)
         {
             Matrix4x2 m = new Matrix4x2();
 
@@ -341,23 +341,23 @@ namespace Zene.Structs
         
         public static Matrix4x2 CreateRotation(Radian angle)
         {
-            double cos = Math.Cos(angle);
-            double sin = Math.Sin(angle);
+            floatv cos = Maths.Cos(angle);
+            floatv sin = Maths.Sin(angle);
 
             return new Matrix4x2(new Vector2(cos, sin), new Vector2(-sin, cos), Vector2.Zero, Vector2.Zero);
         }
 
-        public static Matrix4x2 CreateScale(double scale)
+        public static Matrix4x2 CreateScale(floatv scale)
         {
             return new Matrix4x2(new Vector2(scale, 0), new Vector2(0, scale), Vector2.Zero, Vector2.Zero);
         }
-        public static Matrix4x2 CreateScale(double scaleX, double scaleY)
+        public static Matrix4x2 CreateScale(floatv scaleX, floatv scaleY)
         {
             return new Matrix4x2(new Vector2(scaleX, 0), new Vector2(0, scaleY), Vector2.Zero, Vector2.Zero);
         }
         public static Matrix4x2 CreateScale(Vector2 scale) => CreateScale(scale.X, scale.Y);
 
-        public static Matrix4x2 CreateTranslation(double xy)
+        public static Matrix4x2 CreateTranslation(floatv xy)
         {
             return new Matrix4x2(
                 new Vector2(1, 0),
@@ -365,7 +365,7 @@ namespace Zene.Structs
                 Vector2.Zero,
                 new Vector2(xy, xy));
         }
-        public static Matrix4x2 CreateTranslation(double x, double y)
+        public static Matrix4x2 CreateTranslation(floatv x, floatv y)
         {
             return new Matrix4x2(
                 new Vector2(1, 0),

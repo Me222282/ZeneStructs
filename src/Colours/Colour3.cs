@@ -57,14 +57,14 @@ namespace Zene.Structs
         /// <summary>
         /// Returns this colour stored as HSL values.
         /// </summary>
-        public Vector3 ToHsl() => ColourF3.ToHsl(R / 255d, G / 255d, B / 255d);
+        public Vector3 ToHsl() => ColourF3.ToHsl(R / 255f, G / 255f, B / 255f);
         /// <summary>
         /// Creates a colour from HLS values.
         /// </summary>
         /// <param name="h">The hue of the colour.</param>
         /// <param name="s">The saturation of the colour.</param>
         /// <param name="l">The luminosity of the colour.</param>
-        public static Colour3 FromHsl(double h, double s, double l)
+        public static Colour3 FromHsl(floatv h, floatv s, floatv l)
             => (Colour3)ColourF3.FromHsl(h, s, l);
         /// <summary>
         /// Creates a colour from a wavelength of light.
@@ -136,26 +136,6 @@ namespace Zene.Structs
         public static explicit operator Colour3(Vector3<byte> v)
         {
             return new Colour3(v.X, v.Y, v.Z);
-        }
-
-        public static explicit operator Vector3<int>(Colour3 c)
-        {
-            return new Vector3<int>(c.R, c.G, c.B);
-        }
-        public static explicit operator Colour3(Vector3<int> v)
-        {
-            return new Colour3((byte)v.X, (byte)v.Y, (byte)v.Z);
-        }
-
-        public static explicit operator Vector3<float>(Colour3 c)
-        {
-            ColourF3 cf = c;
-
-            return new Vector3<float>(cf.R, cf.G, cf.B);
-        }
-        public static explicit operator Colour3(Vector3<float> v)
-        {
-            return new Colour3((byte)(v.X * 255), (byte)(v.Y * 255), (byte)(v.Z * 255));
         }
 
         public static explicit operator Vector3I(Colour3 c)

@@ -17,7 +17,7 @@ namespace Zene.Structs
             Row3 = row3;
         }
 
-        public Matrix4x3(params double[] matrix)
+        public Matrix4x3(params floatv[] matrix)
         {
             if (matrix.Length < (Rows * Columns))
             {
@@ -44,13 +44,13 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                matrix.MatrixData(new MatrixSpan(4, 3, new Span<double>(ptr, 12)));
+                matrix.MatrixData(new MatrixSpan(4, 3, new Span<floatv>(ptr, 12)));
             }
         }
 
-        internal fixed double _matrix[12];
+        internal fixed floatv _matrix[12];
 
-        public double this[int x, int y]
+        public floatv this[int x, int y]
         {
             get
             {
@@ -173,7 +173,7 @@ namespace Zene.Structs
             }
         }
 
-        public double Trace() => _matrix[0] + _matrix[4] + _matrix[8];
+        public floatv Trace() => _matrix[0] + _matrix[4] + _matrix[8];
 
         public Matrix4x3 Invert()
         {
@@ -240,7 +240,7 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                Span<double> s = new Span<double>(ptr, 12);
+                Span<floatv> s = new Span<floatv>(ptr, 12);
                 ms.Fill(s, 4, 3);
             }
         }
@@ -266,7 +266,7 @@ namespace Zene.Structs
 
         public static MultiplyMatrix operator *(Matrix4x3 a, IMatrix b) => new MultiplyMatrix(a, b);
         
-        public static Matrix4x3 operator *(Matrix4x3 a, double b)
+        public static Matrix4x3 operator *(Matrix4x3 a, floatv b)
         {
             Matrix4x3 m = new Matrix4x3();
 
@@ -285,7 +285,7 @@ namespace Zene.Structs
 
             return m;
         }
-        public static Matrix4x3 operator *(double b, Matrix4x3 a)
+        public static Matrix4x3 operator *(floatv b, Matrix4x3 a)
         {
             Matrix4x3 m = new Matrix4x3();
 
@@ -419,7 +419,7 @@ namespace Zene.Structs
         private static Matrix4x3 _identity = new Matrix4x3(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), Vector3.Zero);
         public static ref Matrix4x3 Identity => ref _identity;
         
-        public static Matrix4x3 CreateScale(double scale)
+        public static Matrix4x3 CreateScale(floatv scale)
         {
             return new Matrix4x3(
                 new Vector3(scale, 0, 0),
@@ -427,7 +427,7 @@ namespace Zene.Structs
                 new Vector3(0, 0, scale),
                 Vector3.Zero);
         }
-        public static Matrix4x3 CreateScale(double scaleX, double scaleY, double scaleZ)
+        public static Matrix4x3 CreateScale(floatv scaleX, floatv scaleY, floatv scaleZ)
         {
             return new Matrix4x3(
                 new Vector3(scaleX, 0, 0),
@@ -435,7 +435,7 @@ namespace Zene.Structs
                 new Vector3(0, 0, scaleZ),
                 Vector3.Zero);
         }
-        public static Matrix4x3 CreateScale(double scaleX, double scaleY)
+        public static Matrix4x3 CreateScale(floatv scaleX, floatv scaleY)
         {
             return new Matrix4x3(
                 new Vector3(scaleX, 0, 0),
@@ -446,7 +446,7 @@ namespace Zene.Structs
         public static Matrix4x3 CreateScale(Vector3 scale) => CreateScale(scale.X, scale.Y, scale.Z);
         public static Matrix4x3 CreateScale(Vector2 scale) => CreateScale(scale.X, scale.Y);
 
-        public static Matrix4x3 CreateTranslation(double xyz)
+        public static Matrix4x3 CreateTranslation(floatv xyz)
         {
             return new Matrix4x3(
                 new Vector3(1, 0, 0),
@@ -454,7 +454,7 @@ namespace Zene.Structs
                 new Vector3(0, 0, 1),
                 new Vector3(xyz));
         }
-        public static Matrix4x3 CreateTranslation(double x, double y, double z)
+        public static Matrix4x3 CreateTranslation(floatv x, floatv y, floatv z)
         {
             return new Matrix4x3(
                 new Vector3(1, 0, 0),
@@ -462,7 +462,7 @@ namespace Zene.Structs
                 new Vector3(0, 0, 1),
                 new Vector3(x, y, z));
         }
-        public static Matrix4x3 CreateTranslation(double x, double y)
+        public static Matrix4x3 CreateTranslation(floatv x, floatv y)
         {
             return new Matrix4x3(
                 new Vector3(1, 0, 0),
@@ -483,7 +483,7 @@ namespace Zene.Structs
                 new Vector3(0, 0, 1),
                 new Vector3(c.X, c.Y, 0));
         }
-        public static Matrix4x3 CreateBox(IBox box, double depth)
+        public static Matrix4x3 CreateBox(IBox box, floatv depth)
         {
             Vector2 c = box.Centre;
 
@@ -506,8 +506,8 @@ namespace Zene.Structs
 
         public static Matrix4x3 CreateRotationX(Radian angle)
         {
-            double cos = Math.Cos(angle);
-            double sin = Math.Sin(angle);
+            floatv cos = Maths.Cos(angle);
+            floatv sin = Maths.Sin(angle);
 
             return new Matrix4x3(
                 new Vector3(1, 0, 0),
@@ -517,8 +517,8 @@ namespace Zene.Structs
         }
         public static Matrix4x3 CreateRotationY(Radian angle)
         {
-            double cos = Math.Cos(angle);
-            double sin = Math.Sin(angle);
+            floatv cos = Maths.Cos(angle);
+            floatv sin = Maths.Sin(angle);
 
             return new Matrix4x3(
                 new Vector3(cos, 0, -sin),
@@ -528,8 +528,8 @@ namespace Zene.Structs
         }
         public static Matrix4x3 CreateRotationZ(Radian angle)
         {
-            double cos = Math.Cos(angle);
-            double sin = Math.Sin(angle);
+            floatv cos = Maths.Cos(angle);
+            floatv sin = Maths.Sin(angle);
 
             return new Matrix4x3(
                 new Vector3(cos, sin, 0),
@@ -541,22 +541,22 @@ namespace Zene.Structs
         public static Matrix4x3 CreateRotation(Vector3 axis, Radian angle)
         {
             axis.Normalise();
-            double axisX = axis.X, axisY = axis.Y, axisZ = axis.Z;
+            floatv axisX = axis.X, axisY = axis.Y, axisZ = axis.Z;
 
-            double cos = Math.Cos(-angle);
-            double sin = Math.Sin(-angle);
-            double t = 1.0f - cos;
+            floatv cos = Maths.Cos(-angle);
+            floatv sin = Maths.Sin(-angle);
+            floatv t = 1.0f - cos;
 
-            double tXX = t * axisX * axisX;
-            double tXY = t * axisX * axisY;
-            double tXZ = t * axisX * axisZ;
-            double tYY = t * axisY * axisY;
-            double tYZ = t * axisY * axisZ;
-            double tZZ = t * axisZ * axisZ;
+            floatv tXX = t * axisX * axisX;
+            floatv tXY = t * axisX * axisY;
+            floatv tXZ = t * axisX * axisZ;
+            floatv tYY = t * axisY * axisY;
+            floatv tYZ = t * axisY * axisZ;
+            floatv tZZ = t * axisZ * axisZ;
 
-            double sinX = sin * axisX;
-            double sinY = sin * axisY;
-            double sinZ = sin * axisZ;
+            floatv sinX = sin * axisX;
+            floatv sinY = sin * axisY;
+            floatv sinZ = sin * axisZ;
 
             return new Matrix4x3(
                 new Vector3(tXX + cos, tXY - sinZ, tXZ + sinY),

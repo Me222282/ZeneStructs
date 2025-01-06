@@ -19,6 +19,18 @@ namespace Zene.Structs
             G = g;
             B = b;
         }
+        /// <summary>
+        /// Creates a colour from RGB values.
+        /// </summary>
+        /// <param name="r">The red component of the colour.</param>
+        /// <param name="g">The green component of the colour.</param>
+        /// <param name="b">The blue component of the colour.</param>
+        public ColourF3(double r, double g, double b)
+        {
+            R = (float)r;
+            G = (float)g;
+            B = (float)b;
+        }
 
         /// <summary>
         /// The red component of the colour.
@@ -64,14 +76,14 @@ namespace Zene.Structs
         /// <param name="h">The hue of the colour.</param>
         /// <param name="s">The saturation of the colour.</param>
         /// <param name="l">The luminosity of the colour.</param>
-        public static ColourF3 FromHsl(double h, double s, double l)
+        public static ColourF3 FromHsl(floatv h, floatv s, floatv l)
         {
-            double p2;
+            floatv p2;
             if (l <= 0.5) p2 = l * (1 + s);
             else p2 = l + s - l * s;
 
-            double p1 = 2 * l - p2;
-            double r, g, b;
+            floatv p1 = 2 * l - p2;
+            floatv r, g, b;
             if (s == 0)
             {
                 r = l;
@@ -85,9 +97,9 @@ namespace Zene.Structs
                 b = QqhToRgb(p1, p2, h - 120);
             }
 
-            return new ColourF3((float)r, (float)g, (float)b);
+            return new ColourF3(r, g, b);
         }
-        private static double QqhToRgb(double q1, double q2, double hue)
+        private static floatv QqhToRgb(floatv q1, floatv q2, floatv hue)
         {
             if (hue > 360) hue -= 360;
             else if (hue < 0) hue += 360;
@@ -97,22 +109,22 @@ namespace Zene.Structs
             if (hue < 240) return q1 + (q2 - q1) * (240 - hue) / 60;
             return q1;
         }
-        internal static Vector3 ToHsl(double r, double g, double b)
+        internal static Vector3 ToHsl(floatv r, floatv g, floatv b)
         {
-            double h;
-            double s;
-            double l;
+            floatv h;
+            floatv s;
+            floatv l;
 
             // Get the maximum and minimum RGB components.
-            double max = r;
+            floatv max = r;
             if (max < g) max = g;
             if (max < b) max = b;
 
-            double min = r;
+            floatv min = r;
             if (min > g) min = g;
             if (min > b) min = b;
 
-            double diff = max - min;
+            floatv diff = max - min;
             l = (max + min) / 2;
             if (Math.Abs(diff) < 0.00001)
             {
@@ -124,9 +136,9 @@ namespace Zene.Structs
                 if (l <= 0.5) s = diff / (max + min);
                 else s = diff / (2 - max - min);
 
-                double r_dist = (max - r) / diff;
-                double g_dist = (max - g) / diff;
-                double b_dist = (max - b) / diff;
+                floatv r_dist = (max - r) / diff;
+                floatv g_dist = (max - g) / diff;
+                floatv b_dist = (max - b) / diff;
 
                 if (r == max) h = b_dist - g_dist;
                 else if (g == max) h = 2 + r_dist - b_dist;
@@ -224,24 +236,6 @@ namespace Zene.Structs
             return new ColourF3(v.X * ColourF.ByteToFloat, v.Y * ColourF.ByteToFloat, v.Z * ColourF.ByteToFloat);
         }
 
-        public static explicit operator Vector3<int>(ColourF3 c)
-        {
-            return new Vector3<int>((int)(c.R * 255), (int)(c.G * 255), (int)(c.B * 255));
-        }
-        public static explicit operator ColourF3(Vector3<int> v)
-        {
-            return new ColourF3(v.X * ColourF.ByteToFloat, v.Y * ColourF.ByteToFloat, v.Z * ColourF.ByteToFloat);
-        }
-
-        public static explicit operator Vector3<float>(ColourF3 c)
-        {
-            return new Vector3<float>(c.R, c.G, c.B);
-        }
-        public static explicit operator ColourF3(Vector3<float> v)
-        {
-            return new ColourF3(v.X, v.Y, v.Z);
-        }
-
         public static explicit operator Vector3I(ColourF3 c)
         {
             return new Vector3I((int)(c.R * 255), (int)(c.G * 255), (int)(c.B * 255));
@@ -257,7 +251,7 @@ namespace Zene.Structs
         }
         public static explicit operator ColourF3(Vector3 v)
         {
-            return new ColourF3((float)v.X, (float)v.Y, (float)v.Z);
+            return new ColourF3(v.X, v.Y, v.Z);
         }
 
         /// <summary>

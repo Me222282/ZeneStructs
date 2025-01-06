@@ -49,11 +49,11 @@ namespace Zene.Structs
         /// <summary>
         /// The area of the triangle.
         /// </summary>
-        public double Area => (A - B).Cross(B - C).Length * 0.5;
+        public floatv Area => (A - B).Cross(B - C).Length * 0.5f;
         /// <summary>
         /// The squared area of the triangle.
         /// </summary>
-        public double SquaredArea => (A - B).Cross(B - C).SquaredLength * 0.25;
+        public floatv SquaredArea => (A - B).Cross(B - C).SquaredLength * 0.25f;
 
         /// <summary>
         /// Determines whether <paramref name="point"/> is contained within this triangle.
@@ -91,12 +91,12 @@ namespace Zene.Structs
                 p = new Vector2(point.X, point.Y);
             }
 
-            double s = (a.X - c.X) * (p.Y - c.Y) - (a.Y - c.Y) * (p.X - c.X);
-            double t = (b.X - a.X) * (p.Y - a.Y) - (b.Y - a.Y) * (p.X - a.X);
+            floatv s = (a.X - c.X) * (p.Y - c.Y) - (a.Y - c.Y) * (p.X - c.X);
+            floatv t = (b.X - a.X) * (p.Y - a.Y) - (b.Y - a.Y) * (p.X - a.X);
 
             if ((s < 0) != (t < 0) && s != 0 && t != 0) { return false; }
 
-            double d = (c.X - b.X) * (p.Y - b.Y) - (c.Y - b.Y) * (p.X - b.X);
+            floatv d = (c.X - b.X) * (p.Y - b.Y) - (c.Y - b.Y) * (p.X - b.X);
             return d == 0 || (d < 0) == (s + t <= 0);
         }
 
@@ -122,9 +122,9 @@ namespace Zene.Structs
             Vector3 ac = C - A;
             Vector3 bc = C - B;
 
-            double a = Math.Abs(ab.Dot(ac));
-            double b = Math.Abs(ab.Dot(bc));
-            double c = Math.Abs(bc.Dot(ac));
+            floatv a = Math.Abs(ab.Dot(ac));
+            floatv b = Math.Abs(ab.Dot(bc));
+            floatv c = Math.Abs(bc.Dot(ac));
 
             return a == b && b == c;
         }
@@ -137,9 +137,9 @@ namespace Zene.Structs
             Vector3 ac = C - A;
             Vector3 bc = C - B;
 
-            double a = Math.Abs(ab.Dot(ac));
-            double b = Math.Abs(ab.Dot(bc));
-            double c = Math.Abs(bc.Dot(ac));
+            floatv a = Math.Abs(ab.Dot(ac));
+            floatv b = Math.Abs(ab.Dot(bc));
+            floatv c = Math.Abs(bc.Dot(ac));
 
             return a == b || b == c || a == c;
         }
@@ -152,9 +152,9 @@ namespace Zene.Structs
             Vector3 ac = C - A;
             Vector3 bc = C - B;
 
-            double a = Math.Abs(ab.Dot(ac));
-            double b = Math.Abs(ab.Dot(bc));
-            double c = Math.Abs(bc.Dot(ac));
+            floatv a = Math.Abs(ab.Dot(ac));
+            floatv b = Math.Abs(ab.Dot(bc));
+            floatv c = Math.Abs(bc.Dot(ac));
 
             return a != b && b != c && a != c;
         }
@@ -168,9 +168,9 @@ namespace Zene.Structs
             Vector3 ac = C - A;
             Vector3 bc = C - B;
 
-            double a = Math.Abs(ab.Dot(ac));
-            double b = Math.Abs(ab.Dot(bc));
-            double c = Math.Abs(bc.Dot(ac));
+            floatv a = Math.Abs(ab.Dot(ac));
+            floatv b = Math.Abs(ab.Dot(bc));
+            floatv c = Math.Abs(bc.Dot(ac));
 
             TriangleType tt;
             TrianglePoint tp = TrianglePoint.None;
@@ -211,6 +211,6 @@ namespace Zene.Structs
         /// <summary>
         /// A <see cref="Triangle3"/> with all values 0.
         /// </summary>
-        public static Triangle3 Zero { get; } = new Triangle3(0d, 0d, 0d);
+        public static Triangle3 Zero { get; } = new Triangle3(0, 0, 0);
     }
 }

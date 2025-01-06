@@ -24,7 +24,7 @@ namespace Zene.Structs
         /// <param name="aY">The y value of the first point to reference.</param>
         /// <param name="bX">The x value of the second point to reference.</param>
         /// <param name="bY">The y value of the second point to reference.</param>
-        public Segment2(double aX, double aY, double bX, double bY)
+        public Segment2(floatv aX, floatv aY, floatv bX, floatv bY)
         {
             A = new Vector2(aX, aY);
             B = new Vector2(bX, bY);
@@ -37,7 +37,7 @@ namespace Zene.Structs
         /// </remarks>
         /// <param name="l">The line to use as a reference.</param>
         /// <param name="distance">THe distance along the line to bee used as the segment.</param>
-        public Segment2(Line2 l, double distance)
+        public Segment2(Line2 l, floatv distance)
         {
             A = l.Location;
             B = l.Location + (l.Direction * distance);
@@ -69,18 +69,18 @@ namespace Zene.Structs
             Vector2 b = Change;
             Vector2 d = seg.Change;
 
-            double pDot = b.PerpDot(d);
+            floatv pDot = b.PerpDot(d);
 
             // If b dot d == 0, it means the lines are parallel
             if (pDot == 0) { return false; }
             
-            double div = 1d / pDot;
+            floatv div = 1 / pDot;
             
             Vector2 c = seg.A - A;
-            double t = c.PerpDot(d) * div;
+            floatv t = c.PerpDot(d) * div;
             if (t < 0 || t > 1) { return false; }
 
-            double u = c.PerpDot(b) * div;
+            floatv u = c.PerpDot(b) * div;
             if (u < 0 || u > 1) { return false; }
 
             intersection = A + (t * b);

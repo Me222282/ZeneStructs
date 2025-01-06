@@ -7,7 +7,7 @@ namespace Zene.Structs
     /// </summary>
     public struct Degrees
     {
-        private const double _overPI = 1 / Math.PI;
+        private const floatv _overPI = 1 / Maths.PI;
 
         /// <summary>
         /// Creates a degrees value from a <see cref="double"/>.
@@ -15,7 +15,7 @@ namespace Zene.Structs
         /// <param name="degrees">The degrees angle.</param>
         public Degrees(double degrees)
         {
-            _degrees = degrees;
+            _degrees = (floatv)degrees;
         }
         /// <summary>
         /// Creates a degrees value from a <see cref="float"/>.
@@ -23,10 +23,10 @@ namespace Zene.Structs
         /// <param name="degrees">The degrees angle.</param>
         public Degrees(float degrees)
         {
-            _degrees = degrees;
+            _degrees = (floatv)degrees;
         }
 
-        private readonly double _degrees;
+        private readonly floatv _degrees;
 
 #nullable enable
         public override string ToString()
@@ -44,7 +44,7 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="radian">The radians angle.</param>
         /// <returns></returns>
-        public static Degrees Radian(double radian)
+        public static Degrees Radian(floatv radian)
         {
             return new Degrees(radian * 180 * _overPI);
         }
@@ -54,12 +54,12 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="percent">The percentage around the angle.</param>
         /// <returns></returns>
-        public static Degrees Percent(double percent)
+        public static Degrees Percent(floatv percent)
         {
             return new Degrees(percent * 360);
         }
 
-        public Degrees Lerp(Degrees b, double blend) => _degrees.Lerp(b._degrees, blend);
+        public Degrees Lerp(Degrees b, floatv blend) => _degrees.Lerp(b._degrees, blend);
 
         public override bool Equals(object obj)
         {
@@ -82,7 +82,7 @@ namespace Zene.Structs
         public static implicit operator double(Degrees d) => d._degrees;
         public static implicit operator Degrees(double d) => new Degrees(d);
 
-        public static explicit operator float(Degrees r) => (float)r._degrees;
+        public static implicit operator float(Degrees r) => (float)r._degrees;
         public static implicit operator Degrees(float f) => new Degrees(f);
 
         public static implicit operator Degrees(Radian r) => new Degrees(r * 180 * _overPI);
@@ -90,8 +90,8 @@ namespace Zene.Structs
         public static Degrees operator -(Degrees d) => new Degrees(-d._degrees);
 
         public static Degrees Zero { get; } = new Degrees();
-        public static Degrees Quarter { get; } = new Degrees(90d);
-        public static Degrees Half { get; } = new Degrees(180d);
-        public static Degrees Full { get; } = new Degrees(360d);
+        public static Degrees Quarter { get; } = new Degrees(90);
+        public static Degrees Half { get; } = new Degrees(180);
+        public static Degrees Full { get; } = new Degrees(360);
     }
 }

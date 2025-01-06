@@ -9,7 +9,7 @@ namespace Zene.Structs
         {
             Rows = rows;
             Columns = columns;
-            _matrix = new double[rows * columns];
+            _matrix = new floatv[rows * columns];
         }
 
         public int Rows { get; }
@@ -17,20 +17,20 @@ namespace Zene.Structs
         
         public bool Constant => true;
         
-        private readonly double[] _matrix;
+        private readonly floatv[] _matrix;
         public int Length => _matrix.Length;
 
-        public double this[int x, int y]
+        public floatv this[int x, int y]
         {
             get => _matrix[x + (y * Columns)];
             set => _matrix[x + (y * Columns)] = value;
         }
-        public double this[int index]
+        public floatv this[int index]
         {
             get => _matrix[index];
             set => _matrix[index] = value;
         }
-        public double this[Index index]
+        public floatv this[Index index]
         {
             get => _matrix[index.Value];
             set => _matrix[index.Value] = value;

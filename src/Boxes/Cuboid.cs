@@ -16,7 +16,7 @@ namespace Zene.Structs
         /// <param name="w">The width value of the size.</param>
         /// <param name="h">The height value of the size.</param>
         /// <param name="d">The depth value of the size.</param>
-        public Cuboid(double x, double y, double z, double w, double h, double d)
+        public Cuboid(floatv x, floatv y, floatv z, floatv w, floatv h, floatv d)
         {
             X = x;
             Y = y;
@@ -56,20 +56,20 @@ namespace Zene.Structs
         /// <summary>
         /// The left x location of the box.
         /// </summary>
-        public double X { get; set; }
+        public floatv X { get; set; }
         /// <summary>
         /// The top y location of the box.
         /// </summary>
-        public double Y { get; set; }
+        public floatv Y { get; set; }
         /// <summary>
         /// The front z location of the box.
         /// </summary>
-        public double Z { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
-        public double Depth { get; set; }
+        public floatv Z { get; set; }
+        public floatv Width { get; set; }
+        public floatv Height { get; set; }
+        public floatv Depth { get; set; }
 
-        public Vector3 Centre => new Vector3(X + (Width * 0.5), Y - (Height * 0.5), Z + (Depth * 0.5));
+        public Vector3 Centre => new Vector3(X + (Width * 0.5f), Y - (Height * 0.5f), Z + (Depth * 0.5f));
 
         /// <summary>
         /// The top-left-front location of the box.
@@ -98,7 +98,7 @@ namespace Zene.Structs
             }
         }
 
-        public double Left
+        public floatv Left
         {
             get => X;
             set
@@ -107,12 +107,12 @@ namespace Zene.Structs
                 X = value;
             }
         }
-        public double Right
+        public floatv Right
         {
             get => X + Width;
             set => Width = value - X;
         }
-        public double Bottom
+        public floatv Bottom
         {
             get => Y - Height;
             set
@@ -121,12 +121,12 @@ namespace Zene.Structs
                 Y = value;
             }
         }
-        public double Top
+        public floatv Top
         {
             get => Y;
             set => Height += value - Y;
         }
-        public double Front
+        public floatv Front
         {
             get => Z;
             set
@@ -135,7 +135,7 @@ namespace Zene.Structs
                 Z = value;
             }
         }
-        public double Back
+        public floatv Back
         {
             get => Z + Depth;
             set => Depth = value - Z;
@@ -165,9 +165,9 @@ namespace Zene.Structs
         public static bool operator ==(Cuboid l, Cuboid r) => l.Equals(r);
         public static bool operator !=(Cuboid l, Cuboid r) => !l.Equals(r);
 
-        public static Cuboid operator *(Cuboid box, double scale)
+        public static Cuboid operator *(Cuboid box, floatv scale)
             => new Cuboid(box.X * scale, box.Y * scale, box.Z * scale, box.Width * scale, box.Height * scale, box.Depth * scale);
-        public static Cuboid operator /(Cuboid box, double scale)
+        public static Cuboid operator /(Cuboid box, floatv scale)
             => new Cuboid(box.X / scale, box.Y / scale, box.Z / scale, box.Width / scale, box.Height / scale, box.Depth / scale);
 
         public static explicit operator Cuboid(Box3 box) => new Cuboid(box);
@@ -179,6 +179,6 @@ namespace Zene.Structs
         /// <summary>
         /// A <see cref="Cuboid"/> with a <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> of 1 centred around origin.
         /// </summary>
-        public static Cuboid One { get; } = new Cuboid(-0.5, 0.5, -0.5, 1, 1, 1);
+        public static Cuboid One { get; } = new Cuboid(-0.5f, 0.5f, -0.5f, 1, 1, 1);
     }
 }

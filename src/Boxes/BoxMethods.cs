@@ -86,7 +86,7 @@ namespace Zene.Structs
         /// <param name="box">The first box.</param>
         /// <param name="b">The second box.</param>
         /// <returns></returns>
-        public static double CombineVolume(this IBox box, IBox b)
+        public static floatv CombineVolume(this IBox box, IBox b)
         {
             return (Math.Max(box.Right, b.Right) - Math.Min(box.Left, b.Left)) *
                 (Math.Max(box.Top, b.Top) - Math.Min(box.Bottom, b.Bottom));
@@ -195,7 +195,7 @@ namespace Zene.Structs
         /// Extend each side of a box by a value.
         /// </summary>
         /// <param name="value">The value to extend by</param>
-        public static T Expanded<T>(this T box, double value) where T : IBox, new()
+        public static T Expanded<T>(this T box, floatv value) where T : IBox, new()
         {
             return new T()
             {
@@ -209,7 +209,7 @@ namespace Zene.Structs
         /// Extend each side of a box by a value.
         /// </summary>
         /// <param name="value">The value to extend by</param>
-        public static void Expand<T>(this T box, double value) where T : class, IBox
+        public static void Expand<T>(this T box, floatv value) where T : class, IBox
         {
             box.Left -= value;
             box.Right += value;
@@ -220,7 +220,7 @@ namespace Zene.Structs
         /// Extend each side of a box by a value.
         /// </summary>
         /// <param name="value">The value to extend by</param>
-        public static void Expand<T>(this ref T box, double value) where T : struct, IBox
+        public static void Expand<T>(this ref T box, floatv value) where T : struct, IBox
         {
             box.Left -= value;
             box.Right += value;
@@ -238,9 +238,9 @@ namespace Zene.Structs
             Vector2 dist = box.Centre.Relative(line);
 
             // Half of height
-            double hh = box.Height / 2;
+            floatv hh = box.Height * 0.5f;
             // Half of width
-            double hw = box.Width / 2;
+            floatv hw = box.Width * 0.5f;
 
             return ((dist.Y + hh >= 0) && (dist.Y - hh <= 0)) ||
                 ((dist.X + hw >= 0) && (dist.X - hw <= 0));
@@ -258,9 +258,9 @@ namespace Zene.Structs
             Vector2 dist = tolBox.Centre.Relative(line);
 
             // Half of height
-            double hh = tolBox.Height / 2;
+            floatv hh = tolBox.Height * 0.5f;
             // Half of width
-            double hw = tolBox.Width / 2;
+            floatv hw = tolBox.Width * 0.5f;
 
             return ((dist.Y + hh >= 0) && (dist.Y - hh <= 0)) ||
                 ((dist.X + hw >= 0) && (dist.X - hw <= 0));

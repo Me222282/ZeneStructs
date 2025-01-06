@@ -18,10 +18,10 @@ namespace Zene.Structs
             Z = value;
         }
         /// <summary>
-        /// Creates a 3 dimensional vector from a single <see cref="double"/>.
+        /// Creates a 3 dimensional vector from a single <see cref="floatv"/>.
         /// </summary>
         /// <param name="value">The value to set to <see cref="X"/>, <see cref="Y"/> and <see cref="Z"/>.</param>
-        public Vector3I(double value)
+        public Vector3I(floatv value)
         {
             X = (int)value;
             Y = X;
@@ -40,19 +40,19 @@ namespace Zene.Structs
             Z = z;
         }
         /// <summary>
-        /// Creates a 3 dimensional vector from three <see cref="double"/>.
+        /// Creates a 3 dimensional vector from three <see cref="floatv"/>.
         /// </summary>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
         /// <param name="y">The value to set to <see cref="Y"/>.</param>
         /// <param name="z">The value to set to <see cref="Z"/>.</param>
-        public Vector3I(double x, double y, double z)
+        public Vector3I(floatv x, floatv y, floatv z)
         {
             X = (int)x;
             Y = (int)y;
             Z = (int)z;
         }
         /// <summary>
-        /// Creates a 3 dimensional vector from a <see cref="double"/> based vector.
+        /// Creates a 3 dimensional vector from a <see cref="floatv"/> based vector.
         /// </summary>
         /// <param name="xyz">The vector to reference for <see cref="X"/>, <see cref="Y"/> and <see cref="Z"/>.</param>
         public Vector3I(Vector3 xyz)
@@ -62,18 +62,18 @@ namespace Zene.Structs
             Z = (int)xyz.Z;
         }
         /// <summary>
-        /// Creates a 3 dimensional vector from a <see cref="double"/> based 2 dimensional vector and a <see cref="double"/> Z.
+        /// Creates a 3 dimensional vector from a <see cref="floatv"/> based 2 dimensional vector and a <see cref="floatv"/> Z.
         /// </summary>
         /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
         /// <param name="z">The value to set to <see cref="Z"/>.</param>
-        public Vector3I(Vector2 xy, double z)
+        public Vector3I(Vector2 xy, floatv z)
         {
             X = (int)xy.X;
             Y = (int)xy.Y;
             Z = (int)z;
         }
         /// <summary>
-        /// Creates a 3 dimensional vector from a <see cref="double"/> based 2 dimensional vector and an <see cref="int"/> Z.
+        /// Creates a 3 dimensional vector from a <see cref="floatv"/> based 2 dimensional vector and an <see cref="int"/> Z.
         /// </summary>
         /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
         /// <param name="z">The value to set to <see cref="Z"/>.</param>
@@ -84,18 +84,18 @@ namespace Zene.Structs
             Z = z;
         }
         /// <summary>
-        /// Creates a 3 dimensional vector from a <see cref="double"/> based 2 dimensional vector and a <see cref="double"/> X.
+        /// Creates a 3 dimensional vector from a <see cref="floatv"/> based 2 dimensional vector and a <see cref="floatv"/> X.
         /// </summary>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
         /// <param name="yz">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
-        public Vector3I(double x, Vector2 yz)
+        public Vector3I(floatv x, Vector2 yz)
         {
             X = (int)x;
             Y = (int)yz.Y;
             Z = (int)yz.Y;
         }
         /// <summary>
-        /// Creates a 3 dimensional vector from a <see cref="double"/> based 2 dimensional vector and an <see cref="int"/> X.
+        /// Creates a 3 dimensional vector from a <see cref="floatv"/> based 2 dimensional vector and an <see cref="int"/> X.
         /// </summary>
         /// <param name="xy">The value to set to <see cref="X"/>.</param>
         /// <param name="z">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
@@ -106,11 +106,11 @@ namespace Zene.Structs
             Z = (int)yz.Y;
         }
         /// <summary>
-        /// Creates a 3 dimensional vector from a 2 dimensional vector and a <see cref="double"/> Z.
+        /// Creates a 3 dimensional vector from a 2 dimensional vector and a <see cref="floatv"/> Z.
         /// </summary>
         /// <param name="xy">The vector to reference for <see cref="X"/> and <see cref="Y"/>.</param>
         /// <param name="z">The value to set to <see cref="Z"/>.</param>
-        public Vector3I(Vector2I xy, double z)
+        public Vector3I(Vector2I xy, floatv z)
         {
             X = xy.X;
             Y = xy.Y;
@@ -128,11 +128,11 @@ namespace Zene.Structs
             Z = z;
         }
         /// <summary>
-        /// Creates a 3 dimensional vector from a 2 dimensional vector and a <see cref="double"/> X.
+        /// Creates a 3 dimensional vector from a 2 dimensional vector and a <see cref="floatv"/> X.
         /// </summary>
         /// <param name="yz">The vector to reference for <see cref="Y"/> and <see cref="Z"/>.</param>
         /// <param name="x">The value to set to <see cref="X"/>.</param>
-        public Vector3I(double x, Vector2I yz)
+        public Vector3I(floatv x, Vector2I yz)
         {
             Y = yz.X;
             Z = yz.Y;
@@ -166,11 +166,11 @@ namespace Zene.Structs
         /// <summary>
         /// The length of the vector (distance from origin).
         /// </summary>
-        public double Length
+        public floatv Length
         {
             get
             {
-                return Math.Sqrt((X * X) + (Y * Y) + (Z * Z));
+                return Maths.Sqrt((X * X) + (Y * Y) + (Z * Z));
             }
         }
         /// <summary>
@@ -189,9 +189,9 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="b">The vector to reference.</param>
         /// <returns></returns>
-        public double Distance(Vector3I b)
+        public floatv Distance(Vector3I b)
         {
-            return Math.Sqrt(SquaredDistance(b));
+            return Maths.Sqrt(SquaredDistance(b));
         }
         /// <summary>
         /// The squared distance from this vector to <paramref name="b"/>.
@@ -232,7 +232,7 @@ namespace Zene.Structs
         /// <param name="b">The vector to interpolate to.</param>
         /// <param name="blend">The percentage interpolation.</param>
         /// <returns></returns>
-        public Vector3I Lerp(Vector3I b, double blend)
+        public Vector3I Lerp(Vector3I b, floatv blend)
         {
             return new Vector3I(
                 (blend * (b.X - X)) + X,
@@ -252,9 +252,9 @@ namespace Zene.Structs
         /// <param name="u">The percentage <paramref name="b"/> is included.</param>
         /// <param name="v">The percentage <paramref name="c"/> is included.</param>
         /// <returns></returns>
-        public Vector3I BaryCentric(Vector3I b, Vector3I c, int u, int v)
+        public Vector3I BaryCentric(Vector3I b, Vector3I c, floatv u, floatv v)
         {
-            return (this + ((b - this) * u)) + ((c - this) * v);
+            return (Vector3I)(this + ((b - this) * u) + ((c - this) * v));
         }
 
         /// <summary>
@@ -263,11 +263,11 @@ namespace Zene.Structs
         /// <returns></returns>
         public Vector3 Normalised()
         {
-            double sl = SquaredLength;
-            if (sl == 0d) { return Zero; }
-            if (sl == 1d) { return this; }
+            floatv sl = SquaredLength;
+            if (sl == 0) { return Zero; }
+            if (sl == 1) { return this; }
 
-            double scale = 1d / Math.Sqrt(sl);
+            floatv scale = 1 / Maths.Sqrt(sl);
             return new Vector3(X * scale, Y * scale, Z * scale);
         }
 
@@ -283,7 +283,7 @@ namespace Zene.Structs
                 throw new Exception();
             }
 
-            double[] vs = new double[matrix.Rows];
+            floatv[] vs = new floatv[matrix.Rows];
 
             for (int i = 0; i < matrix.Rows; i++)
             {
@@ -421,13 +421,13 @@ namespace Zene.Structs
 
         public static VariableVector operator *(Vector3I a, IMatrix b)
         {
-            MatrixSpan ms = new MatrixSpan(b.Rows, b.Columns, stackalloc double[b.Rows * b.Columns]);
+            MatrixSpan ms = new MatrixSpan(b.Rows, b.Columns, stackalloc floatv[b.Rows * b.Columns]);
             b.MatrixData(ms);
             return a.MultiplyMatrix(ms);
         }
         public static VariableVector operator *(IMatrix a, Vector3I b)
         {
-            MatrixSpan ms = new MatrixSpan(a.Rows, a.Columns, stackalloc double[a.Rows * a.Columns]);
+            MatrixSpan ms = new MatrixSpan(a.Rows, a.Columns, stackalloc floatv[a.Rows * a.Columns]);
             a.MatrixData(ms);
             return b.MultiplyMatrix(ms);
         }
@@ -498,11 +498,11 @@ namespace Zene.Structs
         /// <summary>
         /// A vector with <see cref="X"/>, <see cref="Y"/> and <see cref="Z"/> set to 0.
         /// </summary>
-        public static Vector3I Zero { get; } = new Vector3I(0, 0, 0);
+        public static Vector3I Zero { get; } = new Vector3I(0);
         /// <summary>
         /// A vector with <see cref="X"/>, <see cref="Y"/> and <see cref="Z"/> set to 1.
         /// </summary>
-        public static Vector3I One { get; } = new Vector3I(1, 1, 1);
+        public static Vector3I One { get; } = new Vector3I(1);
 
         public static Vector3I operator +(Vector3I a, Vector2 b)
         {
@@ -521,6 +521,22 @@ namespace Zene.Structs
             return new Vector3I(a.X - b.X, a.Y - b.Y, a.Z);
         }
 
+        public static Vector3 operator +(Vector3I a, Vector3 b)
+        {
+            return new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+        }
+        public static Vector3 operator -(Vector3I a, Vector3 b)
+        {
+            return new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
+        }
+        public static Vector3 operator *(Vector3I a, Vector3 b)
+        {
+            return new Vector3(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
+        }
+        public static Vector3 operator /(Vector3I a, Vector3 b)
+        {
+            return new Vector3(a.X / b.X, a.Y / b.Y, a.Z / b.Z);
+        }
         public static Vector3 operator +(Vector3 a, Vector3I b)
         {
             return new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);

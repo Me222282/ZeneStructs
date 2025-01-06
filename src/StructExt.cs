@@ -1,7 +1,24 @@
-﻿using System;
+﻿#pragma warning disable CS8981
+global using floatv =
+#if DOUBLE
+    System.Double;
+#else
+	System.Single;
+#endif
+
+global using Maths =
+#if DOUBLE
+    System.Math;
+#else
+    System.MathF;
+#endif
+#pragma warning restore CS8981
+
+using System;
 
 namespace Zene.Structs
 {
+    
     /// <summary>
     /// The class containing extensions included in the library.
     /// </summary>
@@ -22,6 +39,50 @@ namespace Zene.Structs
 
             return (random.NextDouble() * (max - min)) + min;
         }
+
+        /// <summary>
+        /// Returns a random floating-point number that is greater than or equal to <paramref name="min"/>, and less than <paramref name="max"/>.
+        /// </summary>
+        /// <param name="random"></param>
+        /// <param name="min">The inclusive lower bound of the random number returned.</param>
+        /// <param name="max">The exclusive upper bound of the random number returned. <paramref name="max"/> must be greater than or equal to <paramref name="min"/>.</param>
+        public static float NextFloat(this Random random, float min, float max)
+        {
+            if (max < min)
+            {
+                throw new ArgumentException($"{nameof(max)} must be greater than or equal to {nameof(min)}.", nameof(min));
+            }
+
+            return ((float)random.NextDouble() * (max - min)) + min;
+        }
+
+        /// <summary>
+        /// Returns a random floating-point number that is greater than or equal to <paramref name="min"/>, and less than <paramref name="max"/>.
+        /// </summary>
+        /// <param name="random"></param>
+        /// <param name="min">The inclusive lower bound of the random number returned.</param>
+        /// <param name="max">The exclusive upper bound of the random number returned. <paramref name="max"/> must be greater than or equal to <paramref name="min"/>.</param>
+        public static floatv NextNumber(this Random random, floatv min, floatv max)
+        {
+            if (max < min)
+            {
+                throw new ArgumentException($"{nameof(max)} must be greater than or equal to {nameof(min)}.", nameof(min));
+            }
+
+            return ((floatv)random.NextDouble() * (max - min)) + min;
+        }
+
+        /// <summary>
+        /// Returns a random floating-point number that is greater than or equal to 0.0, and less than 1.0.
+        /// </summary>
+        /// <param name="random"></param>
+        public static float NextFloat(this Random random) => (float)random.NextDouble();
+
+        /// <summary>
+        /// Returns a random floating-point number that is greater than or equal to 0.0, and less than 1.0.
+        /// </summary>
+        /// <param name="random"></param>
+        public static floatv NextNumber(this Random random) => (floatv)random.NextDouble();
 
         /// <summary>
         /// Returns a colour with random values for the RGB components.
@@ -106,7 +167,7 @@ namespace Zene.Structs
                 random.NextDouble(),
                 random.NextDouble());
         }
-        public static Vector2 NextVector2(this Random random, double scale)
+        public static Vector2 NextVector2(this Random random, floatv scale)
         {
             return new Vector2(
                 random.NextDouble() * scale,
@@ -118,13 +179,13 @@ namespace Zene.Structs
                 random.NextDouble() * scale.X,
                 random.NextDouble() * scale.Y);
         }
-        public static Vector2 NextVector2(this Random random, double min, double max)
+        public static Vector2 NextVector2(this Random random, floatv min, floatv max)
         {
             return new Vector2(
                 (random.NextDouble() * (max - min)) + min,
                 (random.NextDouble() * (max - min)) + min);
         }
-        public static Vector2 NextVector2(this Random random, double minX, double maxX, double minY, double maxY)
+        public static Vector2 NextVector2(this Random random, floatv minX, floatv maxX, floatv minY, floatv maxY)
         {
             return new Vector2(
                 (random.NextDouble() * (maxX - minX)) + minX,
@@ -157,7 +218,7 @@ namespace Zene.Structs
                 random.NextDouble(),
                 random.NextDouble());
         }
-        public static Vector3 NextVector3(this Random random, double scale)
+        public static Vector3 NextVector3(this Random random, floatv scale)
         {
             return new Vector3(
                 random.NextDouble() * scale,
@@ -171,14 +232,14 @@ namespace Zene.Structs
                 random.NextDouble() * scale.Y,
                 random.NextDouble() * scale.Z);
         }
-        public static Vector3 NextVector3(this Random random, double min, double max)
+        public static Vector3 NextVector3(this Random random, floatv min, floatv max)
         {
             return new Vector3(
                 (random.NextDouble() * (max - min)) + min,
                 (random.NextDouble() * (max - min)) + min,
                 (random.NextDouble() * (max - min)) + min);
         }
-        public static Vector3 NextVector3(this Random random, double minX, double maxX, double minY, double maxY, double minZ, double maxZ)
+        public static Vector3 NextVector3(this Random random, floatv minX, floatv maxX, floatv minY, floatv maxY, floatv minZ, floatv maxZ)
         {
             return new Vector3(
                 (random.NextDouble() * (maxX - minX)) + minX,
@@ -216,7 +277,7 @@ namespace Zene.Structs
                 random.NextDouble(),
                 random.NextDouble());
         }
-        public static Vector4 NextVector4(this Random random, double scale)
+        public static Vector4 NextVector4(this Random random, floatv scale)
         {
             return new Vector4(
                 random.NextDouble() * scale,
@@ -232,7 +293,7 @@ namespace Zene.Structs
                 random.NextDouble() * scale.Z,
                 random.NextDouble() * scale.W);
         }
-        public static Vector4 NextVector4(this Random random, double min, double max)
+        public static Vector4 NextVector4(this Random random, floatv min, floatv max)
         {
             return new Vector4(
                 (random.NextDouble() * (max - min)) + min,
@@ -240,7 +301,7 @@ namespace Zene.Structs
                 (random.NextDouble() * (max - min)) + min,
                 (random.NextDouble() * (max - min)) + min);
         }
-        public static Vector4 NextVector4(this Random random, double minX, double maxX, double minY, double maxY, double minZ, double maxZ, double minW, double maxW)
+        public static Vector4 NextVector4(this Random random, floatv minX, floatv maxX, floatv minY, floatv maxY, floatv minZ, floatv maxZ, floatv minW, floatv maxW)
         {
             return new Vector4(
                 (random.NextDouble() * (maxX - minX)) + minX,
@@ -276,25 +337,25 @@ namespace Zene.Structs
 
         public static double Lerp(this double a, double b, double blend) => (blend * (b - a)) + a;
         public static float Lerp(this float a, float b, float blend) => (blend * (b - a)) + a;
-        public static int Lerp(this int a, int b, double blend) => (int)(blend * (b - a)) + a;
-        public static uint Lerp(this uint a, uint b, double blend) => (uint)(blend * (b - a)) + a;
-        public static short Lerp(this short a, short b, double blend) => (short)((blend * (b - a)) + a);
-        public static ushort Lerp(this ushort a, ushort b, double blend) => (ushort)((blend * (b - a)) + a);
-        public static byte Lerp(this byte a, byte b, double blend) => (byte)((blend * (b - a)) + a);
-        public static long Lerp(this long a, long b, double blend) => (long)(blend * (b - a)) + a;
-        public static ulong Lerp(this ulong a, ulong b, double blend) => (ulong)(blend * (b - a)) + a;
+        public static int Lerp(this int a, int b, floatv blend) => (int)(blend * (b - a)) + a;
+        public static uint Lerp(this uint a, uint b, floatv blend) => (uint)(blend * (b - a)) + a;
+        public static short Lerp(this short a, short b, floatv blend) => (short)((blend * (b - a)) + a);
+        public static ushort Lerp(this ushort a, ushort b, floatv blend) => (ushort)((blend * (b - a)) + a);
+        public static byte Lerp(this byte a, byte b, floatv blend) => (byte)((blend * (b - a)) + a);
+        public static long Lerp(this long a, long b, floatv blend) => (long)(blend * (b - a)) + a;
+        public static ulong Lerp(this ulong a, ulong b, floatv blend) => (ulong)(blend * (b - a)) + a;
 
         public static double InvLerp(this double value, double a, double b) => (value - a) / (b - a);
         public static float InvLerp(this float value, float a, float b) => (value - a) / (b - a);
-        public static double InvLerp(this int value, int a, int b) => (double)(value - a) / (b - a);
-        public static double InvLerp(this uint value, uint a, uint b) => (double)(value - a) / (b - a);
-        public static double InvLerp(this short value, short a, short b) => (double)(value - a) / (b - a);
-        public static double InvLerp(this ushort value, ushort a, ushort b) => (double)(value - a) / (b - a);
-        public static double InvLerp(this byte value, byte a, byte b) => (double)(value - a) / (b - a);
-        public static double InvLerp(this long value, long a, long b) => (double)(value - a) / (b - a);
-        public static double InvLerp(this ulong value, ulong a, ulong b) => (double)(value - a) / (b - a);
+        public static floatv InvLerp(this int value, int a, int b) => (floatv)(value - a) / (b - a);
+        public static floatv InvLerp(this uint value, uint a, uint b) => (floatv)(value - a) / (b - a);
+        public static floatv InvLerp(this short value, short a, short b) => (floatv)(value - a) / (b - a);
+        public static floatv InvLerp(this ushort value, ushort a, ushort b) => (floatv)(value - a) / (b - a);
+        public static floatv InvLerp(this byte value, byte a, byte b) => (floatv)(value - a) / (b - a);
+        public static floatv InvLerp(this long value, long a, long b) => (floatv)(value - a) / (b - a);
+        public static floatv InvLerp(this ulong value, ulong a, ulong b) => (floatv)(value - a) / (b - a);
 
-        public static Colour Lerp(this Colour a, Colour b, double blend)
+        public static Colour Lerp(this Colour a, Colour b, floatv blend)
         {
             return new Colour(
                 (byte)((blend * (b.R - a.R)) + a.R),
@@ -302,7 +363,7 @@ namespace Zene.Structs
                 (byte)((blend * (b.B - a.B)) + a.B),
                 (byte)((blend * (b.A - a.A)) + a.A));
         }
-        public static Colour3 Lerp(this Colour3 a, Colour3 b, double blend)
+        public static Colour3 Lerp(this Colour3 a, Colour3 b, floatv blend)
         {
             return new Colour3(
                 (byte)((blend * (b.R - a.R)) + a.R),

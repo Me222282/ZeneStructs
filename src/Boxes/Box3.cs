@@ -16,7 +16,7 @@ namespace Zene.Structs
         /// <param name="bottom">The y loction of the bottom side.</param>
         /// <param name="front">The z loction of the front side.</param>
         /// <param name="back">The z loction of the back side.</param>
-        public Box3(double left, double right, double top, double bottom, double front, double back)
+        public Box3(floatv left, floatv right, floatv top, floatv bottom, floatv front, floatv back)
         {
             Left = left;
             Right = right;
@@ -56,12 +56,12 @@ namespace Zene.Structs
             Back = box.Back;
         }
 
-        public double Left { get; set; }
-        public double Right { get; set; }
-        public double Bottom { get; set; }
-        public double Top { get; set; }
-        public double Front { get; set; }
-        public double Back { get; set; }
+        public floatv Left { get; set; }
+        public floatv Right { get; set; }
+        public floatv Bottom { get; set; }
+        public floatv Top { get; set; }
+        public floatv Front { get; set; }
+        public floatv Back { get; set; }
 
         /// <summary>
         /// The center location of the box.
@@ -96,67 +96,67 @@ namespace Zene.Structs
             set => Location = value;
         }
 
-        public double X
+        public floatv X
         {
-            get => Left + (Width * 0.5);
+            get => Left + (Width * 0.5f);
             set
             {
-                double offset = value - X;
+                floatv offset = value - X;
 
                 Left += offset;
                 Right += offset;
             }
         }
-        public double Y
+        public floatv Y
         {
-            get => Bottom + (Height * 0.5);
+            get => Bottom + (Height * 0.5f);
             set
             {
-                double offset = value - Y;
+                floatv offset = value - Y;
 
                 Bottom += offset;
                 Top += offset;
             }
         }
-        public double Z
+        public floatv Z
         {
-            get => Front + (Depth * 0.5);
+            get => Front + (Depth * 0.5f);
             set
             {
-                double offset = value - Z;
+                floatv offset = value - Z;
 
                 Front += offset;
                 Depth += offset;
             }
         }
-        public double Width
+        public floatv Width
         {
             get => Right - Left;
             set
             {
-                double offset = (value - Width) * 0.5;
+                floatv offset = (value - Width) * 0.5f;
 
                 Left -= offset;
                 Right += offset;
             }
         }
-        public double Height
+        public floatv Height
         {
             get => Top - Bottom;
             set
             {
-                double offset = (value - Height) * 0.5;
+                floatv offset = (value - Height) * 0.5f;
 
                 Bottom -= offset;
                 Top += offset;
             }
         }
-        public double Depth
+        public floatv Depth
         {
             get => Back - Front;
             set
             {
-                double offset = (value - Depth) * 0.5;
+                floatv offset = (value - Depth) * 0.5f;
 
                 Front -= offset;
                 Back += offset;
@@ -192,16 +192,16 @@ namespace Zene.Structs
 
         public static explicit operator Box3(Cuboid box) => new Box3(box);
 
-        public static Box3 operator *(Box3 box, double scale)
+        public static Box3 operator *(Box3 box, floatv scale)
             => new Box3(box.Left * scale, box.Right * scale, box.Top * scale, box.Bottom * scale, box.Front * scale, box.Back * scale);
-        public static Box3 operator /(Box3 box, double scale)
+        public static Box3 operator /(Box3 box, floatv scale)
             => new Box3(box.Left / scale, box.Right / scale, box.Top / scale, box.Bottom / scale, box.Front / scale, box.Back / scale);
 
         /// <summary>
         /// A <see cref="Box3"/> that spans from negative to positive infinity.
         /// </summary>
-        public static Box3 Infinity { get; } = new Box3(double.NegativeInfinity, double.PositiveInfinity, double.PositiveInfinity,
-                                                        double.NegativeInfinity, double.NegativeInfinity, double.PositiveInfinity);
+        public static Box3 Infinity { get; } = new Box3(floatv.NegativeInfinity, floatv.PositiveInfinity, floatv.PositiveInfinity,
+                                                        floatv.NegativeInfinity, floatv.NegativeInfinity, floatv.PositiveInfinity);
         /// <summary>
         /// A <see cref="Box3"/> with <see cref="Left"/>, <see cref="Right"/>, <see cref="Top">, <see cref="Bottom"/>, <see cref="Front"/> and <see cref="Back"/> all set to 0.
         /// </summary>
@@ -209,6 +209,6 @@ namespace Zene.Structs
         /// <summary>
         /// A <see cref="Box3"/> with a <see cref="Width"/>, <see cref="Height"/> and <see cref="Depth"/> of 1 centred around origin.
         /// </summary>
-        public static Box3 One { get; } = new Box3(-0.5, 0.5, 0.5, -0.5, -0.5, 0.5);
+        public static Box3 One { get; } = new Box3(-0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f);
     }
 }

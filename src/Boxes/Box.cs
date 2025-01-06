@@ -14,7 +14,7 @@ namespace Zene.Structs
         /// <param name="r">The x loction of the right side.</param>
         /// <param name="t">The y loction of the top side.</param>
         /// <param name="b">The y loction of the bottom side.</param>
-        public Box(double l, double r, double t, double b)
+        public Box(floatv l, floatv r, floatv t, floatv b)
         {
             Left = l;
             Right = r;
@@ -48,10 +48,10 @@ namespace Zene.Structs
             Top = box.Top;
         }
 
-        public double Left { get; set; }
-        public double Right { get; set; }
-        public double Bottom { get; set; }
-        public double Top { get; set; }
+        public floatv Left { get; set; }
+        public floatv Right { get; set; }
+        public floatv Bottom { get; set; }
+        public floatv Top { get; set; }
 
         /// <summary>
         /// The center location of the box.
@@ -84,45 +84,45 @@ namespace Zene.Structs
             set => Location = value;
         }
 
-        public double X
+        public floatv X
         {
-            get => Left + (Width * 0.5);
+            get => Left + (Width * 0.5f);
             set
             {
-                double offset = value - X;
+                floatv offset = value - X;
 
                 Left += offset;
                 Right += offset;
             }
         }
-        public double Y
+        public floatv Y
         {
-            get => Bottom + (Height * 0.5);
+            get => Bottom + (Height * 0.5f);
             set
             {
-                double offset = value - Y;
+                floatv offset = value - Y;
 
                 Bottom += offset;
                 Top += offset;
             }
         }
-        public double Width
+        public floatv Width
         {
             get => Right - Left;
             set
             {
-                double offset = (value - Width) * 0.5;
+                floatv offset = (value - Width) * 0.5f;
 
                 Left -= offset;
                 Right += offset;
             }
         }
-        public double Height
+        public floatv Height
         {
             get => Top - Bottom;
             set
             {
-                double offset = (value - Height) * 0.5;
+                floatv offset = (value - Height) * 0.5f;
 
                 Bottom -= offset;
                 Top += offset;
@@ -168,22 +168,22 @@ namespace Zene.Structs
         public static bool operator ==(Box l, Box r) => l.Equals(r);
         public static bool operator !=(Box l, Box r) => !l.Equals(r);
 
-        public static Box operator *(Box box, double scale) => new Box(box.Left * scale, box.Right * scale, box.Top * scale, box.Bottom * scale);
-        public static Box operator /(Box box, double scale) => new Box(box.Left / scale, box.Right / scale, box.Top / scale, box.Bottom / scale);
+        public static Box operator *(Box box, floatv scale) => new Box(box.Left * scale, box.Right * scale, box.Top * scale, box.Bottom * scale);
+        public static Box operator /(Box box, floatv scale) => new Box(box.Left / scale, box.Right / scale, box.Top / scale, box.Bottom / scale);
 
         public static explicit operator Box(Rectangle box) => new Box(box);
 
         /// <summary>
         /// A <see cref="Box"/> that spans from negative to positive infinity.
         /// </summary>
-        public static Box Infinity { get; } = new Box(double.NegativeInfinity, double.PositiveInfinity, double.PositiveInfinity, double.NegativeInfinity);
+        public static Box Infinity { get; } = new Box(floatv.NegativeInfinity, floatv.PositiveInfinity, floatv.PositiveInfinity, floatv.NegativeInfinity);
         /// <summary>
         /// A <see cref="Box"/> with <see cref="Left"/>, <see cref="Right"/>, <see cref="Top"/> and <see cref="Bottom"/> all set to 0.
         /// </summary>
-        public static Box Zero { get; } = new Box(0d, 0d, 0d, 0d);
+        public static Box Zero { get; } = new Box(0, 0, 0, 0);
         /// <summary>
         /// A <see cref="Box"/> with a <see cref="Width"/> and <see cref="Height"/> of 1 centred around origin.
         /// </summary>
-        public static Box One { get; } = new Box(-0.5, 0.5, 0.5, -0.5);
+        public static Box One { get; } = new Box(-0.5f, 0.5f, 0.5f, -0.5f);
     }
 }

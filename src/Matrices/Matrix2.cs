@@ -3,7 +3,7 @@
 namespace Zene.Structs
 {
     /// <summary>
-    /// An object that stores a 2 x 2 matrix grid of <see cref="double"/>. 
+    /// An object that stores a 2 x 2 matrix grid of <see cref="floatv"/>. 
     /// </summary>
     public unsafe struct Matrix2 : IMatrix
     {
@@ -32,7 +32,7 @@ namespace Zene.Structs
         /// Creates a 2 x 2 matrix from an array of row major values.
         /// </summary>
         /// <param name="matrix">The values to store in the matrix.</param>
-        public Matrix2(params double[] matrix)
+        public Matrix2(params floatv[] matrix)
         {
             if (matrix.Length < (Rows * Columns))
             {
@@ -49,11 +49,11 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                matrix.MatrixData(new MatrixSpan(2, 2, new Span<double>(ptr, 4)));
+                matrix.MatrixData(new MatrixSpan(2, 2, new Span<floatv>(ptr, 4)));
             }
         }
 
-        internal fixed double _matrix[4];
+        internal fixed floatv _matrix[4];
 
         /// <summary>
         /// Gets a value from the matrix at a given location.
@@ -61,7 +61,7 @@ namespace Zene.Structs
         /// <param name="x">The x value of the location.</param>
         /// <param name="y">The y value of the location.</param>
         /// <returns></returns>
-        public double this[int x, int y]
+        public floatv this[int x, int y]
         {
             get
             {
@@ -144,12 +144,12 @@ namespace Zene.Structs
             }
         }
 
-        public double Determinant()
+        public floatv Determinant()
         {
             return (_matrix[0] * _matrix[3]) - (_matrix[1] * _matrix[2]);
         }
 
-        public double Trace() => _matrix[0] + _matrix[3];
+        public floatv Trace() => _matrix[0] + _matrix[3];
 
         /// <summary>
         /// Returns a normalised version of this matrix.
@@ -157,7 +157,7 @@ namespace Zene.Structs
         /// <returns></returns>
         public Matrix2 Normalize()
         {
-            double det = Determinant();
+            floatv det = Determinant();
 
             return new Matrix2(Row0 / det, Row1 / det);
         }
@@ -168,14 +168,14 @@ namespace Zene.Structs
         /// <returns></returns>
         public Matrix2 Invert()
         {
-            double det = Determinant();
+            floatv det = Determinant();
 
             if (det == 0)
             {
                 throw new InvalidOperationException("Matrix is singular and cannot be inverted.");
             }
 
-            double invDet = 1.0 / det;
+            floatv invDet = 1 / det;
 
             return new Matrix2(
                 (_matrix[3] * invDet, _matrix[1] * invDet),
@@ -203,7 +203,7 @@ namespace Zene.Structs
         {
             fixed (void* ptr = _matrix)
             {
-                Span<double> s = new Span<double>(ptr, 4);
+                Span<floatv> s = new Span<floatv>(ptr, 4);
                 ms.Fill(s, 2, 2);
             }
         }
@@ -224,7 +224,7 @@ namespace Zene.Structs
 
         public static MultiplyMatrix operator *(Matrix2 a, IMatrix b) => new MultiplyMatrix(a, b);
         
-        public static Matrix2 operator *(Matrix2 a, double b)
+        public static Matrix2 operator *(Matrix2 a, floatv b)
         {
             Matrix2 m = new Matrix2();
 
@@ -235,7 +235,7 @@ namespace Zene.Structs
 
             return m;
         }
-        public static Matrix2 operator *(double b, Matrix2 a)
+        public static Matrix2 operator *(floatv b, Matrix2 a)
         {
             Matrix2 m = new Matrix2();
 
@@ -328,8 +328,8 @@ namespace Zene.Structs
         /// <returns></returns>
         public static Matrix2 CreateRotation(Radian angle)
         {
-            double cos = Math.Cos(angle);
-            double sin = Math.Sin(angle);
+            floatv cos = Maths.Cos(angle);
+            floatv sin = Maths.Sin(angle);
 
             return new Matrix2(new Vector2(cos, sin), new Vector2(-sin, cos));
         }
@@ -339,7 +339,7 @@ namespace Zene.Structs
         /// </summary>
         /// <param name="scale">The x and y scale.</param>
         /// <returns></returns>
-        public static Matrix2 CreateScale(double scale)
+        public static Matrix2 CreateScale(floatv scale)
         {
             return new Matrix2(new Vector2(scale, 0), new Vector2(0, scale));
         }
@@ -350,7 +350,7 @@ namespace Zene.Structs
         /// <param name="scaleX">The x scale.</param>
         /// <param name="scaleY">The y scale.</param>
         /// <returns></returns>
-        public static Matrix2 CreateScale(double scaleX, double scaleY)
+        public static Matrix2 CreateScale(floatv scaleX, floatv scaleY)
         {
             return new Matrix2(new Vector2(scaleX, 0), new Vector2(0, scaleY));
         }
