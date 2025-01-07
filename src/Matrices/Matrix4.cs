@@ -670,38 +670,34 @@ namespace Zene.Structs
 
         public static Matrix4 CreateTranslation(Vector2 xy) => CreateTranslation(xy.X, xy.Y);
 
-        public static Matrix4 CreateBox(IBox box)
+        public static Matrix4 CreateBox(Box box)
         {
-            Vector2 c = box.Centre;
-
             return new Matrix4(
                 new Vector4(box.Width, 0, 0, 0),
                 new Vector4(0, box.Height, 0, 0),
                 new Vector4(0, 0, 1, 0),
-                new Vector4(c.X, c.Y, 0, 1));
+                new Vector4(box.X, box.Y, 0, 1));
         }
 
-        public static Matrix4 CreateBox(IBox box, floatv depth)
+        public static Matrix4 CreateBox(Box box, floatv depth)
         {
-            Vector2 c = box.Centre;
-
             return new Matrix4(
                 new Vector4(box.Width, 0, 0, 0),
                 new Vector4(0, box.Height, 0, 0),
                 new Vector4(0, 0, 1, 0),
-                new Vector4(c.X, c.Y, depth, 1));
+                new Vector4(box.X, box.Y, depth, 1));
         }
 
-        public static Matrix4 CreateBox(IBox3 box)
-        {
-            Vector3 c = box.Centre;
+        //public static Matrix4 CreateBox(IBox3 box)
+        //{
+        //    Vector3 c = box.Centre;
 
-            return new Matrix4(
-                new Vector4(box.Width, 0, 0, 0),
-                new Vector4(0, box.Height, 0, 0),
-                new Vector4(0, 0, box.Depth, 0),
-                new Vector4(c.X, c.Y, c.Z, 1));
-        }
+        //    return new Matrix4(
+        //        new Vector4(box.Width, 0, 0, 0),
+        //        new Vector4(0, box.Height, 0, 0),
+        //        new Vector4(0, 0, box.Depth, 0),
+        //        new Vector4(c.X, c.Y, c.Z, 1));
+        //}
 
         public static Matrix4 CreateOrthographicOffCentre(floatv left, floatv right, floatv top, floatv bottom, floatv depthNear, floatv depthFar)
         {

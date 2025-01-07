@@ -441,19 +441,12 @@ namespace Zene.Structs
             return new VariableVector(vs);
         }
         
-        public void Deconstruct(out double x, out double y, out double z, out double w)
+        public void Deconstruct(out floatv x, out floatv y, out floatv z, out floatv w)
         {
             x = X;
             y = Y;
             z = Z;
             w = W;
-        }
-        public void Deconstruct(out float x, out float y, out float z, out float w)
-        {
-            x = (float)X;
-            y = (float)Y;
-            z = (float)Z;
-            w = (float)W;
         }
         public void Deconstruct(out floatv x, out Vector3 yzw)
         {

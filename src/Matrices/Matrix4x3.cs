@@ -473,36 +473,32 @@ namespace Zene.Structs
         public static Matrix4x3 CreateTranslation(Vector3 xyz) => CreateTranslation(xyz.X, xyz.Y, xyz.Z);
         public static Matrix4x3 CreateTranslation(Vector2 xy) => CreateTranslation(xy.X, xy.Y);
 
-        public static Matrix4x3 CreateBox(IBox box)
+        public static Matrix4x3 CreateBox(Box box)
         {
-            Vector2 c = box.Centre;
-
             return new Matrix4x3(
                 new Vector3(box.Width, 0, 0),
                 new Vector3(0, box.Height, 0),
                 new Vector3(0, 0, 1),
-                new Vector3(c.X, c.Y, 0));
+                new Vector3(box.X, box.Y, 0));
         }
-        public static Matrix4x3 CreateBox(IBox box, floatv depth)
+        public static Matrix4x3 CreateBox(Box box, floatv depth)
         {
-            Vector2 c = box.Centre;
-
             return new Matrix4x3(
                 new Vector3(box.Width, 0, 0),
                 new Vector3(0, box.Height, 0),
                 new Vector3(0, 0, 1),
-                new Vector3(c.X, c.Y, depth));
+                new Vector3(box.X, box.Y, depth));
         }
-        public static Matrix4x3 CreateBox(IBox3 box)
-        {
-            Vector3 c = box.Centre;
+        //public static Matrix4x3 CreateBox(IBox3 box)
+        //{
+        //    Vector3 c = box.Centre;
 
-            return new Matrix4x3(
-                new Vector3(box.Width, 0, 0),
-                new Vector3(0, box.Height, 0),
-                new Vector3(0, 0, box.Depth),
-                new Vector3(c.X, c.Y, c.Z));
-        }
+        //    return new Matrix4x3(
+        //        new Vector3(box.Width, 0, 0),
+        //        new Vector3(0, box.Height, 0),
+        //        new Vector3(0, 0, box.Depth),
+        //        new Vector3(c.X, c.Y, c.Z));
+        //}
 
         public static Matrix4x3 CreateRotationX(Radian angle)
         {

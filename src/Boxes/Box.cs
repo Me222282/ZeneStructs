@@ -3,23 +3,23 @@
 namespace Zene.Structs
 {
     /// <summary>
-    /// A box stored by the <see cref="Left"/>, <see cref="Right"/>, <see cref="Top"/> and <see cref="Bottom"/> values.
+    /// A box stored by its <see cref="Location"/> and <see cref="Size"/> values.
     /// </summary>
-    public struct Box : IBox
+    public struct Box
     {
         /// <summary>
-        /// Creates a box from its left, right, top and bottom locations.
+        /// Creates a box from a location and size.
         /// </summary>
-        /// <param name="l">The x loction of the left side.</param>
-        /// <param name="r">The x loction of the right side.</param>
-        /// <param name="t">The y loction of the top side.</param>
-        /// <param name="b">The y loction of the bottom side.</param>
-        public Box(floatv l, floatv r, floatv t, floatv b)
+        /// <param name="x">The x value of the location.</param>
+        /// <param name="y">The y value of the location.</param>
+        /// <param name="w">The width value of the size.</param>
+        /// <param name="h">The height value of the size.</param>
+        public Box(floatv x, floatv y, floatv w, floatv h)
         {
-            Left = l;
-            Right = r;
-            Top = t;
-            Bottom = b;
+            X = x;
+            Y = y;
+            Width = w;
+            Height = h;
         }
         /// <summary>
         /// Creates a box from a location and size.
@@ -28,37 +28,66 @@ namespace Zene.Structs
         /// <param name="size">The size of the box.</param>
         public Box(Vector2 location, Vector2 size)
         {
-            Left = 0;
-            Right = 0;
-            Bottom = 0;
-            Top = 0;
-
-            Location = location;
-            Size = size;
+            X = location.X;
+            Y = location.Y;
+            Width = size.X;
+            Height = size.Y;
         }
         /// <summary>
-        /// Creates a box from an unknown box.
+        /// Creates a box from a <see cref="Rectangle"/>.
         /// </summary>
-        /// <param name="box">THe unknown box to reference from.</param>
-        public Box(IBox box)
+        /// <param name="rect">The rectanle.</param>
+        public Box(Rectangle rect)
         {
-            Left = box.Left;
-            Right = box.Right;
-            Bottom = box.Bottom;
-            Top = box.Top;
+            Location = rect.Centre;
+            Width = rect.Width;
+            Height = rect.Height;
+        }
+        /// <summary>
+        /// Creates a box from a <see cref="Bounds"/> box.
+        /// </summary>
+        /// <param name="box">The bounding box.</param>
+        public Box(Bounds box)
+        {
+            X = box.X;
+            Y = box.Y;
+            Width = box.Width;
+            Height = box.Height;
+        }
+        /// <summary>
+        /// Creates a box from a <see cref="RectangleI"/> box.
+        /// </summary>
+        /// <param name="rect">The rectangle..</param>
+        public Box(RectangleI rect)
+        {
+            Location = rect.Centre;
+            Width = rect.Width;
+            Height = rect.Height;
         }
 
-        public floatv Left { get; set; }
-        public floatv Right { get; set; }
-        public floatv Bottom { get; set; }
-        public floatv Top { get; set; }
+        /// <summary>
+        /// The centre x coordinate of the box.
+        /// </summary>
+        public floatv X { readonly get; set; }
+        /// <summary>
+        /// The centre y coordinate of the box.
+        /// </summary>
+        public floatv Y { readonly get; set; }
+        /// <summary>
+        /// The width of the box.
+        /// </summary>
+        public floatv Width { readonly get; set; }
+        /// <summary>
+        /// The height of the box.
+        /// </summary>
+        public floatv Height { readonly get; set; }
 
         /// <summary>
         /// The center location of the box.
         /// </summary>
         public Vector2 Location
         {
-            get => new Vector2(X, Y);
+            readonly get => new Vector2(X, Y);
             set
             {
                 X = value.X;
@@ -70,7 +99,7 @@ namespace Zene.Structs
         /// </summary>
         public Vector2 Size
         {
-            get => new Vector2(Width, Height);
+            readonly get => new Vector2(Width, Height);
             set
             {
                 Width = value.X;
@@ -78,112 +107,278 @@ namespace Zene.Structs
             }
         }
 
-        public Vector2 Centre
+        /// <summary>
+        /// The x coordinate of the left side of the box.
+        /// </summary>
+        public floatv Left
         {
-            get => Location;
-            set => Location = value;
-        }
-
-        public floatv X
-        {
-            get => Left + (Width * 0.5f);
+            readonly get => X - (Width * 0.5f);
             set
             {
-                floatv offset = value - X;
-
-                Left += offset;
-                Right += offset;
+                floatv diff = value - Left;
+                Width -= diff;
+                X -= diff * 0.5f;
             }
         }
-        public floatv Y
+        /// <summary>
+        /// The x coordinate of the right side of the box.
+        /// </summary>
+        public floatv Right
         {
-            get => Bottom + (Height * 0.5f);
+            readonly get => X + (Width * 0.5f);
             set
             {
-                floatv offset = value - Y;
-
-                Bottom += offset;
-                Top += offset;
+                floatv diff = value - Right;
+                Width += diff;
+                X += diff * 0.5f;
             }
         }
-        public floatv Width
+        /// <summary>
+        /// The y coordinate of the bottom of the box.
+        /// </summary>
+        public floatv Bottom
         {
-            get => Right - Left;
+            readonly get => Y - (Height * 0.5f);
             set
             {
-                floatv offset = (value - Width) * 0.5f;
-
-                Left -= offset;
-                Right += offset;
+                floatv diff = value - Bottom;
+                Height -= diff;
+                Y -= diff * 0.5f;
             }
         }
-        public floatv Height
+        /// <summary>
+        /// The y coordinate of the top of the box.
+        /// </summary>
+        public floatv Top
         {
-            get => Top - Bottom;
+            readonly get => Y + (Height * 0.5f);
             set
             {
-                floatv offset = (value - Height) * 0.5f;
-
-                Bottom -= offset;
-                Top += offset;
+                floatv diff = value - Top;
+                Height += diff;
+                Y += diff * 0.5f;
             }
         }
 
         /// <summary>
-        /// Sets the top left corner of the box whilst keeping the size the same.
+        /// The top-left point.
         /// </summary>
-        /// <param name="value"></param>
-        public void SetTopLeft(Vector2 value)
+        public Vector2 TopLeft
         {
-            Vector2 size = Size;
+            readonly get => new Vector2(Left, Top);
+            set => (Left, Top) = value;
+        }
+        /// <summary>
+        /// The top-right point.
+        /// </summary>
+        public Vector2 TopRight
+        {
+            readonly get => new Vector2(Right, Top);
+            set => (Right, Top) = value;
+        }
+        /// <summary>
+        /// The bottom-left point.
+        /// </summary>
+        public Vector2 BottomLeft
+        {
+            readonly get => new Vector2(Left, Bottom);
+            set => (Left, Bottom) = value;
+        }
+        /// <summary>
+        /// The bottom-right point.
+        /// </summary>
+        public Vector2 BottomRight
+        {
+            readonly get => new Vector2(Right, Bottom);
+            set => (Right, Bottom) = value;
+        }
 
-            Top = value.Y;
-            Left = value.X;
-            Bottom = value.Y - size.Y;
-            Right = value.X + size.X;
+        /// <summary>
+        /// Determines whether this box overlaps <paramref name="box"/>.
+        /// </summary>
+        /// <param name="box">The box to compare to.</param>
+        public readonly bool Overlaps(Box box)
+        {
+            Vector2 diff = (Location - box.Location).Abs();
+            return diff.X <= 0.5f * (Width + box.Width) &&
+                diff.Y <= 0.5f * (Height + box.Height);
+        }
+        /// <summary>
+        /// Determines whether <paramref name="box"/> is inside this.
+        /// </summary>
+        /// <param name="box">The box to compare to.</param>
+        public readonly bool Contains(Box box)
+        {
+            Vector2 diff = (Location - box.Location).Abs();
+            return diff.X < 0.5f * (Width - box.Width) &&
+                diff.Y < 0.5f * (Height - box.Height);
+        }
+        /// <summary>
+        /// Determines whether <paramref name="point"/> is inside this.
+        /// </summary>
+        /// <param name="point">The <see cref="Vector2"/> to compare to.</param>
+        public readonly bool Contains(Vector2 point)
+        {
+            Vector2 diff = (Location - point).Abs();
+
+            return diff.X <= Size.X && diff.Y <= Size.Y;
+        }
+        /// <summary>
+        /// Determines whether <paramref name="point"/> is inside this.
+        /// </summary>
+        /// <param name="point">The <see cref="Vector2I"/> to compare to.</param>
+        public readonly bool Contains(Vector2I point) => Contains(point);
+
+        /// <summary>
+        /// Returns the smallest box possable to contain <paramref name="b"/> and this.
+        /// </summary>
+        /// <param name="b">The second box.</param>
+        /// <returns></returns>
+        public readonly Box Add(Box b) => ((Bounds)this).Add(b);
+
+        /// <summary>
+        /// Returns the combined volume of <paramref name="b"/> and this box.
+        /// </summary>
+        /// <param name="b">The second box.</param>
+        /// <returns></returns>
+        public readonly floatv CombinedVolume(Box b)
+        {
+            Vector2 diff = (Location - b.Location).Abs();
+            Vector2 sd = (Size - b.Size).Abs();
+
+            if (diff.X < sd.X)
+            {
+                diff.X = b.Size.X;
+            }
+            else { diff.X += 0.5f * (Size.X + b.Size.X); }
+            if (diff.Y < sd.Y)
+            {
+                diff.Y = b.Size.Y;
+            }
+            else { diff.Y += 0.5f * (Size.Y + b.Size.Y); }
+
+            return diff.X * diff.Y;
+        }
+
+        /// <summary>
+        /// Returns a box clamped to the bounds of <paramref name="bounds"/>.
+        /// </summary>
+        /// <param name="bounds">The constricting bounds.</param>
+        /// <returns></returns>
+        public readonly Box Clamped(Box bounds) => ((Bounds)this).Clamped(bounds);
+
+        /// <summary>
+        /// Returns a rectangle with each side of the box extended by a value.
+        /// </summary>
+        /// <param name="value">The value to extend by</param>
+        public readonly Box Expanded(Vector2 value)
+        {
+            return new Bounds(
+                X - value.X,
+                Y + value.Y,
+                Width + value.X * 2,
+                Height + value.Y * 2);
+        }
+        /// <summary>
+        /// Extend each side of the box by a value.
+        /// </summary>
+        /// <param name="value">The value to extend by</param>
+        public void Expand(Vector2 value)
+        {
+            X -= value.X;
+            Right += value.X;
+            Bottom -= value.Y;
+            Y += value.Y;
+        }
+
+        /// <summary>
+        /// Determines whether this box intersects the path of <see cref="Line2"/> <paramref name="line"/>.
+        /// </summary>
+        /// <param name="line">The line to compare to</param>
+        /// <param name="tolerance">Added tolerance to act as thickening the line.</param>
+        /// <returns></returns>
+        public readonly bool Intersects(Line2 line, Vector2 tolerance)
+        {
+            Box tolBox = Expanded(tolerance);
+
+            Vector2 dist = tolBox.Location.Relative(line);
+
+            // Half of height
+            floatv hh = tolBox.Height * 0.5f;
+            // Half of width
+            floatv hw = tolBox.Width * 0.5f;
+
+            return ((dist.Y + hh >= 0) && (dist.Y - hh <= 0)) ||
+                ((dist.X + hw >= 0) && (dist.X - hw <= 0));
+        }
+
+        /// <summary>
+        /// Determines whether <paramref name="b"/> shares a bound with this box.
+        /// </summary>
+        /// <param name="b">THe second box.</param>
+        /// <returns></returns>
+        public readonly bool ShareBound(Box b)
+        {
+            Vector2 diff = (Location - b.Location).Abs();
+            return diff.X == 0.5f * (Width + b.Width) ||
+                diff.Y == 0.5f * (Height + b.Height);
         }
 
 #nullable enable
-        public override string ToString()
+        public readonly override string ToString()
         {
-            return $"Left:{Left}, Right:{Right}, Top:{Top}, Bottom:{Bottom}";
+            return $"X:{X}, Y:{Y}, Width:{Width}, Height:{Height}";
         }
-        public string ToString(string? format)
+        public readonly string ToString(string? format)
         {
-            return $"Left:{Left.ToString(format)}, Right:{Right.ToString(format)}, Top:{Top.ToString(format)}, Bottom:{Bottom.ToString(format)}";
+            return $"X:{X.ToString(format)}, Y:{Y.ToString(format)}, Width:{Width.ToString(format)}, Height:{Height.ToString(format)}";
         }
 #nullable disable
 
-        public override bool Equals(object obj)
+        public readonly override bool Equals(object obj)
         {
-            return obj is IBox b &&
-                    Left == b.Left && Right == b.Right &&
-                    Top == b.Top && Bottom == b.Bottom;
+            return obj is Box b &&
+                    X == b.X && Y == b.Y &&
+                    Width == b.Width && Height == b.Height;
         }
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Left, Right, Top, Bottom);
-        }
+        public readonly override int GetHashCode() => HashCode.Combine(X, Y, Width, Height);
 
         public static bool operator ==(Box l, Box r) => l.Equals(r);
         public static bool operator !=(Box l, Box r) => !l.Equals(r);
 
-        public static Box operator *(Box box, floatv scale) => new Box(box.Left * scale, box.Right * scale, box.Top * scale, box.Bottom * scale);
-        public static Box operator /(Box box, floatv scale) => new Box(box.Left / scale, box.Right / scale, box.Top / scale, box.Bottom / scale);
+        public static Box operator *(Box box, floatv scale) => new Box(box.X * scale, box.Y * scale, box.Width * scale, box.Height * scale);
+        public static Box operator *(Box box, Vector2 scale) => new Box(box.X * scale.X, box.Y * scale.Y, box.Width * scale.X, box.Height * scale.Y);
+        public static Box operator /(Box box, floatv scale)
+        {
+            floatv div = 1 / scale;
+            return new Box(box.X * div, box.Y * div, box.Width * div, box.Height * div);
+        }
+        public static Box operator /(Box box, Vector2 scale)
+        {
+            Vector2 div = 1 / scale;
+            return new Box(box.X * div.X, box.Y * div.Y, box.Width * div.X, box.Height * div.Y);
+        }
 
-        public static explicit operator Box(Rectangle box) => new Box(box);
+        public static Box operator +(Box box, Vector2 offset) => new Box(box.X + offset.X, box.Y + offset.Y, box.Width, box.Height);
+        public static Box operator -(Box box, Vector2 offset) => new Box(box.X - offset.X, box.Y - offset.Y, box.Width, box.Height);
+        public static Box operator +(Box a, Box b) => a.Add(b);
+        public static Box operator -(Box a, Box b) => a.Clamped(b);
+
+        public static implicit operator Box(Rectangle box) => new Box(box);
+        public static implicit operator Box(Bounds box) => new Box(box);
+        public static implicit operator Box(RectangleI box) => new Box(box);
 
         /// <summary>
         /// A <see cref="Box"/> that spans from negative to positive infinity.
         /// </summary>
-        public static Box Infinity { get; } = new Box(floatv.NegativeInfinity, floatv.PositiveInfinity, floatv.PositiveInfinity, floatv.NegativeInfinity);
+        public static Box Infinity { get; } = new Box(0, 0, floatv.PositiveInfinity, floatv.PositiveInfinity);
         /// <summary>
-        /// A <see cref="Box"/> with <see cref="Left"/>, <see cref="Right"/>, <see cref="Top"/> and <see cref="Bottom"/> all set to 0.
+        /// A <see cref="Box"/> with <see cref="X"/>, <see cref="Y"/>, <see cref="Width"/> and <see cref="Height"/> all set to 0.
         /// </summary>
         public static Box Zero { get; } = new Box(0, 0, 0, 0);
         /// <summary>
         /// A <see cref="Box"/> with a <see cref="Width"/> and <see cref="Height"/> of 1 centred around origin.
         /// </summary>
-        public static Box One { get; } = new Box(-0.5f, 0.5f, 0.5f, -0.5f);
+        public static Box One { get; } = new Box(0, 0, 1, 1);
     }
 }

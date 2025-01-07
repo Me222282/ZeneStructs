@@ -58,19 +58,19 @@ namespace Zene.Structs
         /// The x distance and y distance between points <see cref="A"/> and <see cref="B"/>.
         /// </summary>
         public Vector3 Change => B - A;
-        /// <summary>
-        /// The smallest box that can fit around this segment.
-        /// </summary>
-        public Box3 Bounds
-        {
-            get => new Box3(
-                    A.X < B.X ? A.X : B.X,
-                    A.X > B.X ? A.X : B.X,
-                    A.Y > B.Y ? A.Y : B.Y,
-                    A.Y < B.Y ? A.Y : B.Y,
-                    A.Z < B.Z ? A.Z : B.Z,
-                    A.Z > B.Z ? A.Z : B.Z);
-        }
+        ///// <summary>
+        ///// The smallest box that can fit around this segment.
+        ///// </summary>
+        //public Box3 Bounds
+        //{
+        //    get => new Box3(
+        //            A.X < B.X ? A.X : B.X,
+        //            A.X > B.X ? A.X : B.X,
+        //            A.Y > B.Y ? A.Y : B.Y,
+        //            A.Y < B.Y ? A.Y : B.Y,
+        //            A.Z < B.Z ? A.Z : B.Z,
+        //            A.Z > B.Z ? A.Z : B.Z);
+        //}
 
 #nullable enable
         public override string ToString()

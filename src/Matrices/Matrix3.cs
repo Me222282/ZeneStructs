@@ -489,14 +489,12 @@ namespace Zene.Structs
         }
         public static Matrix3 CreateTranslation(Vector2 xy) => CreateTranslation(xy.X, xy.Y);
 
-        public static Matrix3 CreateBox(IBox box)
+        public static Matrix3 CreateBox(Box box)
         {
-            Vector2 c = box.Centre;
-
             return new Matrix3(
                 new Vector3(box.Width, 0, 0),
                 new Vector3(0, box.Height, 0),
-                new Vector3(c.X, c.Y, 1));
+                new Vector3(box.X, box.Y, 1));
         }
     }
 }
