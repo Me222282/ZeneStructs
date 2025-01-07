@@ -480,7 +480,13 @@ namespace Zene.Structs
 
             return new VariableVector(vs);
         }
-        
+
+        /// <summary>
+        /// Returns a vector with each component the absolute of this.
+        /// </summary>
+        /// <returns></returns>
+        public Vector4I Abs() => new Vector4I(Math.Abs(X), Math.Abs(Y), Math.Abs(Z), Math.Abs(W));
+
         public void Deconstruct(out int x, out int y, out int z, out int w)
         {
             x = X;

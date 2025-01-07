@@ -225,7 +225,13 @@ namespace Zene.Structs
             X = Y;
             Y = -t;
         }
-        
+
+        /// <summary>
+        /// Returns a vector with each component the absolute of this.
+        /// </summary>
+        /// <returns></returns>
+        public Vector2I Abs() => new Vector2I(Math.Abs(X), Math.Abs(Y));
+
         public void Deconstruct(out int x, out int y)
         {
             x = X;

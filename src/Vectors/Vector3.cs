@@ -272,6 +272,12 @@ namespace Zene.Structs
         }
 
         /// <summary>
+        /// Returns a vector with each component the absolute of this.
+        /// </summary>
+        /// <returns></returns>
+        public Vector3 Abs() => new Vector3(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
+
+        /// <summary>
         /// Returns this vector as a <see cref="Vector3I"/> rounded to the nearest value.
         /// </summary>
         /// <returns></returns>
