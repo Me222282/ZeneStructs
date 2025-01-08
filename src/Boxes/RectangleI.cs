@@ -3,7 +3,7 @@
 namespace Zene.Structs
 {
     /// <summary>
-    /// A box stored by the <see cref="X"/>, <see cref="Y"/>, <see cref="Width"/> and <see cref="Height"/> values as integers.
+    /// A box stored by the top left point, <see cref="Width"/> and <see cref="Height"/> values as integers.
     /// </summary>
     public struct RectangleI
     {
@@ -119,7 +119,7 @@ namespace Zene.Structs
             set
             {
                 X = value.X - (Width / 2);
-                Y = value.Y - (Height / 2);
+                Y = value.Y + (Height / 2);
             }
         }
 
@@ -421,23 +421,23 @@ namespace Zene.Structs
         }
 
 #nullable enable
-        public override string ToString()
+        public readonly override string ToString()
         {
-            return $"X:{X}, Y:{X}, Width:{Width}, Height:{Height}";
+            return $"X:{X}, Y:{Y}, Width:{Width}, Height:{Height}";
         }
-        public string ToString(string? format)
+        public readonly string ToString(string? format)
         {
             return $"X:{X.ToString(format)}, Y:{Y.ToString(format)}, Width:{Width.ToString(format)}, Height:{Height.ToString(format)}";
         }
 #nullable disable
 
-        public override bool Equals(object obj)
+        public readonly override bool Equals(object obj)
         {
             return obj is RectangleI b &&
                     X == b.Left && Width == b.Width &&
                     Y == b.Top && Height == b.Height;
         }
-        public override int GetHashCode()
+        public readonly override int GetHashCode()
         {
             return HashCode.Combine(X, Y, Width, Height);
         }

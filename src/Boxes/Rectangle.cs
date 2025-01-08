@@ -93,7 +93,7 @@ namespace Zene.Structs
             set
             {
                 X = value.X - (Width * 0.5f);
-                Y = value.Y - (Height * 0.5f);
+                Y = value.Y + (Height * 0.5f);
             }
         }
 
@@ -382,7 +382,7 @@ namespace Zene.Structs
 #nullable enable
         public readonly override string ToString()
         {
-            return $"X:{X}, Y:{X}, Width:{Width}, Height:{Height}";
+            return $"X:{X}, Y:{Y}, Width:{Width}, Height:{Height}";
         }
         public readonly string ToString(string? format)
         {
