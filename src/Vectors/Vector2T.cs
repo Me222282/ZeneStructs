@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Numerics;
 
 namespace Zene.Structs
 {
     /// <summary>
     /// An object that stores a 2 dimensional <typeparamref name="T"/> vector.
     /// </summary>
-    public struct Vector2<T> where T : unmanaged
+    public struct Vector2<T> where T : unmanaged//, INumber<T>
     {
         /// <summary>
         /// Creates a 2 dimensional vector from a single <typeparamref name="T"/>.
@@ -54,7 +55,28 @@ namespace Zene.Structs
         /// The second value of the vector.
         /// </summary>
         public T Y { get; set; }
-        
+
+        ///// <summary>
+        ///// The length of the vector (distance from origin).
+        ///// </summary>
+        //public floatv Length
+        //{
+        //    get
+        //    {
+        //        return Maths.Sqrt((X * X) + (Y * Y));
+        //    }
+        //}
+        ///// <summary>
+        ///// The squared length of the vector (distance from origin squared).
+        ///// </summary>
+        //public floatv SquaredLength
+        //{
+        //    get
+        //    {
+        //        return (X * X) + (Y * Y);
+        //    }
+        //}
+
         public void Deconstruct(out T x, out T y)
         {
             x = X;

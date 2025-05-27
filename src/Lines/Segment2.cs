@@ -91,9 +91,9 @@ namespace Zene.Structs
         /// <summary>
         /// The smallest box that can fit around this segment.
         /// </summary>
-        public Box Bounds
+        public Bounds Bounds
         {
-            get => new Box(
+            get => new Bounds(
                     A.X < B.X ? A.X : B.X,
                     A.X > B.X ? A.X : B.X,
                     A.Y > B.Y ? A.Y : B.Y,

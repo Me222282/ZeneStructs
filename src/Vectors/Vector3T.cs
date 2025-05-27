@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Numerics;
 
 namespace Zene.Structs
 {
     /// <summary>
     /// An object that stores a 3 dimensional <typeparamref name="T"/> vector.
     /// </summary>
-    public struct Vector3<T> where T : unmanaged
+    public struct Vector3<T> where T : unmanaged//, INumber<T>
     {
         /// <summary>
         /// Creates a 3 dimensional vector from a single <typeparamref name="T"/>.

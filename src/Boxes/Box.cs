@@ -3,9 +3,9 @@
 namespace Zene.Structs
 {
     /// <summary>
-    /// A box stored by its <see cref="Location"/> and <see cref="Size"/> values.
+    /// A box stored by its centre <see cref="Location"/> and <see cref="Size"/> values.
     /// </summary>
-    public struct Box
+    public struct Box : IBox
     {
         /// <summary>
         /// Creates a box from a location and size.
@@ -107,6 +107,12 @@ namespace Zene.Structs
             }
         }
 
+        Vector2 IBox.Centre
+        {
+            get => Location;
+            set => Location = value;
+        }
+
         /// <summary>
         /// The x coordinate of the left side of the box.
         /// </summary>
@@ -117,7 +123,7 @@ namespace Zene.Structs
             {
                 floatv diff = value - Left;
                 Width -= diff;
-                X -= diff * 0.5f;
+                X += diff * 0.5f;
             }
         }
         /// <summary>
@@ -143,7 +149,7 @@ namespace Zene.Structs
             {
                 floatv diff = value - Bottom;
                 Height -= diff;
-                Y -= diff * 0.5f;
+                Y += diff * 0.5f;
             }
         }
         /// <summary>
@@ -194,134 +200,170 @@ namespace Zene.Structs
         }
 
         /// <summary>
-        /// Determines whether this box overlaps <paramref name="box"/>.
+        /// Sets the top left corner of the box whilst keeping the size the same.
         /// </summary>
-        /// <param name="box">The box to compare to.</param>
-        public readonly bool Overlaps(Box box)
+        /// <param name="value"></param>
+        public void SetTopLeft(Vector2 value)
         {
-            Vector2 diff = (Location - box.Location).Abs();
-            return diff.X <= 0.5f * (Width + box.Width) &&
-                diff.Y <= 0.5f * (Height + box.Height);
+            floatv hw = Width * 0.5f;
+            floatv hh = Height * 0.5f;
+            X = value.X + hw;
+            Y = value.Y - hh;
         }
-        /// <summary>
-        /// Determines whether <paramref name="box"/> is inside this.
-        /// </summary>
-        /// <param name="box">The box to compare to.</param>
-        public readonly bool Contains(Box box)
-        {
-            Vector2 diff = (Location - box.Location).Abs();
-            return diff.X < 0.5f * (Width - box.Width) &&
-                diff.Y < 0.5f * (Height - box.Height);
-        }
-        /// <summary>
-        /// Determines whether <paramref name="point"/> is inside this.
-        /// </summary>
-        /// <param name="point">The <see cref="Vector2"/> to compare to.</param>
-        public readonly bool Contains(Vector2 point)
-        {
-            Vector2 diff = (Location - point).Abs();
 
-            return diff.X <= Size.X && diff.Y <= Size.Y;
-        }
-        /// <summary>
-        /// Determines whether <paramref name="point"/> is inside this.
-        /// </summary>
-        /// <param name="point">The <see cref="Vector2I"/> to compare to.</param>
-        public readonly bool Contains(Vector2I point) => Contains(point);
+        ///// <summary>
+        ///// Determines whether this box overlaps <paramref name="box"/>.
+        ///// </summary>
+        ///// <param name="box">The box to compare to.</param>
+        //public readonly bool Overlaps(Box box)
+        //{
+        //    Vector2 diff = (Location - box.Location).Abs() * 2;
+        //    return diff.X <= Width + box.Width &&
+        //        diff.Y <= Height + box.Height;
+        //}
+        ///// <summary>
+        ///// Determines whether <paramref name="box"/> is inside this.
+        ///// </summary>
+        ///// <param name="box">The box to compare to.</param>
+        //public readonly bool Contains(Box box)
+        //{
+        //    Vector2 diff = (Location - box.Location).Abs() * 2;
+        //    return diff.X < Width - box.Width &&
+        //        diff.Y < Height - box.Height;
+        //}
+        ///// <summary>
+        ///// Determines whether <paramref name="point"/> is inside this.
+        ///// </summary>
+        ///// <param name="point">The <see cref="Vector2"/> to compare to.</param>
+        //public readonly bool Contains(Vector2 point)
+        //{
+        //    Vector2 diff = (Location - point).Abs() * 2;
+
+        //    return diff.X <= Size.X && diff.Y <= Size.Y;
+        //}
+        ///// <summary>
+        ///// Determines whether <paramref name="point"/> is inside this.
+        ///// </summary>
+        ///// <param name="point">The <see cref="Vector2I"/> to compare to.</param>
+        //public readonly bool Contains(Vector2I point) => Contains((Vector2)point);
+
+        ///// <summary>
+        ///// Returns the smallest box possible to contain <paramref name="b"/> and this.
+        ///// </summary>
+        ///// <param name="b">The second box.</param>
+        ///// <returns></returns>
+        //public readonly Box Add(Box b) => ((Bounds)this).Add(b);
+
+        ///// <summary>
+        ///// Returns the combined volume of <paramref name="b"/> and this box.
+        ///// </summary>
+        ///// <param name="b">The second box.</param>
+        ///// <returns></returns>
+        //public readonly floatv CombinedVolume(Box b)
+        //{
+        //    Vector2 diff = (Location - b.Location).Abs();
+        //    Vector2 sd = (Size - b.Size).Abs();
+
+        //    if (diff.X < sd.X)
+        //    {
+        //        diff.X = b.Size.X;
+        //    }
+        //    else { diff.X += 0.5f * (Size.X + b.Size.X); }
+        //    if (diff.Y < sd.Y)
+        //    {
+        //        diff.Y = b.Size.Y;
+        //    }
+        //    else { diff.Y += 0.5f * (Size.Y + b.Size.Y); }
+
+        //    return diff.X * diff.Y;
+        //}
+
+        ///// <summary>
+        ///// Returns a box clamped to the bounds of <paramref name="bounds"/>.
+        ///// </summary>
+        ///// <param name="bounds">The constricting bounds.</param>
+        ///// <returns></returns>
+        //public readonly Box Clamped(Box bounds) => ((Bounds)this).Clamped(bounds);
+
+        ///// <summary>
+        ///// Returns a box with each side of the box extended by a value.
+        ///// </summary>
+        ///// <param name="value">The value to extend by.</param>
+        //public readonly Box Expanded(Vector2 value)
+        //{
+        //    return new Box(
+        //        X, Y,
+        //        Width + value.X * 2,
+        //        Height + value.Y * 2);
+        //}
+        ///// <summary>
+        ///// Extend each side of the box by a value.
+        ///// </summary>
+        ///// <param name="value">The value to extend by.</param>
+        //public void Expand(Vector2 value)
+        //{
+        //    Width += value.X * 2;
+        //    Height += value.Y * 2;
+        //}
+
+        ///// <summary>
+        ///// Determines whether this box intersects the path of <see cref="Line2"/> <paramref name="line"/>.
+        ///// </summary>
+        ///// <param name="line">The line to compare to.</param>
+        ///// <param name="tolerance">Added tolerance to act as thickening the line.</param>
+        ///// <returns></returns>
+        //public readonly bool Intersects(Line2 line, Vector2 tolerance)
+        //{
+        //    Box tolBox = Expanded(tolerance);
+
+        //    Vector2 dist = tolBox.Location.Relative(line);
+
+        //    // Half of height
+        //    floatv hh = tolBox.Height * 0.5f;
+        //    // Half of width
+        //    floatv hw = tolBox.Width * 0.5f;
+
+        //    return ((dist.Y + hh >= 0) && (dist.Y - hh <= 0)) ||
+        //        ((dist.X + hw >= 0) && (dist.X - hw <= 0));
+        //}
+
+        ///// <summary>
+        ///// Determines whether <paramref name="b"/> shares a bound with this box.
+        ///// </summary>
+        ///// <param name="b">The second box.</param>
+        ///// <returns></returns>
+        //public readonly bool ShareBound(Box b)
+        //{
+        //    Vector2 diff = (Location - b.Location).Abs();
+        //    return diff.X == 0.5f * (Width + b.Width) ||
+        //        diff.Y == 0.5f * (Height + b.Height);
+        //}
 
         /// <summary>
-        /// Returns the smallest box possable to contain <paramref name="b"/> and this.
+        /// Creates a <see cref="Box"/> from its limiting bounds.
         /// </summary>
-        /// <param name="b">The second box.</param>
+        /// <param name="left">The left side location.</param>
+        /// <param name="right">The right side location.</param>
+        /// <param name="top">The top side location.</param>
+        /// <param name="bottom">The bottom side location.</param>
         /// <returns></returns>
-        public readonly Box Add(Box b) => ((Bounds)this).Add(b);
-
-        /// <summary>
-        /// Returns the combined volume of <paramref name="b"/> and this box.
-        /// </summary>
-        /// <param name="b">The second box.</param>
-        /// <returns></returns>
-        public readonly floatv CombinedVolume(Box b)
+        public static Box FromBounds(floatv left, floatv right, floatv top, floatv bottom)
         {
-            Vector2 diff = (Location - b.Location).Abs();
-            Vector2 sd = (Size - b.Size).Abs();
-
-            if (diff.X < sd.X)
-            {
-                diff.X = b.Size.X;
-            }
-            else { diff.X += 0.5f * (Size.X + b.Size.X); }
-            if (diff.Y < sd.Y)
-            {
-                diff.Y = b.Size.Y;
-            }
-            else { diff.Y += 0.5f * (Size.Y + b.Size.Y); }
-
-            return diff.X * diff.Y;
-        }
-
-        /// <summary>
-        /// Returns a box clamped to the bounds of <paramref name="bounds"/>.
-        /// </summary>
-        /// <param name="bounds">The constricting bounds.</param>
-        /// <returns></returns>
-        public readonly Box Clamped(Box bounds) => ((Bounds)this).Clamped(bounds);
-
-        /// <summary>
-        /// Returns a rectangle with each side of the box extended by a value.
-        /// </summary>
-        /// <param name="value">The value to extend by</param>
-        public readonly Box Expanded(Vector2 value)
-        {
-            return new Bounds(
-                X - value.X,
-                Y + value.Y,
-                Width + value.X * 2,
-                Height + value.Y * 2);
+            return new Box((left + right) * 0.5f, (top + bottom) * 0.5f, right - left, top - bottom);
         }
         /// <summary>
-        /// Extend each side of the box by a value.
+        /// Creates a <see cref="Box"/> from a reference to its top-left location.
         /// </summary>
-        /// <param name="value">The value to extend by</param>
-        public void Expand(Vector2 value)
-        {
-            X -= value.X;
-            Right += value.X;
-            Bottom -= value.Y;
-            Y += value.Y;
-        }
-
-        /// <summary>
-        /// Determines whether this box intersects the path of <see cref="Line2"/> <paramref name="line"/>.
-        /// </summary>
-        /// <param name="line">The line to compare to</param>
-        /// <param name="tolerance">Added tolerance to act as thickening the line.</param>
+        /// <param name="left">The left side location.</param>
+        /// <param name="top">The top side location.</param>
+        /// <param name="width">The width of the box.</param>
+        /// <param name="height">The height of the box.</param>
         /// <returns></returns>
-        public readonly bool Intersects(Line2 line, Vector2 tolerance)
+        public static Box FromRect(floatv left, floatv top, floatv width, floatv height)
         {
-            Box tolBox = Expanded(tolerance);
-
-            Vector2 dist = tolBox.Location.Relative(line);
-
-            // Half of height
-            floatv hh = tolBox.Height * 0.5f;
-            // Half of width
-            floatv hw = tolBox.Width * 0.5f;
-
-            return ((dist.Y + hh >= 0) && (dist.Y - hh <= 0)) ||
-                ((dist.X + hw >= 0) && (dist.X - hw <= 0));
-        }
-
-        /// <summary>
-        /// Determines whether <paramref name="b"/> shares a bound with this box.
-        /// </summary>
-        /// <param name="b">THe second box.</param>
-        /// <returns></returns>
-        public readonly bool ShareBound(Box b)
-        {
-            Vector2 diff = (Location - b.Location).Abs();
-            return diff.X == 0.5f * (Width + b.Width) ||
-                diff.Y == 0.5f * (Height + b.Height);
+            floatv hw = width * 0.5f;
+            floatv hh = height * 0.5f;
+            return new Box(left + hw, top - hh, width, height);
         }
 
 #nullable enable

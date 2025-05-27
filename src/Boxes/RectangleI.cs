@@ -5,19 +5,19 @@ namespace Zene.Structs
     /// <summary>
     /// A box stored by the top left point, <see cref="Width"/> and <see cref="Height"/> values as integers.
     /// </summary>
-    public struct RectangleI
+    public struct RectangleI : IBox
     {
         /// <summary>
         /// Creates a rectangle box from a location and size.
         /// </summary>
-        /// <param name="x">The x value of the location.</param>
-        /// <param name="y">The y value of the location.</param>
+        /// <param name="left">The x value of the location.</param>
+        /// <param name="top">The y value of the location.</param>
         /// <param name="w">The width value of the size.</param>
         /// <param name="h">The height value of the size.</param>
-        public RectangleI(int x, int y, int w, int h)
+        public RectangleI(int left, int top, int w, int h)
         {
-            X = x;
-            Y = y;
+            X = left;
+            Y = top;
             Width = w;
             Height = h;
         }
@@ -36,14 +36,14 @@ namespace Zene.Structs
         /// <summary>
         /// Creates a rectangle box from a <see cref="floatv"/> based location and size.
         /// </summary>
-        /// <param name="x">The x value of the location.</param>
-        /// <param name="y">The y value of the location.</param>
+        /// <param name="left">The x value of the location.</param>
+        /// <param name="top">The y value of the location.</param>
         /// <param name="w">The width value of the size.</param>
         /// <param name="h">The height value of the size.</param>
-        public RectangleI(floatv x, floatv y, floatv w, floatv h)
+        public RectangleI(floatv left, floatv top, floatv w, floatv h)
         {
-            X = (int)x;
-            Y = (int)y;
+            X = (int)left;
+            Y = (int)top;
             Width = (int)w;
             Height = (int)h;
         }
@@ -97,18 +97,22 @@ namespace Zene.Structs
         /// The left x location of the box.
         /// </summary>
         public int X { readonly get; set; }
+        floatv IBox.X { get => X; set => X = (int)value; }
         /// <summary>
         /// The top y location of the box.
         /// </summary>
         public int Y { readonly get; set; }
+        floatv IBox.Y { get => Y; set => Y = (int)value; }
         /// <summary>
         /// The width of the box.
         /// </summary>
         public int Width { readonly get; set; }
+        floatv IBox.Width { get => Width; set => Width = (int)value; }
         /// <summary>
         /// The height of the box.
         /// </summary>
         public int Height { readonly get; set; }
+        floatv IBox.Height { get => Height; set => Height = (int)value; }
 
         /// <summary>
         /// The center location of the box.
@@ -122,6 +126,7 @@ namespace Zene.Structs
                 Y = value.Y + (Height / 2);
             }
         }
+        Vector2 IBox.Centre { get => Centre; set => Centre = (Vector2I)value; }
 
         /// <summary>
         /// The top-left location of the box.
@@ -147,6 +152,7 @@ namespace Zene.Structs
                 Height = value.Y;
             }
         }
+        Vector2 IBox.Size { get => Size; set => Size = (Vector2I)value; }
 
         /// <summary>
         /// The left side of the box.
@@ -157,13 +163,14 @@ namespace Zene.Structs
             set
             {
                 Width += X - value;
-                if (Width < 0)
-                {
-                    Width = 0;
-                }
+                //if (Width < 0)
+                //{
+                //    Width = 0;
+                //}
                 X = value;
             }
         }
+        floatv IBox.Left { get => Left; set => Left = (int)value; }
         /// <summary>
         /// The right side of the box.
         /// </summary>
@@ -173,12 +180,13 @@ namespace Zene.Structs
             set
             {
                 Width = value - X;
-                if (Width < 0)
-                {
-                    Width = 0;
-                }
+                //if (Width < 0)
+                //{
+                //    Width = 0;
+                //}
             }
         }
+        floatv IBox.Right { get => Right; set => Right = (int)value; }
         /// <summary>
         /// The bottom side of the box.
         /// </summary>
@@ -188,13 +196,14 @@ namespace Zene.Structs
             set
             {
                 Height = Y - value;
-                if (Height < 0)
-                {
-                    Height = 0;
-                }
+                //if (Height < 0)
+                //{
+                //    Height = 0;
+                //}
                 Y = value;
             }
         }
+        floatv IBox.Bottom { get => Bottom; set => Bottom = (int)value; }
         /// <summary>
         /// The top side of the box.
         /// </summary>
@@ -204,12 +213,13 @@ namespace Zene.Structs
             set
             {
                 Height += value - Y;
-                if (Height < 0)
-                {
-                    Height = 0;
-                }
+                //if (Height < 0)
+                //{
+                //    Height = 0;
+                //}
             }
         }
+        floatv IBox.Top { get => Top; set => Top = (int)value; }
 
         /// <summary>
         /// The top-right point.
@@ -236,188 +246,209 @@ namespace Zene.Structs
             set => (Right, Bottom) = value;
         }
 
-        /// <summary>
-        /// Determines whether this box overlaps <paramref name="box"/>.
-        /// </summary>
-        /// <param name="box">The box to compare to.</param>
-        public readonly bool Overlaps(RectangleI box)
-        {
-            return (Left < box.Right) &&
-                (Right > box.Left) &&
-                (Bottom < box.Top) &&
-                (Top > box.Bottom);
-        }
-        /// <summary>
-        /// Determines whether <paramref name="box"/> is inside this.
-        /// </summary>
-        /// <param name="box">The box to compare to.</param>
-        public readonly bool Contains(RectangleI box)
-        {
-            return (Left >= box.Right) &&
-                (Right <= box.Left) &&
-                (Bottom >= box.Top) &&
-                (Top <= box.Bottom);
-        }
-        /// <summary>
-        /// Determines whether <paramref name="point"/> is inside this.
-        /// </summary>
-        /// <param name="point">The <see cref="Vector2I"/> to compare to.</param>
-        public readonly bool Contains(Vector2I point)
-        {
-            return (point.X >= Left) &&
-                (point.X <= Right) &&
-                (point.Y >= Bottom) &&
-                (point.Y <= Top);
-        }
-        /// <summary>
-        /// Determines whether <paramref name="point"/> is inside this.
-        /// </summary>
-        /// <param name="point">The <see cref="Vector2"/> to compare to.</param>
-        public readonly bool Contains(Vector2 point) => Contains(point);
+        ///// <summary>
+        ///// Determines whether this box overlaps <paramref name="box"/>.
+        ///// </summary>
+        ///// <param name="box">The box to compare to.</param>
+        //public readonly bool Overlaps(RectangleI box)
+        //{
+        //    return (Left < box.Right) &&
+        //        (Right > box.Left) &&
+        //        (Bottom < box.Top) &&
+        //        (Top > box.Bottom);
+        //}
+        ///// <summary>
+        ///// Determines whether <paramref name="box"/> is inside this.
+        ///// </summary>
+        ///// <param name="box">The box to compare to.</param>
+        //public readonly bool Contains(RectangleI box)
+        //{
+        //    return (Left >= box.Right) &&
+        //        (Right <= box.Left) &&
+        //        (Bottom >= box.Top) &&
+        //        (Top <= box.Bottom);
+        //}
+        ///// <summary>
+        ///// Determines whether <paramref name="point"/> is inside this.
+        ///// </summary>
+        ///// <param name="point">The <see cref="Vector2I"/> to compare to.</param>
+        //public readonly bool Contains(Vector2I point)
+        //{
+        //    return (point.X >= Left) &&
+        //        (point.X <= Right) &&
+        //        (point.Y >= Bottom) &&
+        //        (point.Y <= Top);
+        //}
+        ///// <summary>
+        ///// Determines whether <paramref name="point"/> is inside this.
+        ///// </summary>
+        ///// <param name="point">The <see cref="Vector2"/> to compare to.</param>
+        //public readonly bool Contains(Vector2 point) => Contains((Vector2I)point);
+
+        ///// <summary>
+        ///// Returns the smallest box possable to contain <paramref name="b"/> and this.
+        ///// </summary>
+        ///// <param name="b">The second box.</param>
+        ///// <returns></returns>
+        //public readonly RectangleI Add(RectangleI b)
+        //{
+        //    Vector2I diff = Location - b.Location;
+        //    Vector2I loc = 0;
+
+        //    if (diff.X < 0)
+        //    {
+        //        diff.X = -diff.X;
+        //        diff.X += b.Width;
+        //        loc.X = X;
+        //    }
+        //    else
+        //    {
+        //        diff.X += Width;
+        //        loc.X = b.X;
+        //    }
+        //    if (diff.Y < 0)
+        //    {
+        //        diff.Y = -diff.Y;
+        //        diff.Y += Height;
+        //        loc.Y = b.Y;
+        //    }
+        //    else
+        //    {
+        //        diff.Y += b.Height;
+        //        loc.Y = Y;
+        //    }
+
+        //    return new RectangleI(loc, diff);
+        //}
+
+        ///// <summary>
+        ///// Returns the combined volume of <paramref name="b"/> and this box.
+        ///// </summary>
+        ///// <param name="b">The second box.</param>
+        ///// <returns></returns>
+        //public readonly int CombinedVolume(RectangleI b)
+        //{
+        //    Vector2I diff = Location - b.Location;
+
+        //    if (diff.X < 0)
+        //    {
+        //        diff.X = -diff.X;
+        //        diff.X += Width;
+        //    }
+        //    else { diff.X += b.Width; }
+        //    if (diff.Y < 0)
+        //    {
+        //        diff.Y = -diff.Y;
+        //        diff.Y += Height;
+        //    }
+        //    else { diff.Y += b.Height; }
+
+        //    return diff.X * diff.Y;
+        //}
+
+        ///// <summary>
+        ///// Returns a box clamped to the bounds of <paramref name="bounds"/>.
+        ///// </summary>
+        ///// <param name="bounds">The constricting bounds.</param>
+        ///// <returns></returns>
+        //public readonly RectangleI Clamped(RectangleI bounds)
+        //{
+        //    RectangleI r = this;
+        //    int c = bounds.Left;
+        //    if (r.Left < c) { r.Left = c; }
+        //    c = bounds.Right;
+        //    if (r.Right > c) { r.Right = c; }
+        //    c = bounds.Bottom;
+        //    if (r.Bottom < c) { r.Bottom = c; }
+        //    c = bounds.Top;
+        //    if (r.Top > c) { r.Top = c; }
+
+        //    return r;
+        //}
+
+        ///// <summary>
+        ///// Returns a rectangle with each side of the box extended by a value.
+        ///// </summary>
+        ///// <param name="value">The value to extend by.</param>
+        //public readonly RectangleI Expanded(Vector2I value)
+        //{
+        //    return new RectangleI(
+        //        X - value.X,
+        //        Y + value.Y,
+        //        Width + value.X * 2,
+        //        Height + value.Y * 2);
+        //}
+        ///// <summary>
+        ///// Extend each side of the box by a value.
+        ///// </summary>
+        ///// <param name="value">The value to extend by.</param>
+        //public void Expand(Vector2I value)
+        //{
+        //    X -= value.X;
+        //    Right += value.X;
+        //    Bottom -= value.Y;
+        //    Y += value.Y;
+        //}
+
+        ///// <summary>
+        ///// Determines whether this box intersects the path of <see cref="Line2"/> <paramref name="line"/>.
+        ///// </summary>
+        ///// <param name="line">The line to compare to.</param>
+        ///// <param name="tolerance">Added tolerance to act as thickening the line.</param>
+        ///// <returns></returns>
+        //public readonly bool Intersects(Line2 line, Vector2 tolerance)
+        //{
+        //    Rectangle tolBox = ((Rectangle)this).Expanded(tolerance);
+
+        //    Vector2 dist = tolBox.Centre.Relative(line);
+
+        //    // Half of height
+        //    floatv hh = tolBox.Height * 0.5f;
+        //    // Half of width
+        //    floatv hw = tolBox.Width * 0.5f;
+
+        //    return ((dist.Y + hh >= 0) && (dist.Y - hh <= 0)) ||
+        //        ((dist.X + hw >= 0) && (dist.X - hw <= 0));
+        //}
+
+        ///// <summary>
+        ///// Determines whether <paramref name="b"/> shares a bound with this box.
+        ///// </summary>
+        ///// <param name="b">The second box.</param>
+        ///// <returns></returns>
+        //public readonly bool ShareBound(RectangleI b)
+        //{
+        //    return X == b.X ||
+        //        Right == b.Right ||
+        //        Y == b.Y ||
+        //        Bottom == b.Bottom;
+        //}
 
         /// <summary>
-        /// Returns the smallest box possable to contain <paramref name="b"/> and this.
+        /// Creates a <see cref="RectangleI"/> from a reference to its centre location.
         /// </summary>
-        /// <param name="b">The second box.</param>
+        /// <param name="x">The centre x position.</param>
+        /// <param name="y">The centre y position.</param>
+        /// <param name="width">The width of the box.</param>
+        /// <param name="height">The height of the box.</param>
         /// <returns></returns>
-        public readonly RectangleI Add(RectangleI b)
+        public static RectangleI FromCoords(int x, int y, int width, int height)
         {
-            Vector2I diff = Location - b.Location;
-            Vector2I loc = 0;
-
-            if (diff.X < 0)
-            {
-                diff.X = -diff.X;
-                diff.X += b.Width;
-                loc.X = X;
-            }
-            else
-            {
-                diff.X += Width;
-                loc.X = b.X;
-            }
-            if (diff.Y < 0)
-            {
-                diff.Y = -diff.Y;
-                diff.Y += Height;
-                loc.Y = b.Y;
-            }
-            else
-            {
-                diff.Y += b.Height;
-                loc.Y = Y;
-            }
-
-            return new RectangleI(loc, diff);
+            int hw = width / 2;
+            int hh = height / 2;
+            return new RectangleI(x - hw, y + hh, width, height);
         }
-
         /// <summary>
-        /// Returns the combined volume of <paramref name="b"/> and this box.
+        /// Creates a <see cref="RectangleI"/> from its limiting bounds.
         /// </summary>
-        /// <param name="b">The second box.</param>
+        /// <param name="left">The left side location.</param>
+        /// <param name="right">The right side location.</param>
+        /// <param name="top">The top side location.</param>
+        /// <param name="bottom">The bottom side location.</param>
         /// <returns></returns>
-        public readonly int CombinedVolume(RectangleI b)
+        public static RectangleI FromBounds(int left, int right, int top, int bottom)
         {
-            Vector2I diff = Location - b.Location;
-
-            if (diff.X < 0)
-            {
-                diff.X = -diff.X;
-                diff.X += Width;
-            }
-            else { diff.X += b.Width; }
-            if (diff.Y < 0)
-            {
-                diff.Y = -diff.Y;
-                diff.Y += Height;
-            }
-            else { diff.Y += b.Height; }
-
-            return diff.X * diff.Y;
-        }
-
-        /// <summary>
-        /// Returns a box clamped to the bounds of <paramref name="bounds"/>.
-        /// </summary>
-        /// <param name="bounds">The constricting bounds.</param>
-        /// <returns></returns>
-        public readonly RectangleI Clamped(RectangleI bounds)
-        {
-            RectangleI r = this;
-            int c = bounds.Right;
-            if (r.Left < c) { r.Left = c; }
-            else
-            {
-                c = bounds.Left;
-                if (r.Right > c) { r.Right = c; }
-            }
-            c = bounds.Top;
-            if (r.Bottom < c) { r.Bottom = c; }
-            else
-            {
-                c = bounds.Bottom;
-                if (r.Top > c) { r.Top = c; }
-            }
-
-            return r;
-        }
-
-        /// <summary>
-        /// Returns a rectangle with each side of the box extended by a value.
-        /// </summary>
-        /// <param name="value">The value to extend by</param>
-        public readonly RectangleI Expanded(Vector2I value)
-        {
-            return new RectangleI(
-                X - value.X,
-                Y + value.Y,
-                Width + value.X * 2,
-                Height + value.Y * 2);
-        }
-        /// <summary>
-        /// Extend each side of the box by a value.
-        /// </summary>
-        /// <param name="value">The value to extend by</param>
-        public void Expand(Vector2I value)
-        {
-            X -= value.X;
-            Right += value.X;
-            Bottom -= value.Y;
-            Y += value.Y;
-        }
-
-        /// <summary>
-        /// Determines whether this box intersects the path of <see cref="Line2"/> <paramref name="line"/>.
-        /// </summary>
-        /// <param name="line">The line to compare to</param>
-        /// <param name="tolerance">Added tolerance to act as thickening the line.</param>
-        /// <returns></returns>
-        public readonly bool Intersects(Line2 line, Vector2 tolerance)
-        {
-            Rectangle tolBox = ((Rectangle)this).Expanded(tolerance);
-
-            Vector2 dist = tolBox.Centre.Relative(line);
-
-            // Half of height
-            floatv hh = tolBox.Height * 0.5f;
-            // Half of width
-            floatv hw = tolBox.Width * 0.5f;
-
-            return ((dist.Y + hh >= 0) && (dist.Y - hh <= 0)) ||
-                ((dist.X + hw >= 0) && (dist.X - hw <= 0));
-        }
-
-        /// <summary>
-        /// Determines whether <paramref name="b"/> shares a bound with this box.
-        /// </summary>
-        /// <param name="b">THe second box.</param>
-        /// <returns></returns>
-        public readonly bool ShareBound(RectangleI b)
-        {
-            return X == b.X ||
-                Right == b.Right ||
-                Y == b.Y ||
-                Bottom == b.Bottom;
+            return new RectangleI(left, top, right - left, top - bottom);
         }
 
 #nullable enable
