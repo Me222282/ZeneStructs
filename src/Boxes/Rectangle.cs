@@ -405,14 +405,16 @@ namespace Zene.Structs
 
         public readonly override bool Equals(object obj)
         {
-            return obj is Rectangle b &&
-                    X == b.Left && Width == b.Width &&
-                    Y == b.Top && Height == b.Height;
+            return obj is Rectangle b && this == b;
         }
         public readonly override int GetHashCode() => HashCode.Combine(X, Y, Width, Height);
 
-        public static bool operator ==(Rectangle l, Rectangle r) => l.Equals(r);
-        public static bool operator !=(Rectangle l, Rectangle r) => !l.Equals(r);
+        public static bool operator ==(Rectangle l, Rectangle r)
+        {
+            return l.X == r.X && l.Width == r.Width &&
+                l.Y == r.Y && l.Height == r.Height;
+        }
+        public static bool operator !=(Rectangle l, Rectangle r) => !(l == r);
 
         public static Rectangle operator *(Rectangle box, floatv scale) => new Rectangle(box.X * scale, box.Y * scale, box.Width * scale, box.Height * scale);
         public static Rectangle operator *(Rectangle box, Vector2 scale) => new Rectangle(box.X * scale.X, box.Y * scale.Y, box.Width * scale.X, box.Height * scale.Y);

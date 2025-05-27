@@ -135,13 +135,7 @@ namespace Zene.Structs
 
         public override bool Equals(object obj)
         {
-            return obj is Matrix2x3 matrix &&
-                _matrix[0] == matrix._matrix[0] &&
-                _matrix[1] == matrix._matrix[1] &&
-                _matrix[2] == matrix._matrix[2] &&
-                _matrix[3] == matrix._matrix[3] &&
-                _matrix[4] == matrix._matrix[4] &&
-                _matrix[5] == matrix._matrix[5];
+            return obj is Matrix2x3 matrix && this == matrix;
         }
 
         public override int GetHashCode()
@@ -169,9 +163,17 @@ namespace Zene.Structs
 [{_matrix[3].ToString(format)}, {_matrix[4].ToString(format)}, {_matrix[5].ToString(format)}]";
         }
 
-        public static bool operator ==(Matrix2x3 a, Matrix2x3 b) => Equals(a, b);
+        public static bool operator ==(Matrix2x3 a, Matrix2x3 b)
+        {
+            return a._matrix[0] == b._matrix[0] &&
+                a._matrix[1] == b._matrix[1] &&
+                a._matrix[2] == b._matrix[2] &&
+                a._matrix[3] == b._matrix[3] &&
+                a._matrix[4] == b._matrix[4] &&
+                a._matrix[5] == b._matrix[5];
+        }
 
-        public static bool operator !=(Matrix2x3 a, Matrix2x3 b) => !Equals(a, b);
+        public static bool operator !=(Matrix2x3 a, Matrix2x3 b) => !(a == b);
 
         public static MultiplyMatrix operator *(Matrix2x3 a, IMatrix b) => new MultiplyMatrix(a, b);
         

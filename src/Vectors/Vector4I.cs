@@ -541,12 +541,10 @@ namespace Zene.Structs
         {
             return
                 (
-                    obj is Vector4I p &&
-                    X == p.X && Y == p.Y && Z == p.Z && W == p.W
+                    obj is Vector4I p && this == p
                 ) ||
                 (
-                    obj is Vector4 pd &&
-                    X == pd.X && Y == pd.Y && Z == pd.Z && W == pd.W
+                    obj is Vector4 pd && this == pd
                 );
         }
         public override int GetHashCode()
@@ -556,20 +554,14 @@ namespace Zene.Structs
 
         public static bool operator ==(Vector4I a, Vector4I b)
         {
-            return a.Equals(b);
+            return a.X == b.X && a.Y == b.Y && a.Z == b.Z && a.W == b.W;
         }
-        public static bool operator !=(Vector4I a, Vector4I b)
-        {
-            return !a.Equals(b);
-        }
+        public static bool operator !=(Vector4I a, Vector4I b) => !(a == b);
         public static bool operator ==(Vector4I a, Vector4 b)
         {
-            return a.Equals(b);
+            return a.X == b.X && a.Y == b.Y && a.Z == b.Z && a.W == b.W;
         }
-        public static bool operator !=(Vector4I a, Vector4 b)
-        {
-            return !a.Equals(b);
-        }
+        public static bool operator !=(Vector4I a, Vector4 b) => !(a == b);
 
         /*
         public static Vector4I operator +(Vector4I a, int b)

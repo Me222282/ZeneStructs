@@ -151,27 +151,31 @@ namespace Zene.Structs
 
         public override bool Equals(object obj)
         {
-            return (obj is Colour c &&
-                R == c.R &&
-                G == c.G &&
-                B == c.B &&
-                A == c.A) ||
-                (obj is ColourF f &&
-                (R * 255f) == f.R &&
-                (G * 255f) == f.G &&
-                (B * 255f) == f.B &&
-                (A * 255f) == f.A);
+            return (obj is Colour c && this == c) ||
+                (obj is ColourF f && this == f);
         }
         public override int GetHashCode()
         {
             return HashCode.Combine(R, G, B, A);
         }
 
-        public static bool operator ==(Colour l, Colour r) => l.Equals(r);
-        public static bool operator !=(Colour l, Colour r) => !l.Equals(r);
+        public static bool operator ==(Colour l, Colour r)
+        {
+            return l.R == r.R &&
+                l.G == r.G &&
+                l.B == r.B &&
+                l.A == r.A;
+        }
+        public static bool operator !=(Colour l, Colour r) => !(l == r);
 
-        public static bool operator ==(Colour l, ColourF r) => l.Equals(r);
-        public static bool operator !=(Colour l, ColourF r) => !l.Equals(r);
+        public static bool operator ==(Colour l, ColourF r)
+        {
+            return (l.R * 255f) == r.R &&
+                (l.G * 255f) == r.G &&
+                (l.B * 255f) == r.B &&
+                (l.A * 255f) == r.A;
+        }
+        public static bool operator !=(Colour l, ColourF r) => !(l == r);
 
         public static implicit operator ColourF(Colour c)
         {

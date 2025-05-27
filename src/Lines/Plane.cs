@@ -230,13 +230,15 @@ namespace Zene.Structs
 
         public override bool Equals(object obj)
         {
-            return obj is Plane plane &&
-                Normal == plane.Normal &&
-                Location == plane.Location;
+            return obj is Plane plane && this == plane;
         }
         public override int GetHashCode() => HashCode.Combine(Normal, Location);
 
-        public static bool operator ==(Plane l, Plane r) => l.Equals(r);
-        public static bool operator !=(Plane l, Plane r) => !l.Equals(r);
+        public static bool operator ==(Plane l, Plane r)
+        {
+            return l.Normal == r.Normal &&
+                l.Location == r.Location;
+        }
+        public static bool operator !=(Plane l, Plane r) => !(l == r);
     }
 }

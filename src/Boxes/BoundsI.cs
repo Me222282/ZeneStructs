@@ -422,17 +422,19 @@
 
 //        public readonly override bool Equals(object obj)
 //        {
-//            return obj is BoundsI b &&
-//                    Left == b.Left && Right == b.Right &&
-//                    Top == b.Top && Bottom == b.Bottom;
+//            return obj is BoundsI b && this == b;
 //        }
 //        public readonly override int GetHashCode()
 //        {
 //            return HashCode.Combine(Left, Right, Top, Bottom);
 //        }
 
-//        public static bool operator ==(BoundsI l, BoundsI r) => l.Equals(r);
-//        public static bool operator !=(BoundsI l, BoundsI r) => !l.Equals(r);
+//        public static bool operator ==(BoundsI l, BoundsI r)
+//        {
+//            return l.Left == r.Left && l.Right == r.Right &&
+//                l.Top == r.Top && l.Bottom == r.Bottom;
+//        }
+//        public static bool operator !=(BoundsI l, BoundsI r) => !(l == r);
 
 //        public static BoundsI operator *(BoundsI box, int scale) => new BoundsI(box.Left * scale, box.Right * scale, box.Top * scale, box.Bottom * scale);
 //        public static BoundsI operator *(BoundsI box, Vector2I scale) => new BoundsI(box.Left * scale.X, box.Right * scale.X, box.Top * scale.Y, box.Bottom * scale.Y);

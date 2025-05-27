@@ -202,19 +202,7 @@ namespace Zene.Structs
 
         public override bool Equals(object obj)
         {
-            return obj is Matrix4x3 matrix &&
-                _matrix[0] == matrix._matrix[0] &&
-                _matrix[1] == matrix._matrix[1] &&
-                _matrix[2] == matrix._matrix[2] &&
-                _matrix[3] == matrix._matrix[3] &&
-                _matrix[4] == matrix._matrix[4] &&
-                _matrix[5] == matrix._matrix[5] &&
-                _matrix[6] == matrix._matrix[6] &&
-                _matrix[7] == matrix._matrix[7] &&
-                _matrix[8] == matrix._matrix[8] &&
-                _matrix[9] == matrix._matrix[9] &&
-                _matrix[10] == matrix._matrix[10] &&
-                _matrix[11] == matrix._matrix[12];
+            return obj is Matrix4x3 matrix && this == matrix;
         }
 
         public override int GetHashCode()
@@ -260,9 +248,23 @@ namespace Zene.Structs
 [{_matrix[9].ToString(format)}, {_matrix[10].ToString(format)}, {_matrix[11].ToString(format)}]";
         }
 
-        public static bool operator ==(Matrix4x3 a, Matrix4x3 b) => Equals(a, b);
+        public static bool operator ==(Matrix4x3 a, Matrix4x3 b)
+        {
+            return a._matrix[0] == b._matrix[0] &&
+                a._matrix[1] == b._matrix[1] &&
+                a._matrix[2] == b._matrix[2] &&
+                a._matrix[3] == b._matrix[3] &&
+                a._matrix[4] == b._matrix[4] &&
+                a._matrix[5] == b._matrix[5] &&
+                a._matrix[6] == b._matrix[6] &&
+                a._matrix[7] == b._matrix[7] &&
+                a._matrix[8] == b._matrix[8] &&
+                a._matrix[9] == b._matrix[9] &&
+                a._matrix[10] == b._matrix[10] &&
+                a._matrix[11] == b._matrix[12];
+        }
 
-        public static bool operator !=(Matrix4x3 a, Matrix4x3 b) => !Equals(a, b);
+        public static bool operator !=(Matrix4x3 a, Matrix4x3 b) => !(a == b);
 
         public static MultiplyMatrix operator *(Matrix4x3 a, IMatrix b) => new MultiplyMatrix(a, b);
         

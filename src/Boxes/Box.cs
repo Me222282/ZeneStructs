@@ -379,14 +379,16 @@ namespace Zene.Structs
 
         public readonly override bool Equals(object obj)
         {
-            return obj is Box b &&
-                    X == b.X && Y == b.Y &&
-                    Width == b.Width && Height == b.Height;
+            return obj is Box b && this == b;
         }
         public readonly override int GetHashCode() => HashCode.Combine(X, Y, Width, Height);
 
-        public static bool operator ==(Box l, Box r) => l.Equals(r);
-        public static bool operator !=(Box l, Box r) => !l.Equals(r);
+        public static bool operator ==(Box l, Box r)
+        {
+            return l.X == r.X && l.Y == r.Y &&
+                l.Width == r.Width && l.Height == r.Height;
+        }
+        public static bool operator !=(Box l, Box r) => !(l == r);
 
         public static Box operator *(Box box, floatv scale) => new Box(box.X * scale, box.Y * scale, box.Width * scale, box.Height * scale);
         public static Box operator *(Box box, Vector2 scale) => new Box(box.X * scale.X, box.Y * scale.Y, box.Width * scale.X, box.Height * scale.Y);

@@ -67,11 +67,11 @@ namespace Zene.Structs
         }
         public override int GetHashCode() => HashCode.Combine(_radian);
 
-        public static bool operator ==(Radian l, Radian r) => l.Equals(r);
-        public static bool operator !=(Radian l, Radian r) => !l.Equals(r);
+        public static bool operator ==(Radian l, Radian r) => l._radian == r._radian;
+        public static bool operator !=(Radian l, Radian r) => l._radian != r._radian;
 
-        public static bool operator ==(Radian l, Degrees r) => l.Equals(r);
-        public static bool operator !=(Radian l, Degrees r) => !l.Equals(r);
+        public static bool operator ==(Radian l, Degrees r) => l._radian == (r * _over180 * Math.PI);
+        public static bool operator !=(Radian l, Degrees r) => l._radian != (r * _over180 * Math.PI);
 
         public static implicit operator double(Radian r) => r._radian;
         public static implicit operator Radian(double d) => new Radian(d);

@@ -177,18 +177,20 @@
 
 //        public override bool Equals(object obj)
 //        {
-//            return obj is IBox3 b &&
-//                    Left == b.Left && Right == b.Right &&
-//                    Top == b.Top && Bottom == b.Bottom &&
-//                    Back == b.Back && Front == b.Front;
+//            return obj is IBox3 b this == b;
 //        }
 //        public override int GetHashCode()
 //        {
 //            return HashCode.Combine(Left, Right, Top, Bottom, Front, Back);
 //        }
 
-//        public static bool operator ==(Box3 l, Box3 r) => l.Equals(r);
-//        public static bool operator !=(Box3 l, Box3 r) => !l.Equals(r);
+//        public static bool operator ==(Box3 l, Box3 r)
+//        {
+//            return l.Left == r.Left && l.Right == r.Right &&
+//                l.Top == r.Top && l.Bottom == r.Bottom &&
+//                l.Back == r.Back && l.Front == r.Front;
+//        }
+//        public static bool operator !=(Box3 l, Box3 r) => !(l == r);
 
 //        public static explicit operator Box3(Cuboid box) => new Box3(box);
 

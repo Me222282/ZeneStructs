@@ -47,7 +47,7 @@ namespace Zene.Structs
         public Line3(Tuple<Vector3, Vector3> seg)
         {
             Location = seg.Item1;
-            _direction = (seg.Item2 - seg.Item1);
+            _direction = seg.Item2 - seg.Item1;
         }
 
         private Vector3 _direction;
@@ -57,10 +57,7 @@ namespace Zene.Structs
         public Vector3 Direction
         {
             get => _direction;
-            set
-            {
-                _direction = value;
-            }
+            set { _direction = value; }
         }
         /// <summary>
         /// A point along the line to define is position in space.
@@ -231,16 +228,18 @@ namespace Zene.Structs
 
         public override bool Equals(object obj)
         {
-            return obj is Line3 line &&
-                _direction == line.Direction &&
-                Location == line.Location;
+            return obj is Line3 line && this == line;
         }
         public override int GetHashCode()
         {
             return HashCode.Combine(_direction, Location);
         }
 
-        public static bool operator ==(Line3 l, Line3 r) => l.Equals(r);
-        public static bool operator !=(Line3 l, Line3 r) => !l.Equals(r);
+        public static bool operator ==(Line3 l, Line3 r)
+        {
+            return l._direction == r._direction &&
+                l.Location == r.Location;
+        }
+        public static bool operator !=(Line3 l, Line3 r) => !(l == r);
     }
 }

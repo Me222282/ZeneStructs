@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Zene.Structs
 {
@@ -113,13 +114,15 @@ namespace Zene.Structs
 
         public override bool Equals(object obj)
         {
-            return obj is Segment2 seg &&
-                A == seg.A &&
-                B == seg.B;
+            return obj is Segment2 seg && this == seg;
         }
         public override int GetHashCode() => HashCode.Combine(A, B);
 
-        public static bool operator ==(Segment2 l,Segment2 r) => l.Equals(r);
-        public static bool operator !=(Segment2 l, Segment2 r) => l.Equals(r);
+        public static bool operator ==(Segment2 l,Segment2 r)
+        {
+            return l.A == r.A &&
+                l.B == r.B;
+        }
+        public static bool operator !=(Segment2 l, Segment2 r) => !(l == r);
     }
 }

@@ -155,15 +155,17 @@
 
 //        public override bool Equals(object obj)
 //        {
-//            return obj is IBox3 b &&
-//                    X == b.Left && Width == b.Width &&
-//                    Y == b.Top && Height == b.Height &&
-//                    Z == b.Front && Depth == b.Depth;
+//            return obj is IBox3 b && this == b;
 //        }
 //        public override int GetHashCode() => HashCode.Combine(X, Y, Z, Width, Height, Depth);
 
-//        public static bool operator ==(Cuboid l, Cuboid r) => l.Equals(r);
-//        public static bool operator !=(Cuboid l, Cuboid r) => !l.Equals(r);
+//        public static bool operator ==(Cuboid l, Cuboid r)
+//        {
+//            return l.X == r.Left && l.Width == r.Width &&
+//                l.Y == r.Top && l.Height == r.Height &&
+//                l.Z == r.Front && l.Depth == r.Depth;
+//        }
+//        public static bool operator !=(Cuboid l, Cuboid r) => !(l == r);
 
 //        public static Cuboid operator *(Cuboid box, floatv scale)
 //            => new Cuboid(box.X * scale, box.Y * scale, box.Z * scale, box.Width * scale, box.Height * scale, box.Depth * scale);
